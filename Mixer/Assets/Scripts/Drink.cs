@@ -4,29 +4,17 @@ using UnityEngine;
 
 public class Drink : MonoBehaviour
 {
-    // lists of drink recipes. 0 = easiest. 3 = hardest
-    public static List<Drink> drinks0;
-    public static List<Drink> drinks1;
-    public static List<Drink> drinks2;
-    public static List<Drink> drinks3;
+    public static bool debugMode;
+    public static List<Drink> drinks0;          // easy drink recipes
+    public static List<Drink> drinks1;          // moderate drink recipes
+    public static List<Drink> drinks2;          // challenging drink recipes
+    public static List<Drink> drinks3;          // difficult drink recipes
 
     public string drinkName;                    // formatted nicely for front-end
     public List<DrinkComponent> components;     // a list of all components required to make this drink
 
 
-    // Use this for initialization
-    void Start ()
-    {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
-
-
+    // initialize static structures in Drink. Should be called once per level load
     public static void Initialize()
     {
         drinks0 = new List<Drink>();
@@ -34,162 +22,155 @@ public class Drink : MonoBehaviour
         drinks2 = new List<Drink>();
         drinks3 = new List<Drink>();
 
-        Drink lager = new Drink();
-        Drink ale = new Drink();
-        Drink rumAndCoke = new Drink();
-        Drink ginAndTonic = new Drink();
-        Drink oldFashioned = new Drink();
-        Drink margarita = new Drink();
-        Drink negroni = new Drink();
-        Drink moscowMule = new Drink();
-        Drink whiskeySour = new Drink();
-        Drink manhattan = new Drink();
-        Drink mimosa = new Drink();
-        Drink gimlet = new Drink();
-        Drink sazerac = new Drink();
-        Drink martini = new Drink();
-        Drink daiquiri = new Drink();
-
         // Lager
+        Drink lager = new Drink();
         List<DrinkComponent> lagerRecipe = new List<DrinkComponent>();
         lagerRecipe.Add(DrinkComponent.glassware["Pint Glass"]);
         lagerRecipe.Add(DrinkComponent.beers["Lager"]);
+        lager.assign("Lager", lagerRecipe);
+        drinks0.Add(lager);
 
         // Ale
+        Drink ale = new Drink();
         List<DrinkComponent> aleRecipe = new List<DrinkComponent>();
         aleRecipe.Add(DrinkComponent.glassware["Pint Glass"]);
         aleRecipe.Add(DrinkComponent.beers["Ale"]);
+        ale.assign("Ale", aleRecipe);
+        drinks0.Add(ale);
 
         // Rum And Coke
+        Drink rumAndCoke = new Drink();
         List<DrinkComponent> rumAndCokeRecipe = new List<DrinkComponent>();
         rumAndCokeRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
-        rumAndCokeRecipe.Add(DrinkComponent.otherMixers["Ice"]);
+        rumAndCokeRecipe.Add(DrinkComponent.other["Ice"]);
         rumAndCokeRecipe.Add(DrinkComponent.liquors["Rum"]);
-        rumAndCokeRecipe.Add(DrinkComponent.otherMixers["Soda"]);
+        rumAndCokeRecipe.Add(DrinkComponent.nonAlcoholic["Coke"]);
+        rumAndCoke.assign("Rum And Coke", rumAndCokeRecipe);
+        drinks0.Add(rumAndCoke);
 
         // Gin And Tonic
+        Drink ginAndTonic = new Drink();
         List<DrinkComponent> ginAndTonicRecipe = new List<DrinkComponent>();
         ginAndTonicRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
-        ginAndTonicRecipe.Add(DrinkComponent.otherMixers["Ice"]);
+        ginAndTonicRecipe.Add(DrinkComponent.other["Ice"]);
         ginAndTonicRecipe.Add(DrinkComponent.liquors["Gin"]);
-        ginAndTonicRecipe.Add(DrinkComponent.otherMixers["Soda"]);
-        ginAndTonicRecipe.Add(DrinkComponent.otherMixers["Orange Garnish"]);
+        ginAndTonicRecipe.Add(DrinkComponent.nonAlcoholic["Tonic"]);
+        ginAndTonicRecipe.Add(DrinkComponent.other["Orange Garnish"]);
+        ginAndTonic.assign("Gin And Tonic", ginAndTonicRecipe);
+        drinks0.Add(ginAndTonic);
 
         // Old Fashioned
+        Drink oldFashioned = new Drink();
         List<DrinkComponent> oldFashionedRecipe = new List<DrinkComponent>();
         oldFashionedRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
-        oldFashionedRecipe.Add(DrinkComponent.otherMixers["Ice"]);
+        oldFashionedRecipe.Add(DrinkComponent.other["Ice"]);
         oldFashionedRecipe.Add(DrinkComponent.liquors["Whiskey"]);
-        oldFashionedRecipe.Add(DrinkComponent.bittersAndSyrups["Angostura Bitters"]);
-        oldFashionedRecipe.Add(DrinkComponent.otherMixers["Sugar"]);
-        oldFashionedRecipe.Add(DrinkComponent.otherMixers["Orange Garnish"]);
+        oldFashionedRecipe.Add(DrinkComponent.bitters["Angostura Bitters"]);
+        oldFashionedRecipe.Add(DrinkComponent.nonAlcoholic["Simple Syrup"]);
+        oldFashionedRecipe.Add(DrinkComponent.other["Orange Garnish"]);
+        oldFashioned.assign("Old Fashioned", oldFashionedRecipe);
+        drinks0.Add(oldFashioned);
 
         // Margarita
+        Drink margarita = new Drink();
         List<DrinkComponent> margaritaRecipe = new List<DrinkComponent>();
         margaritaRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
-        margaritaRecipe.Add(DrinkComponent.otherMixers["Ice"]);
+        margaritaRecipe.Add(DrinkComponent.other["Ice"]);
         margaritaRecipe.Add(DrinkComponent.liquors["Tequila"]);
-        margaritaRecipe.Add(DrinkComponent.otherMixers["Margarita Mix"]);
-        margaritaRecipe.Add(DrinkComponent.otherMixers["Lime juice"]);
-        margaritaRecipe.Add(DrinkComponent.otherMixers["Salt Rim"]);
+        margaritaRecipe.Add(DrinkComponent.nonAlcoholic["Margarita Mix"]);
+        margaritaRecipe.Add(DrinkComponent.nonAlcoholic["Lime juice"]);
+        margaritaRecipe.Add(DrinkComponent.other["Salt Rim"]);
+        margarita.assign("Margarita", margaritaRecipe);
+        drinks0.Add(margarita);
 
         // Negroni
+        Drink negroni = new Drink();
         List<DrinkComponent> negroniRecipe = new List<DrinkComponent>();
         negroniRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
-        negroniRecipe.Add(DrinkComponent.otherMixers["Ice"]);
+        negroniRecipe.Add(DrinkComponent.other["Ice"]);
         negroniRecipe.Add(DrinkComponent.liquors["Gin"]);
-        negroniRecipe.Add(DrinkComponent.bittersAndSyrups["Campari"]);
-        negroniRecipe.Add(DrinkComponent.bittersAndSyrups["Sweet Vermouth"]);
+        negroniRecipe.Add(DrinkComponent.bitters["Campari"]);
+        negroniRecipe.Add(DrinkComponent.bitters["Sweet Vermouth"]);
+        negroni.assign("Negroni", negroniRecipe);
+        drinks0.Add(negroni);
 
         // Moscow Mule
+        Drink moscowMule = new Drink();
         List<DrinkComponent> moscowMuleRecipe = new List<DrinkComponent>();
         moscowMuleRecipe.Add(DrinkComponent.glassware["Copper Cup"]);
-        moscowMuleRecipe.Add(DrinkComponent.otherMixers["Ice"]);
+        moscowMuleRecipe.Add(DrinkComponent.other["Ice"]);
         moscowMuleRecipe.Add(DrinkComponent.liquors["Vodka"]);
-        moscowMuleRecipe.Add(DrinkComponent.otherMixers["Ginger Beer"]);
-        moscowMuleRecipe.Add(DrinkComponent.otherMixers["Lime Juice"]);
+        moscowMuleRecipe.Add(DrinkComponent.nonAlcoholic["Ginger Beer"]);
+        moscowMuleRecipe.Add(DrinkComponent.nonAlcoholic["Lime Juice"]);
+        moscowMule.assign("Moscow Mule", moscowMuleRecipe);
+        drinks0.Add(moscowMule);
 
         // Whiskey Sour
+        Drink whiskeySour = new Drink();
         List<DrinkComponent> whiskeySourRecipe = new List<DrinkComponent>();
         whiskeySourRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
-        whiskeySourRecipe.Add(DrinkComponent.otherMixers["Ice"]);
+        whiskeySourRecipe.Add(DrinkComponent.other["Ice"]);
         whiskeySourRecipe.Add(DrinkComponent.liquors["Whiskey"]);
-        whiskeySourRecipe.Add(DrinkComponent.otherMixers["Lemon Juice"]);
-        whiskeySourRecipe.Add(DrinkComponent.otherMixers["Sugar"]);
+        whiskeySourRecipe.Add(DrinkComponent.nonAlcoholic["Lemon Juice"]);
+        whiskeySourRecipe.Add(DrinkComponent.nonAlcoholic["Simple Syrup"]);
+        whiskeySour.assign("Whiskey Sour", whiskeySourRecipe);
+        drinks0.Add(whiskeySour);
 
         // Manhattan
+        Drink manhattan = new Drink();
         List<DrinkComponent> manhattanRecipe = new List<DrinkComponent>();
         manhattanRecipe.Add(DrinkComponent.glassware["Cocktail Glass"]);
         manhattanRecipe.Add(DrinkComponent.liquors["Whiskey"]);
-        manhattanRecipe.Add(DrinkComponent.bittersAndSyrups["Sweet Vermouth"]);
-        manhattanRecipe.Add(DrinkComponent.bittersAndSyrups["Angostura Bitters"]);
-
-        // Mimosa
-        List<DrinkComponent> mimosaRecipe = new List<DrinkComponent>();
-        mimosaRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
-        mimosaRecipe.Add(DrinkComponent.otherMixers["Champagne"]);
-        mimosaRecipe.Add(DrinkComponent.otherMixers["Orange Juice"]);
+        manhattanRecipe.Add(DrinkComponent.bitters["Sweet Vermouth"]);
+        manhattanRecipe.Add(DrinkComponent.bitters["Angostura Bitters"]);
+        manhattan.assign("Manhattan", manhattanRecipe);
+        drinks0.Add(manhattan);
 
         // Gimlet
+        Drink gimlet = new Drink();
         List<DrinkComponent> gimletRecipe = new List<DrinkComponent>();
         gimletRecipe.Add(DrinkComponent.glassware["Cocktail Glass"]);
         gimletRecipe.Add(DrinkComponent.liquors["Vodka"]);
-        gimletRecipe.Add(DrinkComponent.bittersAndSyrups["Simple Syrup"]);
-        gimletRecipe.Add(DrinkComponent.otherMixers["Lime Juice"]);
+        gimletRecipe.Add(DrinkComponent.nonAlcoholic["Simple Syrup"]);
+        gimletRecipe.Add(DrinkComponent.nonAlcoholic["Lime Juice"]);
+        gimlet.assign("Gimlet", gimletRecipe);
+        drinks0.Add(gimlet);
 
         // Sazerac
+        Drink sazerac = new Drink();     
         List<DrinkComponent> sazeracRecipe = new List<DrinkComponent>();
         sazeracRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
         sazeracRecipe.Add(DrinkComponent.liquors["Whiskey"]);
         sazeracRecipe.Add(DrinkComponent.liquors["Absinthe"]);
-        sazeracRecipe.Add(DrinkComponent.bittersAndSyrups["Simple Syrup"]);
-        sazeracRecipe.Add(DrinkComponent.bittersAndSyrups["Peychaud’s Bitters"]);
+        sazeracRecipe.Add(DrinkComponent.nonAlcoholic["Simple Syrup"]);
+        sazeracRecipe.Add(DrinkComponent.bitters["Peychaud’s Bitters"]);
+        sazerac.assign("Sazerac", sazeracRecipe);
+        drinks0.Add(sazerac);
 
         // Martini
+        Drink martini = new Drink();
         List<DrinkComponent> martiniRecipe = new List<DrinkComponent>();
         martiniRecipe.Add(DrinkComponent.glassware["Cocktail Glass"]);
         martiniRecipe.Add(DrinkComponent.liquors["Vodka"]);
-        martiniRecipe.Add(DrinkComponent.bittersAndSyrups["Dry Vermouth"]);
-        martiniRecipe.Add(DrinkComponent.otherMixers["Olive"]);
+        martiniRecipe.Add(DrinkComponent.bitters["Dry Vermouth"]);
+        martiniRecipe.Add(DrinkComponent.other["Olive"]);
+        martini.assign("Martini", martiniRecipe);
+        drinks0.Add(martini);
 
         // Daiquiri
+        Drink daiquiri = new Drink();
         List<DrinkComponent> daiquiriRecipe = new List<DrinkComponent>();
         daiquiriRecipe.Add(DrinkComponent.glassware["Cocktail Glass"]);
         daiquiriRecipe.Add(DrinkComponent.liquors["Rum"]);
-        daiquiriRecipe.Add(DrinkComponent.bittersAndSyrups["Simple Syrup"]);
-        daiquiriRecipe.Add(DrinkComponent.otherMixers["Lime Juice"]);
-
-        lager.assign("Lager", lagerRecipe);
-        ale.assign("Ale", aleRecipe);
-        rumAndCoke.assign("Rum And Coke", rumAndCokeRecipe);
-        ginAndTonic.assign("Gin And Tonic", ginAndTonicRecipe);
-        oldFashioned.assign("Old Fashioned", oldFashionedRecipe);
-        margarita.assign("Margarita", margaritaRecipe);
-        negroni.assign("Negroni", negroniRecipe);
-        moscowMule.assign("Moscow Mule", moscowMuleRecipe);
-        whiskeySour.assign("Whiskey Sour", whiskeySourRecipe);
-        manhattan.assign("Manhattan", manhattanRecipe);
-        mimosa.assign("Mimosa", mimosaRecipe);
-        gimlet.assign("Gimlet", gimletRecipe);
-        sazerac.assign("Sazerac", sazeracRecipe);
-        martini.assign("Martini", martiniRecipe);
+        daiquiriRecipe.Add(DrinkComponent.nonAlcoholic["Simple Syrup"]);
+        daiquiriRecipe.Add(DrinkComponent.nonAlcoholic["Lime Juice"]);
         daiquiri.assign("Daiquiri", daiquiriRecipe);
-
-        drinks0.Add(lager);
-        drinks0.Add(ale);
-        drinks0.Add(rumAndCoke);
-        drinks0.Add(ginAndTonic);
-        drinks0.Add(oldFashioned);
-        drinks0.Add(margarita);
-        drinks0.Add(negroni);
-        drinks0.Add(moscowMule);
-        drinks0.Add(whiskeySour);
-        drinks0.Add(manhattan);
-        drinks0.Add(mimosa);
-        drinks0.Add(gimlet);
-        drinks0.Add(sazerac);
-        drinks0.Add(martini);
         drinks0.Add(daiquiri);
+    }
+
+    public static Drink getRandomDrink(int drinkDifficulty)
+    {
+
     }
 
 

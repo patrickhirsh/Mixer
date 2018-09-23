@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Order : MonoBehaviour
 {
+    public static bool debugMode;  
     public static List<Queue<Order>> orders;                    // keeps track of the queue of drink orders for each bartender position
     public static List<List<DrinkComponent>> orderProgress;     // keeps track of the DrinkComponents completed for the current drink at each bartender position
 
-    public Drink drink;                                         // the drink associated with this order
+    public Drink drink;                                         // the drink associated with this order   
 
-	// Use this for initialization
-	void Start ()
+
+    // Use this for initialization
+    void Start ()
     {
 		
 	}
@@ -21,7 +23,8 @@ public class Order : MonoBehaviour
 		
 	}
 
-    
+
+    // initialize static structures in Order. Should be called once per level load
     public static void Initialize(int numBartenderPositions)
     {
         // construct the order queues for each bartender position
@@ -42,12 +45,10 @@ public class Order : MonoBehaviour
     }
 
 
-    // given a drink, adds the order to the queue at position
-    public static void newOrder(Drink drink, int position)
+    // "tosses" the drink in progress at position
+    public static void clearOrder(int position)
     {
-        Order order = new Order();
-        order.drink = drink;
-        orders[position].Enqueue(order);
+        orderProgress[position].Clear();
     }
 
 
@@ -72,18 +73,20 @@ public class Order : MonoBehaviour
     }
 
 
-    // "tosses" the drink in progress at position
-    public static void clearOrder(int position)
-    {
-        orderProgress[position].Clear();
-    }
-
-
     // given a keySequence, submits the drinkComponent to the orderProgress list at position
     public static void submitComponent(string keySequence, int position)
     {
         DrinkComponent drinkComponent = new DrinkComponent();
         drinkComponent.keySequence = keySequence;
         orderProgress[position].Add(drinkComponent);
+    }
+
+
+    // given a drink, adds the order to the queue at position
+    private static void newOrder(Drink drink, int position)
+    {
+        Order order = new Order();
+        order.drink = drink;
+        orders[position].Enqueue(order);
     }
 }
