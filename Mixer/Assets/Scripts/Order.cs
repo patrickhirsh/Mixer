@@ -14,6 +14,11 @@ public class Order : MonoBehaviour
 
 
     #region STATIC
+    /*
+     *  STATIC Order is responsible for maintaining a list of all current orders
+     *  in each bartender position. Furthermore, static Order keeps track of
+     *  the player's current order fulfillment for each bartender position.
+     */
 
     // initialize static structures in Order. Should be called once per level load
     public static void Initialize(int numBartenderPositions)
@@ -78,15 +83,19 @@ public class Order : MonoBehaviour
         order.drink = drink;
         orders[position].Enqueue(order);
     }
+
     #endregion
 
 
     #region INSTANCE
+    /*
+     *  An INSTANCE of Order contains all information pertaining to a customer's 
+     *  drink order including the drink type and time of order.Order is then
+     *  responsible for keeping track of the time limit on an order and notifying
+     *  GameManager when time has run out.
+     */
 
-    // get the drink associated with this order
-    public Drink getDrink()
-    {
-        return drink;
-    }
+    // TODO: Implement order timing
+
     #endregion
 }

@@ -18,6 +18,11 @@ public class Drink : MonoBehaviour
 
 
     #region STATIC
+    /*  
+     *  Static Drink is responsible for maintaining lists of all possible drink
+     *  orders. Furthermore, static Drink provides a way to obtain a random drink
+     *  from the desired difficulty tier
+     */
 
     // initialize static structures in Drink. Should be called once per level load
     public static void Initialize()
@@ -208,6 +213,10 @@ public class Drink : MonoBehaviour
 
 
     #region INSTANCE
+    /*
+     *  an instance of Drink is a container comprised of a drink name and all 
+     *  DrinkComponents required to create it.
+     */
 
     private void assign(string drinkName, List<DrinkComponent> components)
     {
