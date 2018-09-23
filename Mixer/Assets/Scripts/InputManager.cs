@@ -31,10 +31,13 @@ public class InputManager : MonoBehaviour
             if (Input.GetKeyDown("DownArrow"))
                 { Bartender.handleMovement("DownArrow"); return; }
 
-
             // bartender drink submission
             if (Input.GetKeyDown("Keypad0") || Input.GetKeyDown("Alpha0"))
                 { Bartender.handleSubmit(); return; }
+
+            // bartender has cleared the drink at his current position
+            if (Input.GetKeyDown("Delete"))
+            { Bartender.handleClear(); return; }
 
             // bartender is not currently in a menu
             if (Bartender.componentMenuState == null)
@@ -61,7 +64,7 @@ public class InputManager : MonoBehaviour
             // bartender is in a menu
             if (Bartender.componentMenuState != null)
             {
-                // look for valid keystrokes
+                // look for valid keystrokes. Return when one is found to avoid multiple input acceptance
                 foreach (string key in compKeys)
                     if (Input.GetKeyDown(key))
                         { Bartender.handleDrinkConstruction(key); return; }

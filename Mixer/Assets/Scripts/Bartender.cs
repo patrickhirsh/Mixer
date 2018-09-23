@@ -18,7 +18,7 @@ public class Bartender : MonoBehaviour
 
 
     // the player has attempted to change the bartender's position
-    // can be fired at any time when gamestate == 1.
+    // can be fired at any time when gamestate == 1
     // fires when the player hits the keys: UpArrow, DownArrow
     public static void handleMovement(string keystroke)
     {
@@ -44,13 +44,23 @@ public class Bartender : MonoBehaviour
 
 
     // the player has tried to submit a drink at this position
-    // can be fired at any time when gamestate == 1.
+    // can be fired at any time when gamestate == 1
     // fires when the player hits the keys: UpArrow, DownArrow
     public static void handleSubmit()
     {
         componentMenuState = null;              // submitting causes all menus to close
         keySequence = null;                     // submitting clears the current keySequence
         Order.submitOrder(position);
+    }
+
+
+    // the player has elected to clear the drink at this position
+    // can be fired at any time when gamestate == 1
+    // fires when the player hits the Delete key
+    public static void handleClear()
+    {
+        componentMenuState = null;              // clearing causes all menus to close
+        keySequence = null;                     // clear the current keySequence
     }
 
 

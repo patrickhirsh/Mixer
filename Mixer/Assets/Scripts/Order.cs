@@ -7,6 +7,7 @@ public class Order : MonoBehaviour
     public static List<Queue<Order>> orders;                    // keeps track of the queue of drink orders for each bartender position
     public static List<List<DrinkComponent>> orderProgress;     // keeps track of the DrinkComponents completed for the current drink at each bartender position
 
+    public Drink drink;                                         // the drink associated with this order
 
 	// Use this for initialization
 	void Start ()
@@ -40,18 +41,49 @@ public class Order : MonoBehaviour
         }
     }
 
-    public static void newOrder(Order order, int bartenderPosition)
-    {
 
+    // given a drink, adds the order to the queue at position
+    public static void newOrder(Drink drink, int position)
+    {
+        Order order = new Order();
+        order.drink = drink;
+        orders[position].Enqueue(order);
     }
 
-    public static bool submitOrder(int bartenderPosition)
-    {
 
+    // attempts to submit the order at position
+    // returns true if the submission was accepted and false if it was rejected
+    public static bool submitOrder(int position)
+    {
+        List<DrinkComponent> submittedOrder = orderProgress[position];
+        List<DrinkComponent> originalOrder = orders[position].Peek().drink.components;
+
+        // reject if the order and submitted order have different drinkComponent counts
+        if (submittedOrder.Count != originalOrder.Count)
+            return false;
+
+        // enumerate through the drinkComponents and ensure they are correct
+        for (int i = 0; i < submittedOrder.Count; i++)
+            if (submittedOrder[i].keySequence != originalOrder[i].keySequence)
+                return false;
+
+        // the drink was correct!
+        return true;
     }
 
-    public static void submitComponent(string keySequence, int bartenderPosition)
-    {
 
+    // "tosses" the drink in progress at position
+    public static void clearOrder(int position)
+    {
+        orderProgress[position].Clear();
+    }
+
+
+    // given a keySequence, submits the drinkComponent to the orderProgress list at position
+    public static void submitComponent(string keySequence, int position)
+    {
+        DrinkComponent drinkComponent = new DrinkComponent();
+        drinkComponent.keySequence = keySequence;
+        orderProgress[position].Add(drinkComponent);
     }
 }

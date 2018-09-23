@@ -11,9 +11,9 @@ public class DrinkComponent : MonoBehaviour
     public static Dictionary<string, DrinkComponent> bittersAndSyrups;
     public static Dictionary<string, DrinkComponent> otherMixers;
 
-    public string component;
-    public string category;
-    public string keySequence;
+    public string component;        // name of the drink component (typed nicely for front-end)
+    public string category;         // the drinkComponent category this component belongs in
+    public string keySequence;      // the keySequence required to properly add this ingredient to a drink
 
 
 	// Use this for initialization
@@ -151,10 +151,11 @@ public class DrinkComponent : MonoBehaviour
         otherMixers.Add(soda.component, soda);
     }
 
-    public void assign(string aComponent, string aCategory, string aKeySequence)
+
+    public void assign(string component, string category, string keySequence)
     {
-        this.component = aComponent;
-        this.category = aCategory;
-        this.keySequence = aKeySequence;
+        this.component = component;
+        this.category = category;
+        this.keySequence = keySequence;
     }
 }

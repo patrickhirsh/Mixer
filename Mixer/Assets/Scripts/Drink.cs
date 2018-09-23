@@ -10,8 +10,8 @@ public class Drink : MonoBehaviour
     public static List<Drink> drinks2;
     public static List<Drink> drinks3;
 
-    public string drinkName;
-    public List<DrinkComponent> components;
+    public string drinkName;                    // formatted nicely for front-end
+    public List<DrinkComponent> components;     // a list of all components required to make this drink
 
 
     // Use this for initialization
@@ -193,9 +193,9 @@ public class Drink : MonoBehaviour
     }
 
 
-    public void assign(string aDrinkName, List<DrinkComponent> aComponents)
+    public void assign(string drinkName, List<DrinkComponent> components)
     {
-        this.drinkName = aDrinkName;
-        this.components = aComponents;
+        this.drinkName = drinkName;
+        this.components = components;
     }
 }
