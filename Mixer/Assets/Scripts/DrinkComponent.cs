@@ -89,29 +89,23 @@ public class DrinkComponent : MonoBehaviour
         bittersAndSyrups = new Dictionary<string, DrinkComponent>();
         DrinkComponent angosturaBitters = new DrinkComponent();
         DrinkComponent peychaudsBitters = new DrinkComponent();
-        DrinkComponent campari = new DrinkComponent();
-        DrinkComponent margaritaMix = new DrinkComponent();
+        DrinkComponent campari = new DrinkComponent();       
         DrinkComponent sweetVermouth = new DrinkComponent();
-        DrinkComponent dryVermouth = new DrinkComponent();
-        DrinkComponent champagne = new DrinkComponent();
+        DrinkComponent dryVermouth = new DrinkComponent();       
         DrinkComponent simpleSyrup = new DrinkComponent();
 
         angosturaBitters.assign("Angostura Bitters", "bittersAndSyrups", "a");
         peychaudsBitters.assign("Peychaud's Bitters", "bittersAndSyrups", "a");
-        campari.assign("Campari", "bittersAndSyrups", "a");
-        margaritaMix.assign("Margarita Mix", "bittersAndSyrups", "a");
+        campari.assign("Campari", "bittersAndSyrups", "a");       
         sweetVermouth.assign("Sweet Vermouth", "bittersAndSyrups", "a");
-        dryVermouth.assign("Dry Vermouth", "bittersAndSyrups", "a");
-        champagne.assign("Champagne", "bittersAndSyrups", "a");
+        dryVermouth.assign("Dry Vermouth", "bittersAndSyrups", "a");       
         simpleSyrup.assign("Simple Syrup", "bittersAndSyrups", "a");
 
         bittersAndSyrups.Add(angosturaBitters.component, angosturaBitters);
         bittersAndSyrups.Add(peychaudsBitters.component, peychaudsBitters);
-        bittersAndSyrups.Add(campari.component, campari);
-        bittersAndSyrups.Add(margaritaMix.component, margaritaMix);
+        bittersAndSyrups.Add(campari.component, campari);      
         bittersAndSyrups.Add(sweetVermouth.component, sweetVermouth);
-        bittersAndSyrups.Add(dryVermouth.component, dryVermouth);
-        bittersAndSyrups.Add(champagne.component, champagne);
+        bittersAndSyrups.Add(dryVermouth.component, dryVermouth);       
         bittersAndSyrups.Add(simpleSyrup.component, simpleSyrup);
 
 
@@ -123,6 +117,8 @@ public class DrinkComponent : MonoBehaviour
         DrinkComponent limeJuice = new DrinkComponent();
         DrinkComponent lemonJuice = new DrinkComponent();
         DrinkComponent orangeJuice = new DrinkComponent();
+        DrinkComponent margaritaMix = new DrinkComponent();
+        DrinkComponent champagne = new DrinkComponent();
         DrinkComponent orangeGarnish = new DrinkComponent();
         DrinkComponent sugar = new DrinkComponent();
         DrinkComponent olive = new DrinkComponent();
@@ -134,6 +130,8 @@ public class DrinkComponent : MonoBehaviour
         limeJuice.assign("Lime Juice", "otherMixers", "a");
         lemonJuice.assign("Lemon Juice", "otherMixers", "a");
         orangeJuice.assign("Orange Juice", "otherMixers", "a");
+        margaritaMix.assign("Margarita Mix", "otherMixers", "a");
+        champagne.assign("Champagne", "otherMixers", "a");
         orangeGarnish.assign("Orange Garnish", "otherMixers", "a");
         sugar.assign("Sugar", "otherMixers", "a");
         olive.assign("Olive", "otherMixers", "a");
@@ -145,6 +143,8 @@ public class DrinkComponent : MonoBehaviour
         otherMixers.Add(limeJuice.component, limeJuice);
         otherMixers.Add(lemonJuice.component, lemonJuice);
         otherMixers.Add(orangeJuice.component, orangeJuice);
+        otherMixers.Add(margaritaMix.component, margaritaMix);
+        otherMixers.Add(champagne.component, champagne);
         otherMixers.Add(orangeGarnish.component, orangeGarnish);
         otherMixers.Add(sugar.component, sugar);
         otherMixers.Add(olive.component, olive);

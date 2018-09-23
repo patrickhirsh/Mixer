@@ -50,20 +50,24 @@ public class Drink : MonoBehaviour
         Drink martini = new Drink();
         Drink daiquiri = new Drink();
 
+        // Lager
         List<DrinkComponent> lagerRecipe = new List<DrinkComponent>();
         lagerRecipe.Add(DrinkComponent.glassware["Pint Glass"]);
         lagerRecipe.Add(DrinkComponent.beers["Lager"]);
 
+        // Ale
         List<DrinkComponent> aleRecipe = new List<DrinkComponent>();
         aleRecipe.Add(DrinkComponent.glassware["Pint Glass"]);
         aleRecipe.Add(DrinkComponent.beers["Ale"]);
 
+        // Rum And Coke
         List<DrinkComponent> rumAndCokeRecipe = new List<DrinkComponent>();
         rumAndCokeRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
         rumAndCokeRecipe.Add(DrinkComponent.otherMixers["Ice"]);
         rumAndCokeRecipe.Add(DrinkComponent.liquors["Rum"]);
         rumAndCokeRecipe.Add(DrinkComponent.otherMixers["Soda"]);
 
+        // Gin And Tonic
         List<DrinkComponent> ginAndTonicRecipe = new List<DrinkComponent>();
         ginAndTonicRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
         ginAndTonicRecipe.Add(DrinkComponent.otherMixers["Ice"]);
@@ -71,6 +75,7 @@ public class Drink : MonoBehaviour
         ginAndTonicRecipe.Add(DrinkComponent.otherMixers["Soda"]);
         ginAndTonicRecipe.Add(DrinkComponent.otherMixers["Orange Garnish"]);
 
+        // Old Fashioned
         List<DrinkComponent> oldFashionedRecipe = new List<DrinkComponent>();
         oldFashionedRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
         oldFashionedRecipe.Add(DrinkComponent.otherMixers["Ice"]);
@@ -79,14 +84,16 @@ public class Drink : MonoBehaviour
         oldFashionedRecipe.Add(DrinkComponent.otherMixers["Sugar"]);
         oldFashionedRecipe.Add(DrinkComponent.otherMixers["Orange Garnish"]);
 
+        // Margarita
         List<DrinkComponent> margaritaRecipe = new List<DrinkComponent>();
         margaritaRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
         margaritaRecipe.Add(DrinkComponent.otherMixers["Ice"]);
         margaritaRecipe.Add(DrinkComponent.liquors["Tequila"]);
-        margaritaRecipe.Add(DrinkComponent.bittersAndSyrups["Margarita Mix"]);
+        margaritaRecipe.Add(DrinkComponent.otherMixers["Margarita Mix"]);
         margaritaRecipe.Add(DrinkComponent.otherMixers["Lime juice"]);
         margaritaRecipe.Add(DrinkComponent.otherMixers["Salt Rim"]);
 
+        // Negroni
         List<DrinkComponent> negroniRecipe = new List<DrinkComponent>();
         negroniRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
         negroniRecipe.Add(DrinkComponent.otherMixers["Ice"]);
@@ -94,6 +101,7 @@ public class Drink : MonoBehaviour
         negroniRecipe.Add(DrinkComponent.bittersAndSyrups["Campari"]);
         negroniRecipe.Add(DrinkComponent.bittersAndSyrups["Sweet Vermouth"]);
 
+        // Moscow Mule
         List<DrinkComponent> moscowMuleRecipe = new List<DrinkComponent>();
         moscowMuleRecipe.Add(DrinkComponent.glassware["Copper Cup"]);
         moscowMuleRecipe.Add(DrinkComponent.otherMixers["Ice"]);
@@ -101,6 +109,7 @@ public class Drink : MonoBehaviour
         moscowMuleRecipe.Add(DrinkComponent.otherMixers["Ginger Beer"]);
         moscowMuleRecipe.Add(DrinkComponent.otherMixers["Lime Juice"]);
 
+        // Whiskey Sour
         List<DrinkComponent> whiskeySourRecipe = new List<DrinkComponent>();
         whiskeySourRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
         whiskeySourRecipe.Add(DrinkComponent.otherMixers["Ice"]);
@@ -108,23 +117,27 @@ public class Drink : MonoBehaviour
         whiskeySourRecipe.Add(DrinkComponent.otherMixers["Lemon Juice"]);
         whiskeySourRecipe.Add(DrinkComponent.otherMixers["Sugar"]);
 
+        // Manhattan
         List<DrinkComponent> manhattanRecipe = new List<DrinkComponent>();
         manhattanRecipe.Add(DrinkComponent.glassware["Cocktail Glass"]);
         manhattanRecipe.Add(DrinkComponent.liquors["Whiskey"]);
         manhattanRecipe.Add(DrinkComponent.bittersAndSyrups["Sweet Vermouth"]);
         manhattanRecipe.Add(DrinkComponent.bittersAndSyrups["Angostura Bitters"]);
 
+        // Mimosa
         List<DrinkComponent> mimosaRecipe = new List<DrinkComponent>();
         mimosaRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
-        mimosaRecipe.Add(DrinkComponent.bittersAndSyrups["Champagne"]);
+        mimosaRecipe.Add(DrinkComponent.otherMixers["Champagne"]);
         mimosaRecipe.Add(DrinkComponent.otherMixers["Orange Juice"]);
 
+        // Gimlet
         List<DrinkComponent> gimletRecipe = new List<DrinkComponent>();
         gimletRecipe.Add(DrinkComponent.glassware["Cocktail Glass"]);
         gimletRecipe.Add(DrinkComponent.liquors["Vodka"]);
         gimletRecipe.Add(DrinkComponent.bittersAndSyrups["Simple Syrup"]);
         gimletRecipe.Add(DrinkComponent.otherMixers["Lime Juice"]);
 
+        // Sazerac
         List<DrinkComponent> sazeracRecipe = new List<DrinkComponent>();
         sazeracRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
         sazeracRecipe.Add(DrinkComponent.liquors["Whiskey"]);
@@ -132,12 +145,14 @@ public class Drink : MonoBehaviour
         sazeracRecipe.Add(DrinkComponent.bittersAndSyrups["Simple Syrup"]);
         sazeracRecipe.Add(DrinkComponent.bittersAndSyrups["Peychaud’s Bitters"]);
 
+        // Martini
         List<DrinkComponent> martiniRecipe = new List<DrinkComponent>();
         martiniRecipe.Add(DrinkComponent.glassware["Cocktail Glass"]);
         martiniRecipe.Add(DrinkComponent.liquors["Vodka"]);
         martiniRecipe.Add(DrinkComponent.bittersAndSyrups["Dry Vermouth"]);
         martiniRecipe.Add(DrinkComponent.otherMixers["Olive"]);
 
+        // Daiquiri
         List<DrinkComponent> daiquiriRecipe = new List<DrinkComponent>();
         daiquiriRecipe.Add(DrinkComponent.glassware["Cocktail Glass"]);
         daiquiriRecipe.Add(DrinkComponent.liquors["Rum"]);
@@ -183,6 +198,4 @@ public class Drink : MonoBehaviour
         this.drinkName = aDrinkName;
         this.components = aComponents;
     }
-
-
 }
