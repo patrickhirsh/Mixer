@@ -3,26 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Order : MonoBehaviour
-{
+{   
+    // STATIC
     public static bool debugMode;  
-    public static List<Queue<Order>> orders;                    // keeps track of the queue of drink orders for each bartender position
-    public static List<List<DrinkComponent>> orderProgress;     // keeps track of the DrinkComponents completed for the current drink at each bartender position
+    public static List<Queue<Order>> orders { get; private set; }                    // keeps track of the queue of drink orders for each bartender position
+    public static List<List<DrinkComponent>> orderProgress { get; private set; }     // keeps track of the DrinkComponents completed for the current drink at each bartender position
 
-    public Drink drink;                                         // the drink associated with this order   
+    // INSTANCE
+    public Drink drink { get; private set; }                                         // the drink associated with this order 
 
 
-    // Use this for initialization
-    void Start ()
-    {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
-
+    #region STATIC
 
     // initialize static structures in Order. Should be called once per level load
     public static void Initialize(int numBartenderPositions)
@@ -76,9 +67,7 @@ public class Order : MonoBehaviour
     // given a keySequence, submits the drinkComponent to the orderProgress list at position
     public static void submitComponent(string keySequence, int position)
     {
-        DrinkComponent drinkComponent = new DrinkComponent();
-        drinkComponent.keySequence = keySequence;
-        orderProgress[position].Add(drinkComponent);
+        orderProgress[position].Add(DrinkComponent.generateExternalDrinkComponent(keySequence));
     }
 
 
@@ -89,4 +78,15 @@ public class Order : MonoBehaviour
         order.drink = drink;
         orders[position].Enqueue(order);
     }
+    #endregion
+
+
+    #region INSTANCE
+
+    // get the drink associated with this order
+    public Drink getDrink()
+    {
+        return drink;
+    }
+    #endregion
 }

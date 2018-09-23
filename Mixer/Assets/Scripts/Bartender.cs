@@ -5,22 +5,10 @@ using UnityEngine;
 public class Bartender : MonoBehaviour
 {
     public static bool debugMode;
-    private static int position;                 // the bartenders current position (0 - GameManager.numBartenderPositions)
-    private static string state;                 // null when the bartender has no menus open. Otherwise, stores the name of the bartender's current DrinkComponent category
-    private static string keySequence;           // the players current entered keySequence relative to position. null when nothing has been entered
+    public static int position { get; private set; }            // the bartenders current position (0 - GameManager.numBartenderPositions)
+    public static string state { get; private set; }            // null when the bartender has no menus open. Otherwise, stores the name of the bartender's current DrinkComponent category
+    public static string keySequence { get; private set; }      // the players current entered keySequence relative to position. null when nothing has been entered
 
-
-    // get the bartender's current position
-    public static int getPosition()
-    {
-        return position;
-    }
-
-    // get the bartender's current state
-    public static string getState()
-    {
-        return state;
-    }
 
     // the player has attempted to change the bartender's position
     // can be fired at any time when gamestate == 1

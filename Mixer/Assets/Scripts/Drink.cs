@@ -1,18 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Drink : MonoBehaviour
 {
+    // STATIC
     public static bool debugMode;
-    public static List<Drink> drinks0;          // easy drink recipes
-    public static List<Drink> drinks1;          // moderate drink recipes
-    public static List<Drink> drinks2;          // challenging drink recipes
-    public static List<Drink> drinks3;          // difficult drink recipes
+    public static List<Drink> drinks0 { get; private set; }         // easy drink recipes
+    public static List<Drink> drinks1 { get; private set; }         // moderate drink recipes
+    public static List<Drink> drinks2 { get; private set; }         // challenging drink recipes
+    public static List<Drink> drinks3 { get; private set; }         // difficult drink recipes
 
-    public string drinkName;                    // formatted nicely for front-end
-    public List<DrinkComponent> components;     // a list of all components required to make this drink
+    // INSTANCE
+    public string drinkName { get; private set; }                   // formatted nicely for front-end
+    public List<DrinkComponent> components { get; private set; }    // a list of all components required to make this drink
 
+
+    #region STATIC
 
     // initialize static structures in Drink. Should be called once per level load
     public static void Initialize()
@@ -168,15 +173,47 @@ public class Drink : MonoBehaviour
         drinks0.Add(daiquiri);
     }
 
-    public static Drink getRandomDrink(int drinkDifficulty)
-    {
 
+    // given a difficulty (0-3), returns a random drink from that tier
+    public static Drink getRandomDrink(int difficulty)
+    {
+        if (difficulty == 0)
+        {
+            int index = UnityEngine.Random.Range(0, drinks0.Count - 1);
+            return drinks0[index];
+        }
+
+        if (difficulty == 1)
+        {
+            int index = UnityEngine.Random.Range(0, drinks1.Count - 1);
+            return drinks1[index];
+        }
+
+        if (difficulty == 2)
+        {
+            int index = UnityEngine.Random.Range(0, drinks2.Count - 1);
+            return drinks2[index];
+        }
+
+        if (difficulty == 3)
+        {
+            int index = UnityEngine.Random.Range(0, drinks3.Count - 1);
+            return drinks3[index];
+        }
+
+        throw new Exception("ERROR: Invalid difficulty given to Drink.getRandomDrink()");
     }
 
+    #endregion
 
-    public void assign(string drinkName, List<DrinkComponent> components)
+
+    #region INSTANCE
+
+    private void assign(string drinkName, List<DrinkComponent> components)
     {
         this.drinkName = drinkName;
         this.components = components;
     }
+
+    #endregion
 }

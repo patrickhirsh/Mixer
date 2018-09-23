@@ -43,7 +43,7 @@ public class InputManager : MonoBehaviour
             { Bartender.handleClear(); return; }
 
             // bartender is not currently in a menu
-            if (Bartender.getState() == null)
+            if (Bartender.state == null)
             {
                 // bartender category selection
                 if (Input.GetKeyDown("Keypad1") || Input.GetKeyDown("Alpha1"))  // Glassware
@@ -68,7 +68,7 @@ public class InputManager : MonoBehaviour
             }
 
             // bartender is in a menu
-            if (Bartender.getState() != null)
+            if (Bartender.state != null)
             {
                 // look for valid keystrokes. Return when one is found to avoid multiple input acceptance
                 foreach (string key in compKeys)

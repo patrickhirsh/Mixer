@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class DrinkComponent : MonoBehaviour
 {
+    // STATIC
     public static bool debugMode;   
-    public static Dictionary<string, DrinkComponent> glassware;
-    public static Dictionary<string, DrinkComponent> liquors;
-    public static Dictionary<string, DrinkComponent> beers;
-    public static Dictionary<string, DrinkComponent> bitters;
-    public static Dictionary<string, DrinkComponent> nonAlcoholic;
-    public static Dictionary<string, DrinkComponent> other;
+    public static Dictionary<string, DrinkComponent> glassware { get; private set; }
+    public static Dictionary<string, DrinkComponent> liquors { get; private set; }
+    public static Dictionary<string, DrinkComponent> beers { get; private set; }
+    public static Dictionary<string, DrinkComponent> bitters { get; private set; }
+    public static Dictionary<string, DrinkComponent> nonAlcoholic { get; private set; }
+    public static Dictionary<string, DrinkComponent> other { get; private set; }
 
-    public string component;        // name of the drink component (typed nicely for front-end)
-    public string category;         // the drinkComponent category this component belongs in
-    public string keySequence;      // the keySequence required to properly add this ingredient to a drink
+    // INSTANCE
+    public string component { get; private set; }        // name of the drink component (typed nicely for front-end)
+    public string category { get; private set; }         // the drinkComponent category this component belongs in
+    public string keySequence { get; private set; }      // the keySequence required to properly add this ingredient to a drink
 
+
+    #region STATIC
 
     // initialize static structures in DrinkComponent. Should be called once per level load
     public static void Initialize()
@@ -194,10 +198,29 @@ public class DrinkComponent : MonoBehaviour
     }
 
 
-    public void assign(string component, string category, string keySequence)
+    // Allows the creation of DrinkComponents external from those created in Initialize()
+    // this is useful when Order needs to build DrinkComponents that the player creates
+    // I want all members of DrinkComponent to be Immutable from outside this class, and since
+    // we can't use constructors when inheriting from MonoBehavior, this is the only way. Thanks Obama.
+    public static DrinkComponent generateExternalDrinkComponent(string keySequence)
+    {
+        DrinkComponent component = new DrinkComponent();
+        component.keySequence = keySequence;
+        component.category = "External";
+        return component;
+    }
+
+    #endregion
+
+
+    #region INSTANCE
+
+    private void assign(string component, string category, string keySequence)
     {
         this.component = component;
         this.category = category;
         this.keySequence = keySequence;
     }
+
+    #endregion
 }
