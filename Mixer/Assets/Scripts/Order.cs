@@ -41,8 +41,8 @@ public class Order : MonoBehaviour
     }
 
 
-    // "tosses" the drink in progress at position
-    public static void clearOrder(int position)
+    // clears the drink in progress at position
+    public static void clearOrderProgress(int position)
     {
         orderProgress[position].Clear();
     }
@@ -57,14 +57,23 @@ public class Order : MonoBehaviour
 
         // reject if the order and submitted order have different drinkComponent counts
         if (submittedOrder.Count != originalOrder.Count)
+        {
+            clearOrderProgress(position);
             return false;
+        }
+            
 
         // enumerate through the drinkComponents and ensure they are correct
         for (int i = 0; i < submittedOrder.Count; i++)
             if (submittedOrder[i].keySequence != originalOrder[i].keySequence)
+            {
+                clearOrderProgress(position);
                 return false;
+            }
 
         // the drink was correct!
+        clearOrderProgress(position);
+        orders[position].Dequeue();
         return true;
     }
 

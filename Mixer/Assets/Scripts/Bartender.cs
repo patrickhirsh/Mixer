@@ -33,6 +33,7 @@ public class Bartender : MonoBehaviour
                 if (position >= Level.levels[GameManager.currentLevel].numBartenderPositions)
                     position = 0;
                 GraphicsManager.updateBartenderPosition();
+                if (debugMode) { Debug.Log(state); }
                 break;
 
             case "DownArrow":
@@ -42,6 +43,7 @@ public class Bartender : MonoBehaviour
                 if (position < 0)
                     position = Level.levels[GameManager.currentLevel].numBartenderPositions - 1;
                 GraphicsManager.updateBartenderPosition();
+                if (debugMode) { Debug.Log(state); }
                 break;
         }
     }
@@ -49,12 +51,13 @@ public class Bartender : MonoBehaviour
 
     // the player has tried to submit a drink at this position
     // can be fired at any time when gamestate == 1
-    // fires when the player hits the keys: UpArrow, DownArrow
+    // fires when the player hits the key: 0
     public static void handleSubmit()
     {
         state = null;                           // submitting causes all menus to close
         keySequence = null;                     // submitting clears the current keySequence
         Order.submitOrder(position);
+        if (debugMode) { Debug.Log(state); }
     }
 
 
@@ -65,6 +68,8 @@ public class Bartender : MonoBehaviour
     {
         state = null;                           // clearing causes all menus to close
         keySequence = null;                     // clear the current keySequence
+        Order.clearOrderProgress(position);
+        if (debugMode) { Debug.Log(state); }
     }
 
 
@@ -77,28 +82,36 @@ public class Bartender : MonoBehaviour
         {
             case "Alpha1":
                 state = "Glassware";
+                keySequence = null;
                 break;
 
             case "Alpha2":
                 state = "Beer";
+                keySequence = null;
                 break;
 
             case "Alpha3":
                 state = "Liquor";
+                keySequence = null;
                 break;
 
             case "Alpha4":
                 state = "Bitters";
+                keySequence = null;
                 break;
 
             case "Alpha5":
                 state = "NonAlcoholic";
+                keySequence = null;
                 break;
 
             case "Alpha6":
                 state = "Other";
+                keySequence = null;
                 break;
         }
+
+        if (debugMode) { Debug.Log(state); }
     }
 
 
@@ -113,6 +126,7 @@ public class Bartender : MonoBehaviour
             Order.submitComponent(keySequence, position);
             state = null;                       // submitting a component causes all menus to close
             keySequence = null;                 // submitting a component clears the current keySequence
+            if (debugMode) { Debug.Log(state); }
             return;
         }
 
@@ -121,6 +135,7 @@ public class Bartender : MonoBehaviour
         {
             state = null;                       // exit the component category
             keySequence = null;                 // exiting the category clears the current keySequence
+            if (debugMode) { Debug.Log(state); }
             return;
         }
 
@@ -131,6 +146,8 @@ public class Bartender : MonoBehaviour
 
         // otherwise, accept the keystroke as an addition to keySequence and keep listening for more
         if (keySequence == null) { keySequence = keystroke; }          
-        else { keySequence = keySequence + keystroke; }           
+        else { keySequence = keySequence + keystroke; }       
+        
+        if (debugMode) { Debug.Log("Current Input: " + keySequence); }
     }
 }

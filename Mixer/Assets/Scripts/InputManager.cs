@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    public static bool debugMode;      
-    private static string[] compKeys = { "A", "B", "C", "D",        // used to check for valid component keystrokes in handleInput()
-        "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
-        "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-        "Space", "RightAlt", "LeftAlt", "Backspace" };
+    public static bool debugMode;
+    private static KeyCode[] compKeys =
+    {   // used to check for valid component keystrokes in handleInput()
+        KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E,
+        KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I, KeyCode.J,
+        KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O,
+        KeyCode.P, KeyCode.Q, KeyCode.R, KeyCode.S, KeyCode.T,
+        KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y,
+        KeyCode.Z, KeyCode.Space, KeyCode.RightAlt, KeyCode.LeftAlt,
+        KeyCode.Backspace
+    };
 	
 
 	void Update ()
@@ -42,39 +48,33 @@ public class InputManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Delete))
             { Bartender.handleClear(); return; }
 
-            // bartender is not currently in a menu
-            if (Bartender.state == null)
-            {
-                // bartender category selection
-                if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))  // Glassware
-                    { Bartender.handleCategorySelection("Alpha1"); return; }
+            // bartender category selection
+            if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))  // Glassware
+            { Bartender.handleCategorySelection("Alpha1"); return; }
 
-                if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))  // Beer
-                    { Bartender.handleCategorySelection("Alpha2"); return; }
-                    
-                if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3))  // Liquor
-                    { Bartender.handleCategorySelection("Alpha3"); return; }
+            if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))  // Beer
+            { Bartender.handleCategorySelection("Alpha2"); return; }
 
-                if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4))  // Bitters
-                    { Bartender.handleCategorySelection("Alpha4"); return; }
+            if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3))  // Liquor
+            { Bartender.handleCategorySelection("Alpha3"); return; }
 
-                if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5))  // Non-Alcoholic
-                    { Bartender.handleCategorySelection("Alpha5"); return; }
+            if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4))  // Bitters
+            { Bartender.handleCategorySelection("Alpha4"); return; }
 
-                if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6))  // Other
-                { Bartender.handleCategorySelection("Alpha6"); return; }
+            if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5))  // Non-Alcoholic
+            { Bartender.handleCategorySelection("Alpha5"); return; }
 
-                return;
-            }
+            if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6))  // Other
+            { Bartender.handleCategorySelection("Alpha6"); return; }
 
             // bartender is in a menu
             if (Bartender.state != null)
             {
                 // look for valid keystrokes. Return when one is found to avoid multiple input acceptance
-                foreach (string key in compKeys)
+                foreach (KeyCode key in compKeys)
                     if (Input.GetKeyDown(key))
-                        { Bartender.handleDrinkConstruction(key); return; }
-            }          
+                        { Bartender.handleDrinkConstruction(key.ToString()); return; }
+            }
         }
     }
 }
