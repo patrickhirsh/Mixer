@@ -5,9 +5,18 @@ using UnityEngine;
 public class Bartender : MonoBehaviour
 {
     public static bool debugMode;
-    public static int position { get; private set; }            // the bartenders current position (0 - GameManager.numBartenderPositions)
+    public static int position { get; private set; }            // the bartenders current position (0 to level.numbartenderpositions-1)
     public static string state { get; private set; }            // null when the bartender has no menus open. Otherwise, stores the name of the bartender's current DrinkComponent category
     public static string keySequence { get; private set; }      // the players current entered keySequence relative to position. null when nothing has been entered
+
+
+    // initialize static members of the Bartender class
+    public static void Initialize()
+    {
+        position = 0;
+        state = null;
+        keySequence = null;
+    }
 
 
     // the player has attempted to change the bartender's position
@@ -21,8 +30,9 @@ public class Bartender : MonoBehaviour
                 state = null;                   // moving causes all menus to close
                 keySequence = null;             // moving clears the current keySequence
                 position++;
-                if (position >= GameManager.numBartenderPositions)
+                if (position >= Level.levels[GameManager.currentLevel].numBartenderPositions)
                     position = 0;
+                GraphicsManager.updateBartenderPosition();
                 break;
 
             case "DownArrow":
@@ -30,7 +40,8 @@ public class Bartender : MonoBehaviour
                 keySequence = null;             // moving clears the current keySequence
                 position--;
                 if (position < 0)
-                    position = GameManager.numBartenderPositions - 1;
+                    position = Level.levels[GameManager.currentLevel].numBartenderPositions - 1;
+                GraphicsManager.updateBartenderPosition();
                 break;
         }
     }

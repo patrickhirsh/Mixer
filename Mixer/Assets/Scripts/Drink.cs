@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Drink : MonoBehaviour
+public class Drink
 {
     // STATIC
     public static bool debugMode;
@@ -88,7 +88,7 @@ public class Drink : MonoBehaviour
         margaritaRecipe.Add(DrinkComponent.other["Ice"]);
         margaritaRecipe.Add(DrinkComponent.liquors["Tequila"]);
         margaritaRecipe.Add(DrinkComponent.nonAlcoholic["Margarita Mix"]);
-        margaritaRecipe.Add(DrinkComponent.nonAlcoholic["Lime juice"]);
+        margaritaRecipe.Add(DrinkComponent.nonAlcoholic["Lime Juice"]);
         margaritaRecipe.Add(DrinkComponent.other["Salt Rim"]);
         margarita.assign("Margarita", margaritaRecipe);
         drinks0.Add(margarita);
@@ -153,7 +153,7 @@ public class Drink : MonoBehaviour
         sazeracRecipe.Add(DrinkComponent.liquors["Whiskey"]);
         sazeracRecipe.Add(DrinkComponent.liquors["Absinthe"]);
         sazeracRecipe.Add(DrinkComponent.nonAlcoholic["Simple Syrup"]);
-        sazeracRecipe.Add(DrinkComponent.bitters["Peychaud’s Bitters"]);
+        sazeracRecipe.Add(DrinkComponent.bitters["Peychaud's Bitters"]);
         sazerac.assign("Sazerac", sazeracRecipe);
         drinks0.Add(sazerac);
 

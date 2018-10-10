@@ -5,13 +5,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static int gameState;
-    public static int numBartenderPositions = 3;
+    public static int currentLevel;     // index in Level.levels
 
 
 	// Use this for initialization
 	void Start ()
     {
         gameState = 1;
+        currentLevel = 0;
 
         // debug mode settings
         InputManager.debugMode = true;
@@ -23,12 +24,14 @@ public class GameManager : MonoBehaviour
         // initialize class static structures and members
         DrinkComponent.Initialize();
         Drink.Initialize();
-        Order.Initialize(numBartenderPositions);
+        Bartender.Initialize();
+        Level.Initialize();
+        Order.Initialize();
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-		
-	}
+
+    }
 }

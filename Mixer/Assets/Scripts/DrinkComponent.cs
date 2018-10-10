@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DrinkComponent : MonoBehaviour
+public class DrinkComponent
 {
     // STATIC
     public static bool debugMode;   

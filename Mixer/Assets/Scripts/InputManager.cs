@@ -29,39 +29,39 @@ public class InputManager : MonoBehaviour
         if (GameManager.gameState == 1)
         {
             // bartender movement
-            if (Input.GetKeyDown("UpArrow"))
+            if (Input.GetKeyDown(KeyCode.UpArrow))
                 { Bartender.handleMovement("UpArrow"); return; }
-            if (Input.GetKeyDown("DownArrow"))
+            if (Input.GetKeyDown(KeyCode.DownArrow))
                 { Bartender.handleMovement("DownArrow"); return; }
 
             // bartender drink submission
-            if (Input.GetKeyDown("Keypad0") || Input.GetKeyDown("Alpha0"))
+            if (Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0))
                 { Bartender.handleSubmit(); return; }
 
             // bartender has cleared the drink at his current position
-            if (Input.GetKeyDown("Delete"))
+            if (Input.GetKeyDown(KeyCode.Delete))
             { Bartender.handleClear(); return; }
 
             // bartender is not currently in a menu
             if (Bartender.state == null)
             {
                 // bartender category selection
-                if (Input.GetKeyDown("Keypad1") || Input.GetKeyDown("Alpha1"))  // Glassware
+                if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))  // Glassware
                     { Bartender.handleCategorySelection("Alpha1"); return; }
 
-                if (Input.GetKeyDown("Keypad2") || Input.GetKeyDown("Alpha2"))  // Beer
+                if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))  // Beer
                     { Bartender.handleCategorySelection("Alpha2"); return; }
                     
-                if (Input.GetKeyDown("Keypad3") || Input.GetKeyDown("Alpha3"))  // Liquor
+                if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3))  // Liquor
                     { Bartender.handleCategorySelection("Alpha3"); return; }
 
-                if (Input.GetKeyDown("Keypad4") || Input.GetKeyDown("Alpha4"))  // Bitters
+                if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4))  // Bitters
                     { Bartender.handleCategorySelection("Alpha4"); return; }
 
-                if (Input.GetKeyDown("Keypad5") || Input.GetKeyDown("Alpha5"))  // Non-Alcoholic
+                if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5))  // Non-Alcoholic
                     { Bartender.handleCategorySelection("Alpha5"); return; }
 
-                if (Input.GetKeyDown("Keypad6") || Input.GetKeyDown("Alpha6"))  // Other
+                if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6))  // Other
                 { Bartender.handleCategorySelection("Alpha6"); return; }
 
                 return;

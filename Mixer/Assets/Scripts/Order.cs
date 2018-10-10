@@ -21,11 +21,11 @@ public class Order : MonoBehaviour
      */
 
     // initialize static structures in Order. Should be called once per level load
-    public static void Initialize(int numBartenderPositions)
+    public static void Initialize()
     {
         // construct the order queues for each bartender position
         orders = new List<Queue<Order>>();
-        for (int i = 0; i < numBartenderPositions; i++)
+        for (int i = 0; i < Level.levels[GameManager.currentLevel].numBartenderPositions; i++)
         {
             Queue<Order> bartenderPosition = new Queue<Order>();
             orders.Add(bartenderPosition);
@@ -33,7 +33,7 @@ public class Order : MonoBehaviour
 
         // construct the order progress list for each bartender position
         orderProgress = new List<List<DrinkComponent>>();
-        for (int i = 0; i < numBartenderPositions; i++)
+        for (int i = 0; i < Level.levels[GameManager.currentLevel].numBartenderPositions; i++)
         {
             List<DrinkComponent> bartenderPosition = new List<DrinkComponent>();
             orderProgress.Add(bartenderPosition);
