@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
         // debug mode settings
         InputManager.debugMode = true;
         Bartender.debugMode = true;
-        Order.debugMode = true;
+        OrderManager.debugMode = true;
         Drink.debugMode = true;
         DrinkComponent.debugMode = true;
 
@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
         Drink.Initialize();
         Bartender.Initialize();
         Level.Initialize();
-        Order.Initialize();
+        OrderManager.Initialize();
 	}
 	
 	// Update is called once per frame

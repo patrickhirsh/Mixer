@@ -56,8 +56,14 @@ public class Bartender : MonoBehaviour
     {
         state = null;                           // submitting causes all menus to close
         keySequence = null;                     // submitting clears the current keySequence
-        Order.submitOrder(position);
-        if (debugMode) { Debug.Log(state); }
+        bool result = OrderManager.submitOrder(position);
+
+        if (debugMode)
+        {
+            if (result) { Debug.Log("The submitted drink was valid!"); }
+            if (!result) { Debug.Log("The submitted drink was invalid"); }
+            Debug.Log(state);
+        }
     }
 
 
@@ -68,8 +74,12 @@ public class Bartender : MonoBehaviour
     {
         state = null;                           // clearing causes all menus to close
         keySequence = null;                     // clear the current keySequence
-        Order.clearOrderProgress(position);
-        if (debugMode) { Debug.Log(state); }
+        OrderManager.clearOrderProgress(position);
+        if (debugMode)
+        {
+            Debug.Log("Drink cleared at bartender position " + position);
+            Debug.Log(state);
+        }
     }
 
 
@@ -123,7 +133,7 @@ public class Bartender : MonoBehaviour
         // submit the component
         if (keystroke == "Space")
         {
-            Order.submitComponent(keySequence, position);
+            OrderManager.submitComponent(keySequence, position);
             state = null;                       // submitting a component causes all menus to close
             keySequence = null;                 // submitting a component clears the current keySequence
             if (debugMode) { Debug.Log(state); }
