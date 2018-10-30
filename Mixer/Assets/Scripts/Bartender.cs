@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Bartender : MonoBehaviour
 {
+    public static GameObject bartender;
+
     public static bool debugMode;
     public static int position { get; private set; }            // the bartenders current position (0 to level.numbartenderpositions-1)
     public static string state { get; private set; }            // null when the bartender has no menus open. Otherwise, stores the name of the bartender's current DrinkComponent category
@@ -13,6 +15,7 @@ public class Bartender : MonoBehaviour
     // initialize static members of the Bartender class
     public static void Initialize()
     {
+        bartender = GameObject.Find("Bartender");
         position = 0;
         state = null;
         keySequence = null;
@@ -32,7 +35,6 @@ public class Bartender : MonoBehaviour
                 position++;
                 if (position >= Level.levels[GameManager.currentLevel].numBartenderPositions)
                     position = 0;
-                GraphicsManager.updateBartenderPosition();
                 if (debugMode) { Debug.Log(state); }
                 break;
 
@@ -42,7 +44,6 @@ public class Bartender : MonoBehaviour
                 position--;
                 if (position < 0)
                     position = Level.levels[GameManager.currentLevel].numBartenderPositions - 1;
-                GraphicsManager.updateBartenderPosition();
                 if (debugMode) { Debug.Log(state); }
                 break;
         }

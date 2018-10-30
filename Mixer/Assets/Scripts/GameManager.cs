@@ -8,11 +8,10 @@ public class GameManager : MonoBehaviour
     public static int currentLevel;     // index in Level.levels
 
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
         gameState = 1;
-        currentLevel = 0;
 
         // debug mode settings
         InputManager.debugMode = true;
@@ -27,11 +26,42 @@ public class GameManager : MonoBehaviour
         Bartender.Initialize();
         Level.Initialize();
         OrderManager.Initialize();
-	}
-	
-	// Update is called once per frame
-	void Update ()
+        GraphicsManager.Initialize();
+
+        loadLevel(0);
+    }
+
+
+    // Update is called once per frame
+    void Update()
     {
 
     }
+
+
+    public static void loadLevel(int level)
+    {
+        GameManager.currentLevel = level;
+        Level currentLevel = Level.levels[GameManager.currentLevel];
+
+        // clear existing alleys and orders
+        List<GameObject> childrenToDestroy = new List<GameObject>();
+
+        foreach (Transform alley in OrderManager.orderAlleys.transform)
+        {
+            foreach (Transform order in alley.transform)
+                childrenToDestroy.Add(order.gameObject);
+            childrenToDestroy.Add(alley.gameObject);
+        }
+
+        foreach (GameObject child in childrenToDestroy)
+            Destroy(child);
+
+        // load new alleys
+        for (int i = 0; i < currentLevel.alleyPositions.Count; i++)
+        {
+            Instantiate(GameObject.Find("OrderAlley"), GameObject.Find("OrderAlleys").transform);
+            OrderManager.orderAlleys.transform.GetChild(i).transform.position = new Vector2(currentLevel.alleyPositions[i].x, currentLevel.alleyPositions[i].y);
+        }       
+    } 
 }
