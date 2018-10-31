@@ -84,24 +84,43 @@ public class OrderManager : MonoBehaviour
 
     // attempts to submit the order at position
     // returns true if the submission was accepted and false if it was rejected
+    // if the submission was empty, accept
     public static bool submitOrder(int position)
     {
+        // always accept empty submissions
+        if (orderProgress[position].Count == 0)
+        {
+            if (debugMode) { Debug.Log("Empty submission. Accepted"); }
+            return true;
+        }
+
+        // if there isn't an order at this position... reject
+        if (orderAlleys.transform.GetChild(position).transform.childCount == 0)
+        {
+            clearOrderProgress(position);
+            if (debugMode) { Debug.Log("An order doesn't exist at this location. Rejected."); }
+            return false;
+        }
+
         List<DrinkComponent> submittedOrder = orderProgress[position];
-        List<DrinkComponent> originalOrder = orderAlleys.transform.GetChild(position).GetComponent<Order>().drink.components;
+        List<DrinkComponent> originalOrder = 
+            orderAlleys.transform.GetChild(position).transform.GetChild(orderAlleys.transform.GetChild(position).transform.childCount - 1).GetComponent<Order>().drink.components;
 
         // reject if the order and submitted order have different drinkComponent counts
         if (submittedOrder.Count != originalOrder.Count)
         {
             clearOrderProgress(position);
+            if (debugMode) { Debug.Log("Invalid number of drink components"); }
             return false;
         }
 
 
         // enumerate through the drinkComponents and ensure they are correct
         for (int i = 0; i < submittedOrder.Count; i++)
-            if (submittedOrder[i].keySequence != originalOrder[i].keySequence)
+            if (submittedOrder[i].keySequence.ToLower() != originalOrder[i].keySequence.ToLower())
             {
                 clearOrderProgress(position);
+                if (debugMode) { Debug.Log("Incorrect drink components"); }
                 return false;
             }
 
@@ -109,6 +128,7 @@ public class OrderManager : MonoBehaviour
         clearOrderProgress(position);
         increaseDifficulty();
         orderAlleys.transform.GetChild(position).GetComponent<OrderAlley>().removeCurrentOrder();
+        if (debugMode) { Debug.Log("Successfully submitted a drink!"); }
         return true;
     }
 
@@ -147,6 +167,6 @@ public class OrderManager : MonoBehaviour
         orderAlleys.transform.GetChild(position).GetChild(orderAlleys.transform.GetChild(position).transform.childCount - 1).GetComponent<Order>().drink = drink;
 
         if (debugMode)
-            Debug.Log("Created New Drink: " + drink.drinkName +  " at bartender position: " + position);
+            Debug.Log("Created new drink: " + drink.drinkName +  " at bartender position: " + position);
     }
 }

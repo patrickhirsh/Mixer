@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GraphicsManager : MonoBehaviour
 {
     private static float ORDER_SPRITE_SPACING = .5f;
+    private static float CURRENT_DRINK_COMPONENT_SPACING = .3f;
 
     private static GameObject currentDrinkPanel;
     private static GameObject currentDrinkTitle;
@@ -51,15 +52,48 @@ public class GraphicsManager : MonoBehaviour
 
     private static void renderCurrentDrinkPanel()
     {
+        // does there exist an order at the current bartending position?
         if (OrderManager.orderAlleys.transform.GetChild(Bartender.position).transform.childCount != 0)
+        {
+            // set the title at the top of the panel
             currentDrinkTitle.GetComponent<Text>().text =
                 OrderManager.orderAlleys.transform.GetChild(Bartender.position).transform.GetChild(0).GetComponent<Order>().drink.drinkName;
 
-        else
-            currentDrinkTitle.GetComponent<Text>().text =
-                "";
+            // destroy the existing child objects (ingredients)
+            List<GameObject> childrenToDestroy = new List<GameObject>();
+            for (int i = 1; i < currentDrinkPanel.transform.childCount; i++)
+                childrenToDestroy.Add(currentDrinkPanel.transform.GetChild(i).gameObject);
+            foreach (GameObject child in childrenToDestroy)
+                Destroy(child);
 
-        Debug.Log(currentDrinkTitle.GetComponent<Text>().text);
+            // enumerate through the DrinkComponents in the order at the bartender's positions' current drink
+            int pos = 1;
+            foreach (DrinkComponent component in OrderManager.orderAlleys.transform.GetChild(Bartender.position).GetChild(0).GetComponent<Order>().drink.components)
+            {
+                GameObject comp = Instantiate(GameObject.Find("DrinkTitle"), GameObject.Find("CurrentDrink").transform);
+                comp.GetComponent<Text>().text = component.component;
+                comp.transform.position = new Vector2(
+                    currentDrinkTitle.transform.position.x + .5f,
+                    currentDrinkTitle.transform.position.y - (pos * CURRENT_DRINK_COMPONENT_SPACING));
+                pos++;
+            }
+        }
+
+        else
+        {
+            // clear current drink title
+            currentDrinkTitle.GetComponent<Text>().text = "";
+
+            // remove existing ingredients when no order exists
+            List<GameObject> childrenToDestroy = new List<GameObject>();
+            for (int i = 1; i < currentDrinkPanel.transform.childCount; i++)
+                childrenToDestroy.Add(currentDrinkPanel.transform.GetChild(i).gameObject);
+            foreach (GameObject child in childrenToDestroy)
+                Destroy(child);
+        }
+            
+
+
     }
 
 
