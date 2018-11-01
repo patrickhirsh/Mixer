@@ -6,13 +6,11 @@ public class GameManager : MonoBehaviour
 {
     public static int gameState;
     public static int currentLevel;     // index in Level.levels
-
+    public static int playerScore;      
 
     // Use this for initialization
     void Start ()
     {
-        gameState = 1;
-
         // debug mode settings
         InputManager.debugMode = true;
         Bartender.debugMode = true;
@@ -39,8 +37,12 @@ public class GameManager : MonoBehaviour
     }
 
 
+    // given a level, resets the game and loads that level
     public static void loadLevel(int level)
     {
+        gameState = 1;
+        playerScore = 0;
+        GraphicsManager.updateScore();
         GameManager.currentLevel = level;
         Level currentLevel = Level.levels[GameManager.currentLevel];
 
@@ -64,4 +66,19 @@ public class GameManager : MonoBehaviour
             OrderManager.orderAlleys.transform.GetChild(i).transform.position = new Vector2(currentLevel.alleyPositions[i].x, currentLevel.alleyPositions[i].y);
         }       
     } 
+
+
+    // Scores the player based on their current combo
+    // TODO: Handle combos - currently just scored the player linearly
+    public static void awardPoints()
+    {
+        playerScore += 10;
+        GraphicsManager.updateScore();
+    }
+
+    public static void awardBonus()
+    {
+        // TODO: implement bonus system for clearing all drinks
+    }
+
 }

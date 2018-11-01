@@ -114,6 +114,8 @@ public class OrderManager : MonoBehaviour
         // check to see if this was the last component (completing the drink)
         if (orderProgress[position].Count == orderAlleys.transform.GetChild(position).transform.GetChild(0).GetComponent<Order>().drink.components.Count)
         {
+            // drink completed!
+            GameManager.awardPoints();
             clearOrderProgress(position);
             orderAlleys.transform.GetChild(position).GetComponent<OrderAlley>().removeCurrentOrder();
             if (debugMode) { Debug.Log("Successfully completed a drink!"); }

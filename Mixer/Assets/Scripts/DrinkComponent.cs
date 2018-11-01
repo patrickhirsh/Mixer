@@ -121,27 +121,27 @@ public class DrinkComponent
 
         // Angostura Bitters
         DrinkComponent angosturaBitters = new DrinkComponent();
-        angosturaBitters.assign("Angostura Bitters", "bittersAndSyrups", "a");
+        angosturaBitters.assign("Angostura Bitters", "bitters", "a");
         bitters.Add(angosturaBitters.component, angosturaBitters);
 
         // Peychaud's Bitters
         DrinkComponent peychaudsBitters = new DrinkComponent();
-        peychaudsBitters.assign("Peychaud's Bitters", "bittersAndSyrups", "a");
+        peychaudsBitters.assign("Peychaud's Bitters", "bitters", "a");
         bitters.Add(peychaudsBitters.component, peychaudsBitters);
 
         // Campari
         DrinkComponent campari = new DrinkComponent();       
-        campari.assign("Campari", "bittersAndSyrups", "a");
+        campari.assign("Campari", "bitters", "a");
         bitters.Add(campari.component, campari);     
         
         // Sweet Vermouth
         DrinkComponent sweetVermouth = new DrinkComponent();
-        sweetVermouth.assign("Sweet Vermouth", "bittersAndSyrups", "a");
+        sweetVermouth.assign("Sweet Vermouth", "bitters", "a");
         bitters.Add(sweetVermouth.component, sweetVermouth);
 
         // Dry Vermouth
         DrinkComponent dryVermouth = new DrinkComponent();       
-        dryVermouth.assign("Dry Vermouth", "bittersAndSyrups", "a");
+        dryVermouth.assign("Dry Vermouth", "bitters", "a");
         bitters.Add(dryVermouth.component, dryVermouth);
         #endregion
 

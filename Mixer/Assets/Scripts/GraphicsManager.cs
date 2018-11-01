@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class GraphicsManager : MonoBehaviour
 {
     private static float ORDER_SPRITE_SPACING = .5f;
-    private static float CURRENT_DRINK_COMPONENT_SPACING = 10f;
 
+    private static GameObject playerScore;
     private static GameObject currentDrinkPanel;
     private static GameObject currentDrinkLabel;
     private static GameObject categoryLabels;
@@ -18,6 +18,7 @@ public class GraphicsManager : MonoBehaviour
 
     public static void Initialize()
     {
+        playerScore = GameObject.Find("score");
         currentDrinkPanel = GameObject.Find("current_drink");
         currentDrinkLabel = GameObject.Find("current_drink_label");
         currentDrinkProgress = GameObject.Find("current_drink_progress");
@@ -38,8 +39,15 @@ public class GraphicsManager : MonoBehaviour
     }
 
 
+    // updates the player's score. Should be called from GameManager any time the player's score changes
+    public static void updateScore()
+    {
+        playerScore.GetComponent<Text>().text = GameManager.playerScore.ToString();
+    }
+
+
     // updates the bartender's position on-screen based on Bartender.position
-    private static void updateBartender()
+    public static void updateBartender()
     {
         Bartender.bartender.transform.position = 
             Level.levels[GameManager.currentLevel].bartenderPositions[Bartender.position];
@@ -47,7 +55,7 @@ public class GraphicsManager : MonoBehaviour
 
 
     // updates the order sprites based on alley position and ORDER_SPRITE_SPACING
-    private static void updateOrders()
+    public static void updateOrders()
     {
         foreach (Transform alley in OrderManager.orderAlleys.transform)
         {
@@ -62,7 +70,7 @@ public class GraphicsManager : MonoBehaviour
 
 
     // updates the current drink panel's graphics (components, progress icons, etc.)
-    private static void updateCurrentDrinkPanel()
+    public static void updateCurrentDrinkPanel()
     {
         // does there exist an order at the current bartending position?
         if (OrderManager.orderAlleys.transform.GetChild(Bartender.position).transform.childCount != 0)
@@ -102,7 +110,7 @@ public class GraphicsManager : MonoBehaviour
 
 
     // updates the category icons and labels on the left menu block
-    private static void updateCategories()
+    public static void updateCategories()
     {
         // bartender isn't in a menu, show menu labels
         if (Bartender.state == null)
@@ -121,7 +129,7 @@ public class GraphicsManager : MonoBehaviour
 
 
     // updates the "current category" section of the left menu block
-    private static void updateCurrentCategory()
+    public static void updateCurrentCategory()
     {
         // bartender isn't in a menu. hide current category section
         if (Bartender.state == null)
