@@ -97,12 +97,12 @@ public class Bartender : MonoBehaviour
                 break;
 
             case "Alpha2":
-                state = "Beer";
+                state = "Beers";
                 keySequence = null;
                 break;
 
             case "Alpha3":
-                state = "Liquor";
+                state = "Liquors";
                 keySequence = null;
                 break;
 
