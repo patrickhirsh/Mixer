@@ -76,67 +76,48 @@ public class OrderManager : MonoBehaviour
 
 
     // clears the drink in progress at position
+    // happens either when a drink is failed, or submitted successfully
+    // each drink clear increases difficulty
     public static void clearOrderProgress(int position)
     {
         orderProgress[position].Clear();
+        increaseDifficulty();
     }
 
 
-    // attempts to submit the order at position
-    // returns true if the submission was accepted and false if it was rejected
-    // if the submission was empty, accept
-    public static bool submitOrder(int position)
+    // given a keySequence, submits the drinkComponent to the orderProgress list at position
+    // validates the submitted component and reacts accordingly
+    public static void submitComponent(string keySequence, int position)
     {
-        // always accept empty submissions
-        if (orderProgress[position].Count == 0)
-        {
-            if (debugMode) { Debug.Log("Empty submission. Accepted"); }
-            return true;
-        }
+        // add the component to the order in progress and note its index
+        orderProgress[position].Add(DrinkComponent.generateExternalDrinkComponent(keySequence, Bartender.state));
+        int compIndex = orderProgress[position].Count - 1;
 
         // if there isn't an order at this position... reject
         if (orderAlleys.transform.GetChild(position).transform.childCount == 0)
         {
             clearOrderProgress(position);
             if (debugMode) { Debug.Log("An order doesn't exist at this location. Rejected."); }
-            return false;
         }
 
-        List<DrinkComponent> submittedOrder = orderProgress[position];
-        List<DrinkComponent> originalOrder = 
-            orderAlleys.transform.GetChild(position).transform.GetChild(orderAlleys.transform.GetChild(position).transform.childCount - 1).GetComponent<Order>().drink.components;
-
-        // reject if the order and submitted order have different drinkComponent counts
-        if (submittedOrder.Count != originalOrder.Count)
+        // if the submitted component doesn't have the same keysequence OR doesn't have the same category as the recipe...
+        if ((orderProgress[position][compIndex].keySequence.ToUpper() !=                                                                                    // same keySequence?
+            orderAlleys.transform.GetChild(position).transform.GetChild(0).GetComponent<Order>().drink.components[compIndex].keySequence.ToUpper()) || 
+            (orderProgress[position][compIndex].category.ToUpper() !=                                                                                       // same category?
+            orderAlleys.transform.GetChild(position).transform.GetChild(0).GetComponent<Order>().drink.components[compIndex].category.ToUpper()))
         {
             clearOrderProgress(position);
-            if (debugMode) { Debug.Log("Invalid number of drink components"); }
-            return false;
+            if (debugMode) { Debug.Log("Invalid drink component submitted. Clearing drink progress"); }
         }
 
-
-        // enumerate through the drinkComponents and ensure they are correct
-        for (int i = 0; i < submittedOrder.Count; i++)
-            if (submittedOrder[i].keySequence.ToLower() != originalOrder[i].keySequence.ToLower())
-            {
-                clearOrderProgress(position);
-                if (debugMode) { Debug.Log("Incorrect drink components"); }
-                return false;
-            }
-
-        // the drink was correct!
-        clearOrderProgress(position);
-        increaseDifficulty();
-        orderAlleys.transform.GetChild(position).GetComponent<OrderAlley>().removeCurrentOrder();
-        if (debugMode) { Debug.Log("Successfully submitted a drink!"); }
-        return true;
-    }
-
-
-    // given a keySequence, submits the drinkComponent to the orderProgress list at position
-    public static void submitComponent(string keySequence, int position)
-    {
-        orderProgress[position].Add(DrinkComponent.generateExternalDrinkComponent(keySequence));
+        // otherwise, the component was valid
+        // check to see if this was the last component (completing the drink)
+        if (orderProgress[position].Count == orderAlleys.transform.GetChild(position).transform.GetChild(0).GetComponent<Order>().drink.components.Count)
+        {
+            clearOrderProgress(position);
+            orderAlleys.transform.GetChild(position).GetComponent<OrderAlley>().removeCurrentOrder();
+            if (debugMode) { Debug.Log("Successfully completed a drink!"); }
+        }
     }
 
 

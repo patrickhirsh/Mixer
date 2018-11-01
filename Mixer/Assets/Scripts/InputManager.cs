@@ -12,8 +12,7 @@ public class InputManager : MonoBehaviour
         KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O,
         KeyCode.P, KeyCode.Q, KeyCode.R, KeyCode.S, KeyCode.T,
         KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y,
-        KeyCode.Z, KeyCode.Space, KeyCode.RightAlt, KeyCode.LeftAlt,
-        KeyCode.Backspace
+        KeyCode.Z, KeyCode.LeftAlt, KeyCode.RightAlt
     };
 	
 
@@ -35,14 +34,8 @@ public class InputManager : MonoBehaviour
         if (GameManager.gameState == 1)
         {
             // bartender movement
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-                { Bartender.handleMovement("UpArrow"); return; }
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-                { Bartender.handleMovement("DownArrow"); return; }
-
-            // bartender drink submission
-            if (Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0))
-                { Bartender.handleSubmit(); return; }
+            if (Input.GetKeyDown(KeyCode.Space))
+                { Bartender.handleMovement(); return; }
 
             // bartender has cleared the drink at his current position
             if (Input.GetKeyDown(KeyCode.Delete))

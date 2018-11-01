@@ -213,11 +213,11 @@ public class DrinkComponent
     // this is useful when Order needs to build DrinkComponents that the player creates
     // I want all members of DrinkComponent to be Immutable from outside this class, and since
     // we can't use constructors when inheriting from MonoBehavior, this is the only way. Thanks Obama.
-    public static DrinkComponent generateExternalDrinkComponent(string keySequence)
+    public static DrinkComponent generateExternalDrinkComponent(string keySequence, string category)
     {
         DrinkComponent component = new DrinkComponent();
         component.keySequence = keySequence;
-        component.category = "External";
+        component.category = category;
         return component;
     }
 
