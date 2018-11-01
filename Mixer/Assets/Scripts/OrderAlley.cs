@@ -7,6 +7,6 @@ public class OrderAlley : MonoBehaviour
 	public void removeCurrentOrder()
     {
         if (this.transform.childCount != 0)
-            Destroy(this.transform.GetChild(0));
+            Destroy(this.transform.GetChild(0).gameObject);
     }
 }

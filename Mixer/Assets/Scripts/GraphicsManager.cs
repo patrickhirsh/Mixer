@@ -13,12 +13,14 @@ public class GraphicsManager : MonoBehaviour
     private static GameObject categoryLabels;
     private static GameObject categoryIcons;
     private static GameObject categoryComponentList;
+    private static GameObject currentDrinkProgress;
 
 
     public static void Initialize()
     {
         currentDrinkPanel = GameObject.Find("current_drink");
         currentDrinkLabel = GameObject.Find("current_drink_label");
+        currentDrinkProgress = GameObject.Find("current_drink_progress");
         categoryLabels = GameObject.Find("category_labels");
         categoryIcons = GameObject.Find("category_icons");
         categoryComponentList = GameObject.Find("category_component_list");
@@ -36,7 +38,7 @@ public class GraphicsManager : MonoBehaviour
     }
 
 
-    // renders the bartender's position on-screen based on Bartender.position
+    // updates the bartender's position on-screen based on Bartender.position
     private static void updateBartender()
     {
         Bartender.bartender.transform.position = 
@@ -44,7 +46,7 @@ public class GraphicsManager : MonoBehaviour
     }
 
 
-    // renders the order sprites based on alley position and ORDER_SPRITE_SPACING
+    // updates the order sprites based on alley position and ORDER_SPRITE_SPACING
     private static void updateOrders()
     {
         foreach (Transform alley in OrderManager.orderAlleys.transform)
@@ -59,14 +61,17 @@ public class GraphicsManager : MonoBehaviour
     }
 
 
+    // updates the current drink panel's graphics (components, progress icons, etc.)
     private static void updateCurrentDrinkPanel()
     {
         // does there exist an order at the current bartending position?
         if (OrderManager.orderAlleys.transform.GetChild(Bartender.position).transform.childCount != 0)
         {
-            // clear the current drink panel
+            // clear the current drink labels and icons
             for (int i = 0; i < currentDrinkPanel.transform.childCount; i++)
                 currentDrinkPanel.transform.GetChild(i).GetComponent<Text>().text = "";
+            for (int i = 0; i < currentDrinkProgress.transform.childCount; i++)
+                currentDrinkProgress.transform.GetChild(i).gameObject.SetActive(false);
 
             // set the title at the top of the panel
             currentDrinkLabel.GetComponent<Text>().text =
@@ -78,14 +83,20 @@ public class GraphicsManager : MonoBehaviour
                 currentDrinkPanel.transform.GetChild(i).GetComponent<Text>().text =
                     OrderManager.orderAlleys.transform.GetChild(Bartender.position).GetChild(0).GetComponent<Order>().drink.components[i - 1].component;
             }
+
+            // render the drink progress icons
+            for (int i = 0; i < OrderManager.orderProgress[Bartender.position].Count; i++)
+                currentDrinkProgress.transform.GetChild(i).gameObject.SetActive(true);
         }
 
         // if not, clear the panel
         else
         {
-            // clear the current drink panel
+            // clear the icons and labels
             for (int i = 0; i < currentDrinkPanel.transform.childCount; i++)
                 currentDrinkPanel.transform.GetChild(i).GetComponent<Text>().text = "";
+            for (int i = 0; i < currentDrinkProgress.transform.childCount; i++)
+                currentDrinkProgress.transform.GetChild(i).gameObject.SetActive(false);
         }
     }
 
