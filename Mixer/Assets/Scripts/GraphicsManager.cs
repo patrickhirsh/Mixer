@@ -8,6 +8,7 @@ public class GraphicsManager : MonoBehaviour
     private static float ORDER_SPRITE_SPACING = .5f;
 
     private static GameObject playerScore;
+    private static GameObject pointsAwarded;
     private static GameObject currentDrinkPanel;
     private static GameObject currentDrinkLabel;
     private static GameObject categoryLabels;
@@ -19,6 +20,7 @@ public class GraphicsManager : MonoBehaviour
     public static void Initialize()
     {
         playerScore = GameObject.Find("score");
+        pointsAwarded = GameObject.Find("points_awarded");
         currentDrinkPanel = GameObject.Find("current_drink");
         currentDrinkLabel = GameObject.Find("current_drink_label");
         currentDrinkProgress = GameObject.Find("current_drink_progress");
@@ -43,6 +45,17 @@ public class GraphicsManager : MonoBehaviour
     public static void updateScore()
     {
         playerScore.GetComponent<Text>().text = GameManager.playerScore.ToString();
+    }
+
+
+    // spawns a +(points) string above the player score as visual feedback for the points they were awarded
+    public static void spawnPointAward(int points)
+    {
+        // TODO: change the color based on the number of points awarded
+        Color color = Color.yellow;
+        color.a = .7f;
+        GameObject pointsAwardedInstance = Instantiate(pointsAwarded, pointsAwarded.transform, true);
+        pointsAwardedInstance.GetComponent<AnimatedText>().generateText("+" + points.ToString(), color);
     }
 
 

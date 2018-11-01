@@ -72,8 +72,11 @@ public class GameManager : MonoBehaviour
     // TODO: Handle combos - currently just scored the player linearly
     public static void awardPoints()
     {
+        // this will be changed based on combos later...
+        int pointsToAward = 10;
         playerScore += 10;
         GraphicsManager.updateScore();
+        GraphicsManager.spawnPointAward(pointsToAward);
     }
 
     public static void awardBonus()
