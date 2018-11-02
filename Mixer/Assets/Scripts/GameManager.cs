@@ -12,11 +12,12 @@ public class GameManager : MonoBehaviour
     void Start ()
     {
         // debug mode settings
-        InputManager.debugMode = true;
-        Bartender.debugMode = true;
-        OrderManager.debugMode = true;
         Drink.debugMode = true;
         DrinkComponent.debugMode = true;
+        Bartender.debugMode = true;
+        InputManager.debugMode = true;
+        OrderManager.debugMode = true;
+        GraphicsManager.debugMode = true;
 
         // initialize class static structures and members
         DrinkComponent.Initialize();

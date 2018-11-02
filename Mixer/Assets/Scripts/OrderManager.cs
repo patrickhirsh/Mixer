@@ -38,10 +38,10 @@ public class OrderManager : MonoBehaviour
         orderAlleys = GameObject.Find("OrderAlleys");
 
         // these starting values arbitrary. TODO: pull these from an instance of level
-        avgTimeLimit = 10;
-        avgOrderTimer = 10;
+        avgTimeLimit = 20;
+        avgOrderTimer = 20;
         avgTimeLimit_ReductionVal = .01f;
-        avgOrderTimer_ReductionVal = .01f;
+        avgOrderTimer_ReductionVal = .05f;
 
         // construct the order progress list for each bartender position
         orderProgress = new List<List<DrinkComponent>>();
@@ -85,12 +85,12 @@ public class OrderManager : MonoBehaviour
     }
 
 
-    // given a keySequence, submits the drinkComponent to the orderProgress list at position
+    // given a KeyCode, submits the drinkComponent to the orderProgress list at position
     // validates the submitted component and reacts accordingly
-    public static void submitComponent(string keySequence, int position)
+    public static void submitComponent(KeyCode key, int position)
     {
         // add the component to the order in progress and note its index
-        orderProgress[position].Add(DrinkComponent.generateExternalDrinkComponent(keySequence, Bartender.state));
+        orderProgress[position].Add(DrinkComponent.generateExternalDrinkComponent(key, Bartender.state));
         int compIndex = orderProgress[position].Count - 1;
 
         // if there isn't an order at this position... reject
@@ -101,9 +101,9 @@ public class OrderManager : MonoBehaviour
         }
 
         // if the submitted component doesn't have the same keysequence OR doesn't have the same category as the recipe...
-        if ((orderProgress[position][compIndex].keySequence.ToUpper() !=                                                                                    // same keySequence?
-            orderAlleys.transform.GetChild(position).transform.GetChild(0).GetComponent<Order>().drink.components[compIndex].keySequence.ToUpper()) || 
-            (orderProgress[position][compIndex].category.ToUpper() !=                                                                                       // same category?
+        if ((orderProgress[position][compIndex].key.ToString().ToUpper() !=                                                                                    // same keySequence?
+            orderAlleys.transform.GetChild(position).transform.GetChild(0).GetComponent<Order>().drink.components[compIndex].key.ToString().ToUpper()) || 
+            (orderProgress[position][compIndex].category.ToUpper() !=                                                                                          // same category?
             orderAlleys.transform.GetChild(position).transform.GetChild(0).GetComponent<Order>().drink.components[compIndex].category.ToUpper()))
         {
             clearOrderProgress(position);

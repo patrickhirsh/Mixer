@@ -5,26 +5,48 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
     public static bool debugMode;
-    private static KeyCode[] compKeys =
-    {   // used to check for valid component keystrokes in handleInput()
+
+    // keybindings
+    public static KeyCode moveUp = KeyCode.W;
+    public static KeyCode moveDown = KeyCode.S;
+    public static KeyCode goBack = KeyCode.Keypad0;
+    public static KeyCode category1 = KeyCode.Keypad1;
+    public static KeyCode category2 = KeyCode.Keypad2;
+    public static KeyCode category3 = KeyCode.Keypad3;
+    public static KeyCode category4 = KeyCode.Keypad4;
+    public static KeyCode category5 = KeyCode.Keypad5;
+    public static KeyCode category6 = KeyCode.Keypad6;
+    public static KeyCode category7 = KeyCode.Keypad7;
+    public static KeyCode category8 = KeyCode.Keypad8;
+    public static KeyCode category9 = KeyCode.Keypad9;
+
+    // used to generate category keybinding hints in GraphicsManager
+    public static KeyCode[] categoryKeys =
+    {
+        category1, category2, category3, category4, category5,
+        category6, category7, category8, category9
+    };
+
+    // used for highscore initials input validation
+    public static KeyCode[] validInitialsInput =
+    {
         KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E,
         KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I, KeyCode.J,
         KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O,
         KeyCode.P, KeyCode.Q, KeyCode.R, KeyCode.S, KeyCode.T,
         KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y,
-        KeyCode.Z, KeyCode.LeftAlt, KeyCode.RightAlt
+        KeyCode.Z, KeyCode.Backspace, KeyCode.Return
     };
-	
 
-	void Update ()
+
+    void Update ()
     {
         switch (GameManager.gameState)
         {
             case 1:
                 handleInput1();
                 break;
-        }
-        
+        }    
 	}
 
 
@@ -34,40 +56,88 @@ public class InputManager : MonoBehaviour
         if (GameManager.gameState == 1)
         {
             // bartender movement
-            if (Input.GetKeyDown(KeyCode.Space))
-                { Bartender.handleMovement(); return; }
+            if (Input.GetKeyDown(moveUp))
+                { Bartender.handleMovement(moveUp); return; }
+            if (Input.GetKeyDown(moveDown))
+                { Bartender.handleMovement(moveDown); return; }
 
-            // bartender has cleared the drink at his current position
-            if (Input.GetKeyDown(KeyCode.Delete))
-            { Bartender.handleClear(); return; }
+            // goBack key
+            if (Input.GetKeyDown(goBack))
+                if (Bartender.state != null) { Bartender.handleComponentSelection(goBack); return; }
 
-            // bartender category selection
-            if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))  // Glassware
-            { Bartender.handleCategorySelection("Alpha1"); return; }
 
-            if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))  // Beer
-            { Bartender.handleCategorySelection("Alpha2"); return; }
-
-            if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3))  // Liquor
-            { Bartender.handleCategorySelection("Alpha3"); return; }
-
-            if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4))  // Bitters
-            { Bartender.handleCategorySelection("Alpha4"); return; }
-
-            if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5))  // Non-Alcoholic
-            { Bartender.handleCategorySelection("Alpha5"); return; }
-
-            if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6))  // Other
-            { Bartender.handleCategorySelection("Alpha6"); return; }
-
-            // bartender is in a menu
-            if (Bartender.state != null)
+            // category1 key
+            if (Input.GetKeyDown(category1))
             {
-                // look for valid keystrokes. Return when one is found to avoid multiple input acceptance
-                foreach (KeyCode key in compKeys)
-                    if (Input.GetKeyDown(key))
-                        { Bartender.handleDrinkConstruction(key.ToString()); return; }
+                if (Bartender.state == null) { Bartender.handleCategorySelection(category1); return; }
+                if (Bartender.state != null) { Bartender.handleComponentSelection(category1); return; }
+            }
+
+            // category2 key
+            if (Input.GetKeyDown(category2))
+            {
+                if (Bartender.state == null) { Bartender.handleCategorySelection(category2); return; }
+                if (Bartender.state != null) { Bartender.handleComponentSelection(category2); return; }
+            }
+
+            // category3 key
+            if (Input.GetKeyDown(category3))
+            {
+                if (Bartender.state == null) { Bartender.handleCategorySelection(category3); return; }
+                if (Bartender.state != null) { Bartender.handleComponentSelection(category3); return; }
+            }
+
+            // category4 key
+            if (Input.GetKeyDown(category4))
+            {
+                if (Bartender.state == null) { Bartender.handleCategorySelection(category4); return; }
+                if (Bartender.state != null) { Bartender.handleComponentSelection(category4); return; }
+            }
+
+            // category5 key
+            if (Input.GetKeyDown(category5))
+            {
+                if (Bartender.state == null) { Bartender.handleCategorySelection(category5); return; }
+                if (Bartender.state != null) { Bartender.handleComponentSelection(category5); return; }
+            }
+
+            // category6 key
+            if (Input.GetKeyDown(category6))
+            {
+                if (Bartender.state == null) { Bartender.handleCategorySelection(category6); return; }
+                if (Bartender.state != null) { Bartender.handleComponentSelection(category6); return; }
+            }
+
+            // category7 key
+            if (Input.GetKeyDown(category7))
+            {
+                if (Bartender.state == null) { Bartender.handleCategorySelection(category7); return; }
+                if (Bartender.state != null) { Bartender.handleComponentSelection(category7); return; }
+            }
+
+            // category8 key
+            if (Input.GetKeyDown(category8))
+            {
+                if (Bartender.state == null) { Bartender.handleCategorySelection(category8); return; }
+                if (Bartender.state != null) { Bartender.handleComponentSelection(category8); return; }
+            }
+
+            // category9 key
+            if (Input.GetKeyDown(category9))
+            {
+                if (Bartender.state == null) { Bartender.handleCategorySelection(category8); return; }
+                if (Bartender.state != null) { Bartender.handleComponentSelection(category8); return; }
             }
         }
+    }
+
+
+    // Given a keycode, returns a clean string that's formatted for front-end use
+    public static string getStringFromKeyCode(KeyCode key)
+    {
+        string clean = key.ToString();
+        if (clean.StartsWith("ALPHA", true, System.Globalization.CultureInfo.CurrentCulture)) { clean = clean.Substring(5, clean.Length - 5); }
+        if (clean.StartsWith("KEYPAD", true, System.Globalization.CultureInfo.CurrentCulture)) { clean = clean.Substring(6, clean.Length - 6); }
+        return clean;
     }
 }

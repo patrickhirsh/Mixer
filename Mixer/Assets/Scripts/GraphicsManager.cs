@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GraphicsManager : MonoBehaviour
 {
+    public static bool debugMode;
     private static float ORDER_SPRITE_SPACING = .5f;
 
     private static GameObject playerScore;
@@ -19,6 +20,7 @@ public class GraphicsManager : MonoBehaviour
 
     public static void Initialize()
     {
+        // obtain references to frequently updated GameObjects
         playerScore = GameObject.Find("score");
         pointsAwarded = GameObject.Find("points_awarded");
         currentDrinkPanel = GameObject.Find("current_drink");
@@ -27,6 +29,10 @@ public class GraphicsManager : MonoBehaviour
         categoryLabels = GameObject.Find("category_labels");
         categoryIcons = GameObject.Find("category_icons");
         categoryComponentList = GameObject.Find("category_component_list");
+
+        // non-dynamic keybindings need to be manually populated on startup by calling this method
+        // see the method's documentation for more info on "non-dynamic" keybinding hints
+        updateNonDynamicKeybindingHints();
     }
 
 
@@ -37,7 +43,7 @@ public class GraphicsManager : MonoBehaviour
         updateOrders();
         updateCurrentDrinkPanel();
         updateCategories();
-        updateCurrentCategory();
+        updateComponents();
     }
 
 
@@ -141,8 +147,8 @@ public class GraphicsManager : MonoBehaviour
     }
 
 
-    // updates the "current category" section of the left menu block
-    public static void updateCurrentCategory()
+    // updates the drink components section of the left menu block
+    public static void updateComponents()
     {
         // bartender isn't in a menu. hide current category section
         if (Bartender.state == null)
@@ -169,8 +175,9 @@ public class GraphicsManager : MonoBehaviour
                     // iterate through the components in this category and update the labels accordingly
                     foreach (KeyValuePair<string, DrinkComponent> component in DrinkComponent.glassware)
                     {
+                        // perform cleanup on KeyCode.ToString() labels                          
                         categoryComponentList.transform.GetChild(index).GetComponent<Text>().text =
-                            "(" + component.Value.keySequence.ToUpper() + ") - " + component.Key;
+                            "(" + component.Value.keyString + ") " + component.Key;
                         index++;
                     }
                     // once we run out of components, use the index (keeping track of child position in categoryComponentList) to set the rest to ""
@@ -182,7 +189,7 @@ public class GraphicsManager : MonoBehaviour
                     foreach (KeyValuePair<string, DrinkComponent> component in DrinkComponent.beers)
                     {
                         categoryComponentList.transform.GetChild(index).GetComponent<Text>().text =
-                            "(" + component.Value.keySequence.ToUpper() + ") - " + component.Key;
+                            "(" + component.Value.keyString + ") " + component.Key;
                         index++;
                     }
                     for (int i = index; i < categoryComponentList.transform.childCount; i++)
@@ -193,7 +200,7 @@ public class GraphicsManager : MonoBehaviour
                     foreach (KeyValuePair<string, DrinkComponent> component in DrinkComponent.liquors)
                     {
                         categoryComponentList.transform.GetChild(index).GetComponent<Text>().text =
-                            "(" + component.Value.keySequence.ToUpper() + ") - " + component.Key;
+                            "(" + component.Value.keyString + ") " + component.Key;
                         index++;
                     }
                     for (int i = index; i < categoryComponentList.transform.childCount; i++)
@@ -204,7 +211,7 @@ public class GraphicsManager : MonoBehaviour
                     foreach (KeyValuePair<string, DrinkComponent> component in DrinkComponent.bitters)
                     {
                         categoryComponentList.transform.GetChild(index).GetComponent<Text>().text =
-                            "(" + component.Value.keySequence.ToUpper() + ") - " + component.Key;
+                            "(" + component.Value.keyString + ") " + component.Key;
                         index++;
                     }
                     for (int i = index; i < categoryComponentList.transform.childCount; i++)
@@ -215,7 +222,7 @@ public class GraphicsManager : MonoBehaviour
                     foreach (KeyValuePair<string, DrinkComponent> component in DrinkComponent.nonAlcoholic)
                     {
                         categoryComponentList.transform.GetChild(index).GetComponent<Text>().text =
-                            "(" + component.Value.keySequence.ToUpper() + ") - " + component.Key;
+                            "(" + component.Value.keyString + ") " + component.Key;
                         index++;
                     }
                     for (int i = index; i < categoryComponentList.transform.childCount; i++)
@@ -226,13 +233,33 @@ public class GraphicsManager : MonoBehaviour
                     foreach (KeyValuePair<string, DrinkComponent> component in DrinkComponent.other)
                     {
                         categoryComponentList.transform.GetChild(index).GetComponent<Text>().text =
-                            "(" + component.Value.keySequence.ToUpper() + ") - " + component.Key;
+                            "(" + component.Value.keyString + ") " + component.Key;
                         index++;
                     }
                     for (int i = index; i < categoryComponentList.transform.childCount; i++)
                         categoryComponentList.transform.GetChild(index).GetComponent<Text>().text = "";
                     break;
             }            
+        }
+    }
+
+
+    // most keybinding hints are updated dynamically in-script when a list is re-populated (ie. components in a category).
+    // in this case, it happens literally any time a category is changed, so we're always looking for updated keybindings.
+    // other keybindings are static in that we don't overwrite their object's text field (and we can simply set them inactive)
+    // so we call them "non-dynamic". These need to be updated any time the keybindings are changed using this method.
+    public static void updateNonDynamicKeybindingHints()
+    {
+        // ensure category structures are consistent
+        if (DrinkComponent.categoryLabels.Count != categoryLabels.transform.childCount)
+            if (debugMode)
+                Debug.Log("WARNING: Number of categories does not match the number of category labels");
+
+        // update category labels to include new keybinding hints
+        for (int i = 0; i < categoryLabels.transform.childCount; i++)
+        {
+            categoryLabels.transform.GetChild(i).GetComponent<Text>().text =
+                DrinkComponent.categoryLabels[i] + " (" + InputManager.getStringFromKeyCode(InputManager.categoryKeys[i]) + ")";
         }
     }
 }

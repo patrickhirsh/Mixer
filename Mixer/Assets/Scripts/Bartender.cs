@@ -21,88 +21,100 @@ public class Bartender : MonoBehaviour
 
 
     // the player has attempted to change the bartender's position
-    // can be fired at any time when gamestate == 1
-    // fires when the player hits space. Always moves the bartender up (with wrap around)
-    public static void handleMovement()
+    // can be fired at any time when gamestate == 1 (takes precedence over menus)
+    public static void handleMovement(KeyCode key)
     {
-        state = null;                   // moving causes all menus to close
-        position++;
-        if (position >= Level.levels[GameManager.currentLevel].numBartenderPositions)
-            position = 0;
-        if (debugMode) { Debug.Log(state); }
-    }
-
-
-    // the player has elected to clear the drink at this position
-    // can be fired at any time when gamestate == 1
-    // fires when the player hits the Delete key
-    public static void handleClear()
-    {
-        state = null;                           // clearing causes all menus to close
-        OrderManager.clearOrderProgress(position);
-        if (debugMode)
+        if (key == InputManager.moveUp)
         {
-            Debug.Log("Drink cleared at bartender position " + position);
-            Debug.Log(state);
+            // moving causes all menus to close
+            state = null; 
+            
+            // handle wrap-around
+            position++;
+            if (position >= Level.levels[GameManager.currentLevel].numBartenderPositions)
+                position = 0;
+
+            if (debugMode)
+                Debug.Log("Bartender State: " + state); ;
+            return;
+        }
+
+        if (key == InputManager.moveDown)
+        {
+            // moving causes all menus to close
+            state = null;
+
+            // handle wrap-around
+            position--;
+            if (position < 0)               
+                position = Level.levels[GameManager.currentLevel].numBartenderPositions - 1;
+
+            if (debugMode)
+                Debug.Log("Bartender State: " + state); ;
+            return;
         }
     }
 
 
     // the player has opened a drink components category
     // can only be fired when componentMenuState == null
-    // fires when the player hits keypad OR alpha 1-6 (keystroke should be Alpha#)
-    public static void handleCategorySelection(string keystroke)
+    public static void handleCategorySelection(KeyCode key)
     {
-        switch (keystroke)
-        {
-            case "Alpha1":
-                state = "Glassware";
-                break;
+        if (key == InputManager.goBack)
+            state = null;
 
-            case "Alpha2":
-                state = "Beers";
-                break;
+        else if (key == InputManager.category1)
+            state = "Glassware";
 
-            case "Alpha3":
-                state = "Liquors";
-                break;
+        else if (key == InputManager.category2)
+            state = "Beers";
 
-            case "Alpha4":
-                state = "Bitters";
-                break;
+        else if (key == InputManager.category3)
+            state = "Liquors";
 
-            case "Alpha5":
-                state = "NonAlcoholic";
-                break;
+        else if (key == InputManager.category4)
+            state = "Bitters";
 
-            case "Alpha6":
-                state = "Other";
-                break;
-        }
+        else if (key == InputManager.category5)
+            state = "NonAlcoholic";
 
-        if (debugMode) { Debug.Log(state); }
+        else if (key == InputManager.category6)
+            state = "Other";
+
+        else if (key == InputManager.category7)
+            state = null;   // unused
+
+        else if (key == InputManager.category8)
+            state = null;   // unused
+
+        else if (key == InputManager.category9)
+            state = null;   // unused
+
+        else
+            if (debugMode) { Debug.Log("handleCategorySelection() couldn't parse the given key: " + key.ToString()); }
+
+        if (debugMode) { Debug.Log("Bartender State: " + state); }
     }
 
 
     // the player is selecting a component
     // can only fire if componentMenuState != null
-    // valid keys are ALL in InputManager.compKeys
-    public static void handleDrinkConstruction(string keystroke)
+    public static void handleComponentSelection(KeyCode key)
     {
         // player tried to exit the component category
-        if ((keystroke == "LeftAlt") || (keystroke == "RightAlt"))
+        if (key == InputManager.goBack)
         {
             state = null;                           
-            if (debugMode) { Debug.Log(state); }
+            if (debugMode) { Debug.Log("Bartender State: " + state); ; }
             return;
         }
 
         // player selected a component
         else
         {                       
-            OrderManager.submitComponent(keystroke, position);
+            OrderManager.submitComponent(key, position);
             state = null;
-            if (debugMode) { Debug.Log(state); }
+            if (debugMode) { Debug.Log("Bartender State: " + state); ; }
             return;
         }
     }
