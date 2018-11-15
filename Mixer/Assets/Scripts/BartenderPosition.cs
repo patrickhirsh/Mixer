@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrderAlley : MonoBehaviour
+public class BartenderPosition : MonoBehaviour
 {
 	public void removeCurrentOrder()
     {

@@ -117,7 +117,7 @@ public class OrderManager : MonoBehaviour
             // drink completed!
             GameManager.awardPoints();
             clearOrderProgress(position);
-            orderAlleys.transform.GetChild(position).GetComponent<OrderAlley>().removeCurrentOrder();
+            orderAlleys.transform.GetChild(position).GetComponent<BartenderPosition>().removeCurrentOrder();
             if (debugMode) { Debug.Log("Successfully completed a drink!"); }
         }
     }

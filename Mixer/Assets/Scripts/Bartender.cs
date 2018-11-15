@@ -14,7 +14,7 @@ public class Bartender : MonoBehaviour
     // initialize static members of the Bartender class
     public static void Initialize()
     {
-        bartender = GameObject.Find("Bartender");
+        bartender = GameObject.Find("bartender");
         position = 0;
         state = null;
     }
@@ -24,7 +24,7 @@ public class Bartender : MonoBehaviour
     // can be fired at any time when gamestate == 1 (takes precedence over menus)
     public static void handleMovement(KeyCode key)
     {
-        if (key == InputManager.moveUp)
+        if (key == InputManager.moveRight)
         {
             // moving causes all menus to close
             state = null; 
@@ -39,7 +39,7 @@ public class Bartender : MonoBehaviour
             return;
         }
 
-        if (key == InputManager.moveDown)
+        if (key == InputManager.moveLeft)
         {
             // moving causes all menus to close
             state = null;

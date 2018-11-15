@@ -7,8 +7,8 @@ public class InputManager : MonoBehaviour
     public static bool debugMode;
 
     // keybindings
-    public static KeyCode moveUp = KeyCode.W;
-    public static KeyCode moveDown = KeyCode.S;
+    public static KeyCode moveRight = KeyCode.W;
+    public static KeyCode moveLeft = KeyCode.S;
     public static KeyCode goBack = KeyCode.Keypad0;
     public static KeyCode category1 = KeyCode.Keypad1;
     public static KeyCode category2 = KeyCode.Keypad2;
@@ -56,10 +56,10 @@ public class InputManager : MonoBehaviour
         if (GameManager.gameState == 1)
         {
             // bartender movement
-            if (Input.GetKeyDown(moveUp))
-                { Bartender.handleMovement(moveUp); return; }
-            if (Input.GetKeyDown(moveDown))
-                { Bartender.handleMovement(moveDown); return; }
+            if (Input.GetKeyDown(moveRight))
+                { Bartender.handleMovement(moveRight); return; }
+            if (Input.GetKeyDown(moveLeft))
+                { Bartender.handleMovement(moveLeft); return; }
 
             // goBack key
             if (Input.GetKeyDown(goBack))
