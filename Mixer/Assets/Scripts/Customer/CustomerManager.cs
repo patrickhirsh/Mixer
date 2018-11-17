@@ -14,13 +14,13 @@ public class CustomerManager : MonoBehaviour
 
 
     // variables for spawn interval algorithm
-    private static float avgSpawnTimer;                 // the time limit between customer spawns
-    private static float avgSpawnTimer_ReductionVal;    // the time in seconds that the avgSpawnTimer is reduced by on difficulty increase. (TODO: scale non-linearly)
-    private static float nextSpawnTimer;                // the time remaining before another customer should be spawned
+    private static float avgSpawnTimer;                     // the time limit between customer spawns
+    private static float avgSpawnTimer_ReductionVal;        // the time in seconds that the avgSpawnTimer is reduced by on difficulty increase. (TODO: scale non-linearly)
+    private static float nextSpawnTimer;                    // the time remaining before another customer should be spawned
 
-    private static List<OrderNode> orderNodes;          // list of all orderNodes
-    private static List<SpawnNode> spawnNodes_spawn;    // list of all spawnNodes of type "spawn"
-    private static List<SpawnNode> spawnNodes_despawn;  // list of all spawnNodes of type "despawn"
+    private static List<OrderNode> orderNodes;              // list of all orderNodes
+    private static List<SpawnNode> spawnNodes_spawn;        // list of all spawnNodes of type "spawn"
+    private static List<SpawnNode> spawnNodes_despawn;      // list of all spawnNodes of type "despawn"
 
 
     /// <summary>
@@ -30,47 +30,59 @@ public class CustomerManager : MonoBehaviour
     {
         avgSpawnTimer = STARTING_SPAWN_TIMER;
         avgSpawnTimer_ReductionVal = STARTING_SPAWN_TIMER_REDUCTION_VAL;
-
         populateNodesLists();
     }
 
 	// Update is called once per frame
 	void Update ()
     {
-        // TODO: Handle customer spawning
-
-        // We'll need: 
-        // Pathfinding
-        // Node System
-        // Nodes that are associated with a bartender position
-
-        /*
         nextSpawnTimer -= Time.deltaTime;
 
-        // spawn a new order and reset the timer (timer is at 0)
+        // when timer reaches 0, spawn a new customer and reset the timer
         if (nextSpawnTimer <= 0)
         {
-            // reset nextOrderTimer
-            float deviation = UnityEngine.Random.Range(SPAWN_TIMER_VARIANCE_LOWER, SPAWN_TIMER_VARIANCE_UPPER);
-
-            // make sure the deviation in avgOrderTimer doesn't create an invalid timeLimit
-            if ((avgSpawnTimer + deviation) <= 0)
-                nextSpawnTimer = avgSpawnTimer;
-            else { nextSpawnTimer = avgSpawnTimer + deviation; }
+            // TODO: Spawn customer here
+            resetNextSpawnTimer();
         }
-        */
     }
 
 
+    /// <summary>
+    /// reduce the average amount of time between customer spawns by avgSpawnTimer_ReductionVal
+    /// </summary>
     public static void increaseDifficulty()
     {
-        // reduce the average amount of time between customer spawns
         if ((avgSpawnTimer - avgSpawnTimer_ReductionVal) > 0)
             avgSpawnTimer -= avgSpawnTimer_ReductionVal;
     }
 
 
     #region HELPER METHODS
+
+
+    /// <summary>
+    /// spawns a customer at a random spawn location
+    /// </summary>
+    private static void spawnCustomer()
+    {
+        throw new System.NotImplementedException();
+    }
+
+
+    /// <summary>
+    /// Resets the nextSpawnTimer based on the avgSpawnTimer, using a random deviation
+    /// </summary>
+    private static void resetNextSpawnTimer()
+    {
+        // reset nextSpawnTimer
+        float deviation = UnityEngine.Random.Range(SPAWN_TIMER_VARIANCE_LOWER, SPAWN_TIMER_VARIANCE_UPPER);
+
+        // make sure the deviation in nextSpawnTimer doesn't create an invalid timeLimit
+        if ((avgSpawnTimer + deviation) <= 0)
+            nextSpawnTimer = avgSpawnTimer;
+        else { nextSpawnTimer = avgSpawnTimer + deviation; }
+    }
+
 
     /// <summary>
     /// Populates lists of nodes for each node type. Should be called in Start()
