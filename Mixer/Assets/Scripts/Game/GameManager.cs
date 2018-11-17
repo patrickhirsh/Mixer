@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
         OrderManager.debugMode = true;
         CustomerManager.debugMode = true;
         GraphicsManager.debugMode = true;
+        PathfindingManager.debugMode = true;
 
         // initialize class static structures and members
         DrinkComponent.Initialize();

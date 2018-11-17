@@ -14,9 +14,13 @@ public class CustomerManager : MonoBehaviour
 
 
     // variables for spawn interval algorithm
-    public static float avgSpawnTimer { get; private set; }                 // the time limit between customer spawns
-    public static float avgSpawnTimer_ReductionVal { get; private set; }    // the time in seconds that the avgSpawnTimer is reduced by on difficulty increase. (TODO: scale non-linearly)
-    public static float nextSpawnTimer { get; private set; }                // the time remaining before another customer should be spawned
+    private static float avgSpawnTimer;                 // the time limit between customer spawns
+    private static float avgSpawnTimer_ReductionVal;    // the time in seconds that the avgSpawnTimer is reduced by on difficulty increase. (TODO: scale non-linearly)
+    private static float nextSpawnTimer;                // the time remaining before another customer should be spawned
+
+    private static List<OrderNode> orderNodes;          // list of all orderNodes
+    private static List<SpawnNode> spawnNodes_spawn;    // list of all spawnNodes of type "spawn"
+    private static List<SpawnNode> spawnNodes_despawn;  // list of all spawnNodes of type "despawn"
 
 
     /// <summary>
@@ -26,6 +30,8 @@ public class CustomerManager : MonoBehaviour
     {
         avgSpawnTimer = STARTING_SPAWN_TIMER;
         avgSpawnTimer_ReductionVal = STARTING_SPAWN_TIMER_REDUCTION_VAL;
+
+        populateNodesLists();
     }
 
 	// Update is called once per frame
@@ -62,6 +68,42 @@ public class CustomerManager : MonoBehaviour
         if ((avgSpawnTimer - avgSpawnTimer_ReductionVal) > 0)
             avgSpawnTimer -= avgSpawnTimer_ReductionVal;
     }
+
+
+    #region HELPER METHODS
+
+    /// <summary>
+    /// Populates lists of nodes for each node type. Should be called in Start()
+    /// Only nodes that are children of the "nodes" object will be observed
+    /// </summary>
+    private static void populateNodesLists()
+    {
+        // populate lists of all different node types (under "nodes" object)
+        GameObject nodesParent = GameObject.Find("nodes");
+        for (int i = 0; i < nodesParent.transform.childCount; i++)
+        {
+
+            // ORDER NODES
+            if (nodesParent.transform.GetChild(i).GetComponent<OrderNode>() != null)
+            {
+                if (!nodesParent.transform.GetChild(i).GetComponent<OrderNode>().isLinked())
+                    if (debugMode) { Debug.LogWarning("Detected an OrderNode without an associated bartenderPosition"); }
+                    else
+                        orderNodes.Add(nodesParent.transform.GetChild(i).GetComponent<OrderNode>());
+            }
+
+            // SPAWN NODES
+            if (nodesParent.transform.GetChild(i).GetComponent<SpawnNode>() != null)
+            {
+                if (nodesParent.transform.GetChild(i).GetComponent<SpawnNode>().spawnType == SpawnNode.SpawnType.spawn)
+                    spawnNodes_spawn.Add(nodesParent.transform.GetChild(i).GetComponent<SpawnNode>());
+                else
+                    spawnNodes_despawn.Add(nodesParent.transform.GetChild(i).GetComponent<SpawnNode>());
+            }
+        }
+    }
+
+    #endregion
 
     /*
     // since we're casting to int (and thus rounding down), we need the full range of top position -> top position .999... to get an even probability

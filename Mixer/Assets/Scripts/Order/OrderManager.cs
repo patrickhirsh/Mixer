@@ -17,8 +17,8 @@ public class OrderManager : MonoBehaviour
     private static float STARTING_TIME_LIMIT_REDUCTION_VAL = .01f;          // value at which to reduce timeLimit by each increaseDifficulty() call
 
     // variables for spawn order timing algorithm 
-    public static float timeLimeLimit_ReductionVal { get; private set; }    // the time in seconds that the avgTimeLimit is reduced by every drink. (TODO: scale non-linearly)
     public static float timeLimit { get; private set; }                     // used for assigning timeLimits to Orders
+    private static float timeLimeLimit_ReductionVal;                        // the time in seconds that the avgTimeLimit is reduced by every drink. (TODO: scale non-linearly)
 
     // the DrinkComponents completed for the current drink at each bartender position
     public static List<List<DrinkComponent>> orderProgress;
