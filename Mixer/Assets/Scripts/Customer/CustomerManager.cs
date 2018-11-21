@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class CustomerManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class CustomerManager : MonoBehaviour
     private static float STARTING_SPAWN_TIMER_REDUCTION_VAL = .05f;         // value at which to reduce spawnTimer by each increaseDifficulty() call
     private static float SPAWN_TIMER_VARIANCE_UPPER = 1f;                   // deviation allowance for nextSpawnTimer when resetting the timer (upper bound)
     private static float SPAWN_TIMER_VARIANCE_LOWER = -1f;                  // deviation allowance for nextSpawnTimer when resetting the timer (lower bound)
+
+    private static System.Random randomSeed;
 
 
     // variables for spawn interval algorithm
@@ -28,6 +31,7 @@ public class CustomerManager : MonoBehaviour
     /// </summary>
     public static void Initialize()
     {
+        randomSeed = new System.Random();
         avgSpawnTimer = STARTING_SPAWN_TIMER;
         avgSpawnTimer_ReductionVal = STARTING_SPAWN_TIMER_REDUCTION_VAL;
         populateNodesLists();
@@ -57,6 +61,29 @@ public class CustomerManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// returns a random spawnNode from the list of valid spawn points "spawnNodes_spawn"
+    /// </summary>
+    public static SpawnNode getRandomSpawnNode()
+    {
+        return spawnNodes_spawn[randomSeed.Next(0, spawnNodes_spawn.Count - 1)];
+    }
+
+
+    /// <summary>
+    /// returns a random spawnNode from the list of valid despawn points "spawnNodes_despawn"
+    /// </summary>
+    public static SpawnNode getRandomDespawnNode()
+    {
+        return spawnNodes_despawn[randomSeed.Next(0, spawnNodes_despawn.Count - 1)];
+    }
+
+    public static OrderNode getRandomOrderNode()
+    {
+        return orderNodes[randomSeed.Next(0, orderNodes.Count - 1)];
+    }
+
+
     #region HELPER METHODS
 
 
@@ -65,7 +92,7 @@ public class CustomerManager : MonoBehaviour
     /// </summary>
     private static void spawnCustomer()
     {
-        throw new System.NotImplementedException();
+        
     }
 
 

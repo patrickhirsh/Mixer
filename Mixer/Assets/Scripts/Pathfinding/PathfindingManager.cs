@@ -24,8 +24,8 @@ public class NodeComparer : IComparer<Node>
 
 /// <summary>
 /// Provides pathfinding algorithms to traverse fields of Nodes. Note that this class is not designed
-/// to work Asynchronously (nor is it designed to work with coroutines). This is simply due to the small
-/// number of Nodes in any given level (and the simplicity of design associated with a static implementation)
+/// to work asynchronously. This is simply due to the small number of Nodes in any given level 
+/// (and the simplicity of design associated with a static implementation)
 /// </summary>
 public class PathfindingManager : MonoBehaviour
 {
