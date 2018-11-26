@@ -7,6 +7,11 @@ public class CustomerManager : MonoBehaviour
 {
     public static bool debugMode;
 
+    // constants for customer behavior
+    public static readonly float AVG_WALK_SPEED = 2f;
+    public static readonly float AVG_WALK_SPEED_VARIANCE = .3f;
+
+
     // constants for spawn interval algorithm (all in seconds)
     private static float STARTING_SPAWN_TIMER = 20f;                        // time between customer spawns (adjusted over time)
     private static float STARTING_SPAWN_TIMER_REDUCTION_VAL = .05f;         // value at which to reduce spawnTimer by each increaseDifficulty() call
@@ -14,6 +19,7 @@ public class CustomerManager : MonoBehaviour
     private static float SPAWN_TIMER_VARIANCE_LOWER = -1f;                  // deviation allowance for nextSpawnTimer when resetting the timer (lower bound)
 
     private static System.Random randomSeed;
+    private static Dictionary<Customer, Node> customers;                     // maps every customer in the scene to their currentNode ... Is this necessary?
 
 
     // variables for spawn interval algorithm

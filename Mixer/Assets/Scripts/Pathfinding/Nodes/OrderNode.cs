@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OrderNode : Node
 {
-    public BartenderPosition bartenderPosition;     // the bartenderPosition associated with this OrderNode
+    public GameObject bartenderPosition;     // the bartenderPosition associated with this OrderNode
 
     /// <summary>
     /// Checks to see if this OrderNode has a bartenderPosition associated with it.

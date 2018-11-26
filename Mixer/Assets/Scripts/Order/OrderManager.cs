@@ -45,14 +45,17 @@ public class OrderManager : MonoBehaviour
     /// <summary>
     /// add a new order from "customer" containing "drink" at bartender position "position"
     /// </summary>
-    public static void newOrder(Customer customer, Drink drink, int bartenderPosition)
+    public static Order newOrder(Customer customer, Drink drink, GameObject bartenderPosition)
     {
         // create the order and add it to the bartenderPosition indexed by "position"
-        GameObject order = Instantiate(GameObject.Find("order"), Bartender.bartenderPositions.transform.GetChild(bartenderPosition));
-        order.GetComponent<Order>().Initialize(customer, drink);
+        GameObject orderObject = Instantiate(GameObject.Find("order"), bartenderPosition.transform);
+        Order order = orderObject.GetComponent<Order>();
+        order.Initialize(customer, drink);
 
         if (debugMode)
             Debug.Log("Created new order: " + drink.drinkName + " at bartender position: " + bartenderPosition);
+
+        return order;       
     }
 
 
