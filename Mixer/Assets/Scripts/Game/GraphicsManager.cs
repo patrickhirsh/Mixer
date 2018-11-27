@@ -7,14 +7,15 @@ public class GraphicsManager : MonoBehaviour
 {
     public static bool debugMode;
 
-    private static int DRINK_PROGRESS_Y_OFFSET = 153;   // the Y offset of the drink progress panel over the current bartender position (in UI units)
-             
+    private static int DRINK_PROGRESS_Y_OFFSET = 155;                                           // the Y offset of the drink progress panel over the current bartender position (in UI units)
+    private static Color DRINK_COMPONENT_PROGRESS_INCOMPLETE = new Color(.15f, .15f, .15f);     // incomplete drink component color in current drink progress panel
+    private static Color DRINK_COMPONENT_PROGRESS_COMPLETED = Color.black;                      // completed drink component color in current drink progress panel
+
     private static GameObject canvas;                  
     private static GameObject playerScore;              
     private static GameObject pointsAwarded;            // object used to instantiated AnimatedText objects for points awarded
     private static RectTransform currentDrink;          // the current drink panel RectTransform. The parent transform for the entire panel.
     private static GameObject currentDrinkText;         // [0] = current drink label. [1+] = current drink components
-    private static GameObject currentDrinkProgress;     // the parent of all current drink progress sprites
     private static GameObject currentDrinkBackground;   // the current drink backgroud sprite
     private static GameObject categoryLabels;           // the parent of all category labels
 
@@ -27,10 +28,10 @@ public class GraphicsManager : MonoBehaviour
         pointsAwarded = GameObject.Find("points_awarded");
         currentDrink = GameObject.Find("current_drink").GetComponent<RectTransform>();
         currentDrinkText = GameObject.Find("current_drink_text");
-        currentDrinkProgress = GameObject.Find("current_drink_progress");
         currentDrinkBackground = GameObject.Find("current_drink_background");
         categoryLabels = GameObject.Find("category_labels");
 
+        hideEditorTools();
         updateScore();
     }
 
@@ -76,11 +77,13 @@ public class GraphicsManager : MonoBehaviour
         // does there exist an order at the current bartending position?
         if (Bartender.bartenderPositions.transform.GetChild(Bartender.position).transform.childCount != 0)
         {
-            // clear the current drink labels and icons
-            for (int i = 0; i < currentDrinkText.transform.childCount; i++)
-                currentDrinkText.transform.GetChild(i).GetComponent<Text>().text = "";
-            for (int i = 0; i < currentDrinkProgress.transform.childCount; i++)
-                currentDrinkProgress.transform.GetChild(i).gameObject.SetActive(false);
+            // clear the current drink labels
+            for (int i = 1; i < currentDrinkText.transform.childCount; i++)
+            {
+                Text label = currentDrinkText.transform.GetChild(i).GetComponent<Text>();
+                label.text = "";
+                label.color = DRINK_COMPONENT_PROGRESS_INCOMPLETE;
+            }               
 
             // get a reference to the current drink
             Drink drink = Bartender.bartenderPositions.transform.GetChild(Bartender.position).GetChild(0).GetComponent<Order>().drink;
@@ -90,13 +93,16 @@ public class GraphicsManager : MonoBehaviour
 
             // render the drink components
             for (int i = 1; i <= drink.components.Count; i++)
-                currentDrinkText.transform.GetChild(i).GetComponent<Text>().text = drink.components[i - 1].component;
+            {
+                Text component = currentDrinkText.transform.GetChild(i).GetComponent<Text>();
+                component.text = drink.components[i - 1].component;
 
-            // render the drink progress icons
-            for (int i = 0; i < OrderManager.orderProgress[Bartender.position].Count; i++)
-                currentDrinkProgress.transform.GetChild(i).gameObject.SetActive(true);
+                // apply completed component color to completed components
+                if ((i-1) < OrderManager.orderProgress[Bartender.position].Count)
+                    currentDrinkText.transform.GetChild(i).gameObject.GetComponent<Text>().color = DRINK_COMPONENT_PROGRESS_COMPLETED;
+            }                
 
-            //reander the current drink background
+            //render the current drink background
             currentDrinkBackground.SetActive(true);
 
             // position the drink progress graphics over the current bartending position
@@ -111,8 +117,6 @@ public class GraphicsManager : MonoBehaviour
             // clear the icons and labels
             for (int i = 0; i < currentDrinkText.transform.childCount; i++)
                 currentDrinkText.transform.GetChild(i).GetComponent<Text>().text = "";
-            for (int i = 0; i < currentDrinkProgress.transform.childCount; i++)
-                currentDrinkProgress.transform.GetChild(i).gameObject.SetActive(false);
 
             currentDrinkBackground.SetActive(false);
         }
@@ -227,6 +231,22 @@ public class GraphicsManager : MonoBehaviour
             ((viewportPosition.y * canvasRect.sizeDelta.y) - (canvasRect.sizeDelta.y * 0.5f)));
 
         return canvasPosition;
+    }
+
+
+    /// <summary>
+    /// Hides all editor tool UI sprites like pathnodes and bartender positions.
+    /// </summary>
+    private static void hideEditorTools()
+    {
+        // hide bartender position sprites
+        for (int i = 0; i < Bartender.bartenderPositions.transform.childCount; i++)
+            Bartender.bartenderPositions.transform.GetChild(i).GetComponent<SpriteRenderer>().enabled = false;
+
+        // hide pathnode sprites
+        GameObject nodesParent = GameObject.Find("nodes");
+        for (int i = 0; i < nodesParent.transform.childCount; i++)
+            nodesParent.transform.GetChild(i).GetComponent<SpriteRenderer>().enabled = false;
     }
 
 

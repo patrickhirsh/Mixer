@@ -15,10 +15,10 @@ public class CustomerManager : MonoBehaviour
     public static float WAITING_POSITION_Y_GAP = .15f;                  // distance in the Y direction between each customer waiting for a drink at any given OrderNode
 
     // constants for spawn interval algorithm (all in seconds)
-    private static float STARTING_SPAWN_TIMER = 5f;                     // time between customer spawns (adjusted over time)
-    private static float STARTING_SPAWN_TIMER_REDUCTION_VAL = .05f;     // value at which to reduce spawnTimer by each increaseDifficulty() call
-    private static float SPAWN_TIMER_VARIANCE_UPPER = 0f;               // deviation allowance for nextSpawnTimer when resetting the timer (upper bound)
-    private static float SPAWN_TIMER_VARIANCE_LOWER = 0f;               // deviation allowance for nextSpawnTimer when resetting the timer (lower bound)
+    private static float STARTING_SPAWN_TIMER = 15f;                    // time between customer spawns (adjusted over time)
+    private static float STARTING_SPAWN_TIMER_REDUCTION_VAL = .5f;      // value at which to reduce spawnTimer by each increaseDifficulty() call
+    private static float SPAWN_TIMER_VARIANCE_UPPER = 1f;               // deviation allowance for nextSpawnTimer when resetting the timer (upper bound)
+    private static float SPAWN_TIMER_VARIANCE_LOWER = 1f;               // deviation allowance for nextSpawnTimer when resetting the timer (lower bound)
 
 
     // variables for spawn interval algorithm
