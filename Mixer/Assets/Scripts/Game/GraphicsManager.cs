@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class GraphicsManager : MonoBehaviour
 {
     public static bool debugMode;
-    private static float ORDER_SPRITE_SPACING = .5f;
 
     private static GameObject playerScore;              // player's score
     private static GameObject pointsAwarded;            // object used to instantiated AnimatedText objects for points awarded
@@ -166,6 +165,16 @@ public class GraphicsManager : MonoBehaviour
                     break;
             }
         }
+    }
+
+    /// <summary>
+    /// Given a y coordinate for any object, determine the proper Z coordinate
+    /// to keep consistent layering. Objects with a lower Y value should be displayed
+    /// above objects with a higher Y value.
+    /// </summary>
+    public static float calculateZValue(float y)
+    {
+        return ((y - 1f) / 100) - 1f;
     }
 
 

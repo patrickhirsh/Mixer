@@ -158,37 +158,37 @@ public class DrinkComponent
 
         // Tonic
         DrinkComponent tonic = new DrinkComponent();
-        tonic.assign("Tonic", InputManager.category1, "nonAlcoholic");
+        tonic.assign("Tonic", InputManager.category1, "non-Alcoholic");
         nonAlcoholic.Add(tonic.component, tonic);
 
         // Coke
         DrinkComponent coke = new DrinkComponent();
-        coke.assign("Coke", InputManager.category2, "nonAlcoholic");
+        coke.assign("Coke", InputManager.category2, "non-Alcoholic");
         nonAlcoholic.Add(coke.component, coke);
 
         // Ginger Beer
         DrinkComponent gingerBeer = new DrinkComponent();
-        gingerBeer.assign("Ginger Beer", InputManager.category3, "nonAlcoholic");
+        gingerBeer.assign("Ginger Beer", InputManager.category3, "non-Alcoholic");
         nonAlcoholic.Add(gingerBeer.component, gingerBeer);
 
         // Lime Juice
         DrinkComponent limeJuice = new DrinkComponent();
-        limeJuice.assign("Lime Juice", InputManager.category4, "nonAlcoholic");
+        limeJuice.assign("Lime Juice", InputManager.category4, "non-Alcoholic");
         nonAlcoholic.Add(limeJuice.component, limeJuice);
 
         // Lemon Juice
         DrinkComponent lemonJuice = new DrinkComponent();
-        lemonJuice.assign("Lemon Juice", InputManager.category5, "nonAlcoholic");
+        lemonJuice.assign("Lemon Juice", InputManager.category5, "non-Alcoholic");
         nonAlcoholic.Add(lemonJuice.component, lemonJuice);
 
         // Margarita Mix
         DrinkComponent margaritaMix = new DrinkComponent();
-        margaritaMix.assign("Margarita Mix", InputManager.category6, "nonAlcoholic");
+        margaritaMix.assign("Margarita Mix", InputManager.category6, "non-Alcoholic");
         nonAlcoholic.Add(margaritaMix.component, margaritaMix);
 
         // Simple Syrup
         DrinkComponent simpleSyrup = new DrinkComponent();
-        simpleSyrup.assign("Simple Syrup", InputManager.category7, "nonAlcoholic");
+        simpleSyrup.assign("Simple Syrup", InputManager.category7, "non-Alcoholic");
         nonAlcoholic.Add(simpleSyrup.component, simpleSyrup);
         #endregion
 

@@ -43,7 +43,7 @@ public class Order : MonoBehaviour
     /// </summary>
     public void destroy(bool drinkCompleted)
     {
-        // TODO: tell the associated customer about the outcome of their drink...
-        Destroy(this);
+        customer.orderCallback(true);
+        Destroy(this.gameObject);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using System;
 
 public class CustomerManager : MonoBehaviour
@@ -8,38 +9,43 @@ public class CustomerManager : MonoBehaviour
     public static bool debugMode;
 
     // constants for customer behavior
-    public static readonly float AVG_WALK_SPEED = 2f;
-    public static readonly float AVG_WALK_SPEED_VARIANCE = .3f;
-
+    public static float AVG_WALK_SPEED = 1f;
+    public static float AVG_WALK_SPEED_VARIANCE = .1f;
+    public static float WAITING_POSITION_X_VARIANCE = .3f;              // variance in the X position of standing positions chosen for customers waiting for drinks
+    public static float WAITING_POSITION_Y_GAP = .15f;                  // distance in the Y direction between each customer waiting for a drink at any given OrderNode
 
     // constants for spawn interval algorithm (all in seconds)
-    private static float STARTING_SPAWN_TIMER = 20f;                        // time between customer spawns (adjusted over time)
-    private static float STARTING_SPAWN_TIMER_REDUCTION_VAL = .05f;         // value at which to reduce spawnTimer by each increaseDifficulty() call
-    private static float SPAWN_TIMER_VARIANCE_UPPER = 1f;                   // deviation allowance for nextSpawnTimer when resetting the timer (upper bound)
-    private static float SPAWN_TIMER_VARIANCE_LOWER = -1f;                  // deviation allowance for nextSpawnTimer when resetting the timer (lower bound)
-
-    private static System.Random randomSeed;
-    private static Dictionary<Customer, Node> customers;                     // maps every customer in the scene to their currentNode ... Is this necessary?
+    private static float STARTING_SPAWN_TIMER = 5f;                     // time between customer spawns (adjusted over time)
+    private static float STARTING_SPAWN_TIMER_REDUCTION_VAL = .05f;     // value at which to reduce spawnTimer by each increaseDifficulty() call
+    private static float SPAWN_TIMER_VARIANCE_UPPER = 0f;               // deviation allowance for nextSpawnTimer when resetting the timer (upper bound)
+    private static float SPAWN_TIMER_VARIANCE_LOWER = 0f;               // deviation allowance for nextSpawnTimer when resetting the timer (lower bound)
 
 
     // variables for spawn interval algorithm
+    private static System.Random rnd;                       // used for all random integer numbers during customer spawning
     private static float avgSpawnTimer;                     // the time limit between customer spawns
     private static float avgSpawnTimer_ReductionVal;        // the time in seconds that the avgSpawnTimer is reduced by on difficulty increase. (TODO: scale non-linearly)
     private static float nextSpawnTimer;                    // the time remaining before another customer should be spawned
 
+    private static GameObject CustomersParent;              // parent object in which all customers should be instantiated under                                          
+    private static List<GameObject> customerPrefabs;        // array of all customer prefabs in Assets/Prefabs/Customers
     private static List<OrderNode> orderNodes;              // list of all orderNodes
     private static List<SpawnNode> spawnNodes_spawn;        // list of all spawnNodes of type "spawn"
     private static List<SpawnNode> spawnNodes_despawn;      // list of all spawnNodes of type "despawn"
 
 
-    /// <summary>
-    /// initialize static structures in CustomerManager. Should be called once per level load
-    /// </summary>
-    public static void Initialize()
+    public void Start()
     {
-        randomSeed = new System.Random();
+        orderNodes = new List<OrderNode>();
+        spawnNodes_spawn = new List<SpawnNode>();
+        spawnNodes_despawn = new List<SpawnNode>();
+
+        rnd = new System.Random();
+        CustomersParent = GameObject.Find("Customers");
+        nextSpawnTimer = 1f;
         avgSpawnTimer = STARTING_SPAWN_TIMER;
         avgSpawnTimer_ReductionVal = STARTING_SPAWN_TIMER_REDUCTION_VAL;
+        populateCustomerPrefabs();
         populateNodesLists();
     }
 
@@ -51,7 +57,7 @@ public class CustomerManager : MonoBehaviour
         // when timer reaches 0, spawn a new customer and reset the timer
         if (nextSpawnTimer <= 0)
         {
-            // TODO: Spawn customer here
+            spawnCustomer();
             resetNextSpawnTimer();
         }
     }
@@ -72,7 +78,7 @@ public class CustomerManager : MonoBehaviour
     /// </summary>
     public static SpawnNode getRandomSpawnNode()
     {
-        return spawnNodes_spawn[randomSeed.Next(0, spawnNodes_spawn.Count - 1)];
+        return spawnNodes_spawn[rnd.Next(0, spawnNodes_spawn.Count)];          
     }
 
 
@@ -81,12 +87,31 @@ public class CustomerManager : MonoBehaviour
     /// </summary>
     public static SpawnNode getRandomDespawnNode()
     {
-        return spawnNodes_despawn[randomSeed.Next(0, spawnNodes_despawn.Count - 1)];
+        return spawnNodes_despawn[rnd.Next(0, spawnNodes_despawn.Count)];           
     }
 
-    public static OrderNode getRandomOrderNode()
+    public static OrderNode getRandomOrderNode(List<OrderNode> validOrderNodes)
     {
-        return orderNodes[randomSeed.Next(0, orderNodes.Count - 1)];
+        return validOrderNodes[rnd.Next(0, validOrderNodes.Count)];          
+    }
+
+
+    /// <summary>
+    /// based on the number of people currently waiting at "orderNode", returns a position
+    /// that the customer calling this method should stand while they wait for their drink.
+    /// Should be called after the customer's drink has been ordered
+    /// </summary>
+    public static Vector3 getRandomWaitingPosition(OrderNode orderNode)
+    {
+        float x = orderNode.transform.position.x + UnityEngine.Random.Range(WAITING_POSITION_X_VARIANCE * -1f, WAITING_POSITION_X_VARIANCE);
+        float y = orderNode.transform.position.y - ((orderNode.bartenderPosition.transform.childCount - 1) * WAITING_POSITION_Y_GAP);
+        float z = GraphicsManager.calculateZValue(y);
+
+        // first customer doesn't have any X offset
+        if (orderNode.bartenderPosition.transform.childCount == 1)
+            x = orderNode.transform.position.x;
+
+        return new Vector3(x, y, z);
     }
 
 
@@ -98,7 +123,8 @@ public class CustomerManager : MonoBehaviour
     /// </summary>
     private static void spawnCustomer()
     {
-        
+        // TODO: Add more customer variations
+        Instantiate(customerPrefabs[0], CustomersParent.transform);
     }
 
 
@@ -123,6 +149,10 @@ public class CustomerManager : MonoBehaviour
     /// </summary>
     private static void populateNodesLists()
     {
+        orderNodes.Clear();
+        spawnNodes_spawn.Clear();
+        spawnNodes_despawn.Clear();
+
         // populate lists of all different node types (under "nodes" object)
         GameObject nodesParent = GameObject.Find("nodes");
         for (int i = 0; i < nodesParent.transform.childCount; i++)
@@ -132,9 +162,10 @@ public class CustomerManager : MonoBehaviour
             if (nodesParent.transform.GetChild(i).GetComponent<OrderNode>() != null)
             {
                 if (!nodesParent.transform.GetChild(i).GetComponent<OrderNode>().isLinked())
-                    if (debugMode) { Debug.LogWarning("Detected an OrderNode without an associated bartenderPosition"); }
-                    else
-                        orderNodes.Add(nodesParent.transform.GetChild(i).GetComponent<OrderNode>());
+                {
+                    if (debugMode) { Debug.LogWarning("Detected an OrderNode without an associated bartenderPosition"); }                    
+                }
+                else { orderNodes.Add(nodesParent.transform.GetChild(i).GetComponent<OrderNode>()); }                    
             }
 
             // SPAWN NODES
@@ -145,6 +176,30 @@ public class CustomerManager : MonoBehaviour
                 else
                     spawnNodes_despawn.Add(nodesParent.transform.GetChild(i).GetComponent<SpawnNode>());
             }
+        }
+    }
+
+
+    /// <summary>
+    /// Pulls all customer prefabs from Assets/Prefabs/Customers for customer spawning.
+    /// Should be called once before attempting to spawn any customers. Assumes customer prefabs
+    /// follow the name convention "customer0, customer1, customer2, etc.."
+    /// </summary>
+    private static void populateCustomerPrefabs()
+    {
+        customerPrefabs = new List<GameObject>();
+
+        int prefabIndex = 0;
+        string prefabName = "customer";
+        GameObject prefabObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/Prefabs/Customers/" + 
+            prefabName + prefabIndex.ToString() + ".prefab") as GameObject;
+
+        while (prefabObject != null)
+        {
+            customerPrefabs.Add(prefabObject);
+            prefabIndex++;
+            prefabObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/Prefabs/Customers/" + 
+                prefabName + prefabIndex.ToString() + ".prefab") as GameObject;
         }
     }
 

@@ -36,6 +36,7 @@ public class PathfindingManager : MonoBehaviour
 	void Start ()
     {
         // construct a list of all Nodes in the scene under the "nodes" GameObject
+        nodes = new List<Node>();
         GameObject nodesParents = GameObject.Find("nodes");
         for (int i = 0; i < nodesParents.transform.childCount; i++)
         {
@@ -74,10 +75,10 @@ public class PathfindingManager : MonoBehaviour
 
         #region SETUP
 
-        NodeComparer nodeComparer = new NodeComparer();         // used by .Sort() to sort by Node.distance
-        Node currentNode = start;                               // start with the start node
-        List<Node> processed = new List<Node>();                // all "visited" nodes
-        List<Node> frontier = new List<Node>();                 // all "unvisited" nodes
+        NodeComparer nodeComparer = new NodeComparer();                     // used by .Sort() to sort by Node.distance
+        Node currentNode = start;                                           // start with the start node
+        Dictionary<Node, bool> processed = new Dictionary<Node, bool>();    // all "visited" nodes              
+        List<Node> frontier = new List<Node>();                             // all "unvisited" nodes
 
         // populate the frontier
         foreach (Node node in nodes)
@@ -116,17 +117,22 @@ public class PathfindingManager : MonoBehaviour
             if (currentNode == destination)
                 break;
 
+            // otherwise, if the current node hasn't been processed, process it
             foreach (Node node in currentNode.outboundConnections)
             {
-                float distance = Vector3.Distance(currentNode.transform.position, node.transform.position) + currentNode.distance;
-                if (node.distance > distance)
+                if (!processed.ContainsKey(currentNode))
                 {
-                    node.distance = distance;
-                    node.prevNode = currentNode;
-                }                    
+                    float distance = Vector3.Distance(currentNode.transform.position, node.transform.position) + currentNode.distance;
+                    if (node.distance > distance)
+                    {
+                        node.distance = distance;
+                        node.prevNode = currentNode;
+                    }
+                }                                   
             }
 
             // re-sort the frontier after altering distance values
+            processed.Add(currentNode, true);
             frontier.Sort(nodeComparer);
         }
 

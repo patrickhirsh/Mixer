@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 
 /// <summary>
@@ -11,6 +12,9 @@ using UnityEngine;
 public class OrderManager : MonoBehaviour
 {
     public static bool debugMode;
+
+    // prefab used to spawn orders
+    private static GameObject orderPrefab;
 
     // constants for order timing algorithm (all in seconds)
     private static float STARTING_TIME_LIMIT = 20f;                         // starting time limit on new orders (reduced over time)
@@ -30,7 +34,8 @@ public class OrderManager : MonoBehaviour
     public static void Initialize()
     {
         timeLimit = STARTING_TIME_LIMIT;       
-        timeLimeLimit_ReductionVal = STARTING_TIME_LIMIT_REDUCTION_VAL;    
+        timeLimeLimit_ReductionVal = STARTING_TIME_LIMIT_REDUCTION_VAL;
+        orderPrefab = AssetDatabase.LoadAssetAtPath<Object>("Assets/Prefabs/order.prefab") as GameObject;
 
         // construct the order progress list for each bartender position
         orderProgress = new List<List<DrinkComponent>>();
@@ -48,7 +53,7 @@ public class OrderManager : MonoBehaviour
     public static Order newOrder(Customer customer, Drink drink, GameObject bartenderPosition)
     {
         // create the order and add it to the bartenderPosition indexed by "position"
-        GameObject orderObject = Instantiate(GameObject.Find("order"), bartenderPosition.transform);
+        GameObject orderObject = Instantiate(orderPrefab, bartenderPosition.transform);
         Order order = orderObject.GetComponent<Order>();
         order.Initialize(customer, drink);
 

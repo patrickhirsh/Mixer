@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SpawnNode : Node
 {
-    // indicates whether this is a spawn or despawn location
+    
     public enum SpawnType { spawn, despawn }
-    public SpawnType spawnType;
+    public SpawnType spawnType;                     // indicates whether this is a spawn or despawn location
+    public List<OrderNode> validOrderNodes;         // indicates which OrderNodes should be considered when spawning from this point
 }

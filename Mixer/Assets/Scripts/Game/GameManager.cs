@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 // gameState should NEVER have more than one flag set at any given time
 public enum gameState { menuScreen = 0, mainGame = 1 }
 
@@ -29,7 +30,6 @@ public class GameManager : MonoBehaviour
         Drink.Initialize();
         Bartender.Initialize();
         OrderManager.Initialize();
-        CustomerManager.Initialize();
         GraphicsManager.Initialize();
 
         // TODO: don't immediately transition to mainGame (need a main menu)
