@@ -7,20 +7,28 @@ public class GraphicsManager : MonoBehaviour
 {
     public static bool debugMode;
 
-    private static GameObject playerScore;              // player's score
+    private static int DRINK_PROGRESS_Y_OFFSET = 153;   // the Y offset of the drink progress panel over the current bartender position (in UI units)
+             
+    private static GameObject canvas;                  
+    private static GameObject playerScore;              
     private static GameObject pointsAwarded;            // object used to instantiated AnimatedText objects for points awarded
+    private static RectTransform currentDrink;          // the current drink panel RectTransform. The parent transform for the entire panel.
     private static GameObject currentDrinkText;         // [0] = current drink label. [1+] = current drink components
     private static GameObject currentDrinkProgress;     // the parent of all current drink progress sprites
+    private static GameObject currentDrinkBackground;   // the current drink backgroud sprite
     private static GameObject categoryLabels;           // the parent of all category labels
 
 
     public static void Initialize()
     {
         // obtain references to frequently updated GameObjects
+        canvas = GameObject.Find("Canvas");
         playerScore = GameObject.Find("score");
         pointsAwarded = GameObject.Find("points_awarded");
+        currentDrink = GameObject.Find("current_drink").GetComponent<RectTransform>();
         currentDrinkText = GameObject.Find("current_drink_text");
         currentDrinkProgress = GameObject.Find("current_drink_progress");
+        currentDrinkBackground = GameObject.Find("current_drink_background");
         categoryLabels = GameObject.Find("category_labels");
 
         updateScore();
@@ -87,6 +95,14 @@ public class GraphicsManager : MonoBehaviour
             // render the drink progress icons
             for (int i = 0; i < OrderManager.orderProgress[Bartender.position].Count; i++)
                 currentDrinkProgress.transform.GetChild(i).gameObject.SetActive(true);
+
+            //reander the current drink background
+            currentDrinkBackground.SetActive(true);
+
+            // position the drink progress graphics over the current bartending position
+            Vector2 position = convertToCanvasPosition(Bartender.bartenderPositions.transform.GetChild(Bartender.position).transform.position);
+            position.y += DRINK_PROGRESS_Y_OFFSET;
+            currentDrink.anchoredPosition = position;
         }
 
         // if not, clear the panel
@@ -97,6 +113,8 @@ public class GraphicsManager : MonoBehaviour
                 currentDrinkText.transform.GetChild(i).GetComponent<Text>().text = "";
             for (int i = 0; i < currentDrinkProgress.transform.childCount; i++)
                 currentDrinkProgress.transform.GetChild(i).gameObject.SetActive(false);
+
+            currentDrinkBackground.SetActive(false);
         }
     }
 
@@ -170,7 +188,7 @@ public class GraphicsManager : MonoBehaviour
     /// <summary>
     /// Given a y coordinate for any object, determine the proper Z coordinate
     /// to keep consistent layering. Objects with a lower Y value should be displayed
-    /// above objects with a higher Y value.
+    /// above objects with a higher Y value
     /// </summary>
     public static float calculateZValue(float y)
     {
@@ -193,6 +211,22 @@ public class GraphicsManager : MonoBehaviour
         // fill the rest with ""
         for (int i = index; i < categoryLabels.transform.childCount; i++)                                    
             categoryLabels.transform.GetChild(index).GetComponent<Text>().text = "";
+    }
+
+
+    /// <summary>
+    /// given a worldPosition in world space, converts this position to the equivalent
+    /// UI canvas position. Useful for placing UI elements relative to world space elements
+    /// Reference: https://answers.unity.com/questions/799616/unity-46-beta-19-how-to-convert-from-world-space-t.html
+    /// </summary>
+    private static Vector2 convertToCanvasPosition(Vector3 worldPosition)
+    {
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+        Vector2 viewportPosition = Camera.main.WorldToViewportPoint(worldPosition);
+        Vector2 canvasPosition = new Vector2(((viewportPosition.x * canvasRect.sizeDelta.x) - (canvasRect.sizeDelta.x * 0.5f)),
+            ((viewportPosition.y * canvasRect.sizeDelta.y) - (canvasRect.sizeDelta.y * 0.5f)));
+
+        return canvasPosition;
     }
 
 
