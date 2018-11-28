@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // bartenderState should NEVER have more than one flag set at any given time
+// indicates the bartender's current menu state
 public enum bartenderMenuState { noCategorySelected, glasswareCategory, beersCategory, liquorsCategory, bittersCategory, nonAlcoholicCategory, otherCategory }
 
 
@@ -12,21 +13,20 @@ public class Bartender : MonoBehaviour
 
     public static GameObject bartender { get; private set; }            // reference to the bartender gameObject
     public static GameObject bartenderPositions { get; private set; }   // reference to the parent of all bartenderPosition objects
-    public static int numPositions { get; private set; }                // number of bartender positions in this scene
     public static int position { get; private set; }                    // the bartenders current position (0 to numBartenderPositions - 1)
     public static bartenderMenuState menuState { get; private set; }    // the bartender's current memu state
 
 
-    // initialize static members of the Bartender class
-    public static void Initialize()
+    void Start()
     {
-        bartender = GameObject.Find("bartender");
+        bartender = this.gameObject;
         bartenderPositions = GameObject.Find("bartender_positions");
-        numPositions = bartenderPositions.transform.childCount;
         position = 0;
         menuState = bartenderMenuState.noCategorySelected;
     }
 
+
+    #region EXTERNAL FUNCTIONS
 
     // the player has attempted to change the bartender's position
     // can be fired at any time when gamestate == 1 (takes precedence over menus)
@@ -39,7 +39,7 @@ public class Bartender : MonoBehaviour
             
             // handle wrap-around
             position++;
-            if (position >= numPositions) { position = 0; }               
+            if (position >= bartenderPositions.transform.childCount) { position = 0; }
             return;
         }
 
@@ -50,7 +50,7 @@ public class Bartender : MonoBehaviour
 
             // handle wrap-around
             position--;
-            if (position < 0) { position = numPositions - 1; }                     
+            if (position < 0) { position = bartenderPositions.transform.childCount - 1; }
             return;
         }
     }
@@ -94,6 +94,7 @@ public class Bartender : MonoBehaviour
 
             else
                 if (debugMode) { Debug.Log("handleCategorySelection() couldn't parse the given key: " + key.ToString()); }
+
         }
 
         // bartender has a category open. Try to submit a component
@@ -115,4 +116,6 @@ public class Bartender : MonoBehaviour
             }
         }      
     }
+
+    #endregion
 }

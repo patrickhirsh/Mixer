@@ -17,6 +17,7 @@ public class Order : MonoBehaviour
 
     void Start()
     {
+        // use OrderManager's current timeLimit (adjusted as difficulty increases) as the timeLimit
         timeLeft = OrderManager.timeLimit;
     }
 
@@ -39,7 +40,7 @@ public class Order : MonoBehaviour
 
     /// <summary>
     /// Remove this order. Destroy() is responsible for signaling the associated customer
-    /// regarding the outcome of thier drink.
+    /// regarding the outcome of their drink.
     /// </summary>
     public void destroy(bool drinkCompleted)
     {

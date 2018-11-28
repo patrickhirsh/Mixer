@@ -20,7 +20,7 @@ public class GraphicsManager : MonoBehaviour
     private static GameObject categoryLabels;           // the parent of all category labels
 
 
-    public static void Initialize()
+    void Start()
     {
         // obtain references to frequently updated GameObjects
         canvas = GameObject.Find("Canvas");
@@ -35,9 +35,7 @@ public class GraphicsManager : MonoBehaviour
         updateScore();
     }
 
-
-    // Update is called once per frame
-    void Update ()
+    void Update()
     {
         updateBartender();
         updateCurrentDrinkProgress();
@@ -45,14 +43,20 @@ public class GraphicsManager : MonoBehaviour
     }
 
 
-    // updates the player's score score based on GameManager.playerScore
+    #region EXTERNAL FUNCTIONS
+
+    /// <summary>
+    /// updates the player's score score based on GameManager.playerScore
+    /// </summary>
     public static void updateScore()
     {
         playerScore.GetComponent<Text>().text = GameManager.playerScore.ToString();
     }
 
 
-    // spawns a +(points) string above the player score as visual feedback for the points they were awarded
+    /// <summary>
+    /// spawns a +(points) string above the player score as visual feedback for the points they were awarded
+    /// </summary>  
     public static void spawnPointAward(int points)
     {
         // TODO: change the color based on the number of points awarded
@@ -63,7 +67,9 @@ public class GraphicsManager : MonoBehaviour
     }
 
 
-    // updates the bartender's position on-screen based on Bartender.position
+    /// <summary>
+    /// updates the bartender's position on-screen based on Bartender.position
+    /// </summary>
     public static void updateBartender()
     {
         Bartender.bartender.transform.position =
@@ -71,7 +77,9 @@ public class GraphicsManager : MonoBehaviour
     }
 
 
-    // updates the current drink progress graphics (components, progress icons, etc.)
+    /// <summary>
+    /// updates the current drink progress graphics (components, progress icons, etc.)
+    /// </summary>
     public static void updateCurrentDrinkProgress()
     {
         // does there exist an order at the current bartending position?
@@ -98,7 +106,7 @@ public class GraphicsManager : MonoBehaviour
                 component.text = drink.components[i - 1].component;
 
                 // apply completed component color to completed components
-                if ((i-1) < OrderManager.orderProgress[Bartender.position].Count)
+                if ((i-1) < OrderManager.getCompletedComponentsCount())
                     currentDrinkText.transform.GetChild(i).gameObject.GetComponent<Text>().color = DRINK_COMPONENT_PROGRESS_COMPLETED;
             }                
 
@@ -123,7 +131,9 @@ public class GraphicsManager : MonoBehaviour
     }
 
 
-    // updates the category icons and labels on the left menu block
+    /// <summary>
+    /// updates the category icons and labels on the left menu block
+    /// </summary>
     public static void updateCategories()
     {
         // bartender isn't in a category, show category labels
@@ -199,6 +209,10 @@ public class GraphicsManager : MonoBehaviour
         return ((y - 1f) / 100) - 1f;
     }
 
+    #endregion
+
+
+    #region INTERNAL FUNCTIONS
 
     /// <summary>
     /// given a source dictionary of labels for a category, populate the scene's menu with these labels
@@ -236,6 +250,7 @@ public class GraphicsManager : MonoBehaviour
 
     /// <summary>
     /// Hides all editor tool UI sprites like pathnodes and bartender positions.
+    /// This should be called in Start()
     /// </summary>
     private static void hideEditorTools()
     {
@@ -249,25 +264,5 @@ public class GraphicsManager : MonoBehaviour
             nodesParent.transform.GetChild(i).GetComponent<SpriteRenderer>().enabled = false;
     }
 
-
-    /*
-    // most keybinding hints are updated dynamically in-script when a list is re-populated (ie. components in a category).
-    // in this case, it happens literally any time a category is changed, so we're always looking for updated keybindings.
-    // other keybindings are static in that we don't overwrite their object's text field (and we can simply set them inactive)
-    // so we call them "non-dynamic". These need to be updated any time the keybindings are changed using this method.
-    public static void updateNonDynamicKeybindingHints()
-    {
-        // ensure category structures are consistent
-        if (DrinkComponent.categoryLabels.Count != categoryLabels.transform.childCount)
-            if (debugMode)
-                Debug.Log("WARNING: Number of categories does not match the number of category labels");
-
-        // update category labels to include new keybinding hints
-        for (int i = 0; i < categoryLabels.transform.childCount; i++)
-        {
-            categoryLabels.transform.GetChild(i).GetComponent<Text>().text =
-                DrinkComponent.categoryLabels[i] + " (" + InputManager.getStringFromKeyCode(InputManager.categoryKeys[i]) + ")";
-        }
-    }
-    */
+    #endregion
 }

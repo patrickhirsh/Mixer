@@ -13,9 +13,6 @@ public class OrderManager : MonoBehaviour
 {
     public static bool debugMode;
 
-    // prefab used to spawn orders
-    private static GameObject orderPrefab;
-
     // constants for order timing algorithm (all in seconds)
     private static float STARTING_TIME_LIMIT = 20f;                         // starting time limit on new orders (reduced over time)
     private static float STARTING_TIME_LIMIT_REDUCTION_VAL = .01f;          // value at which to reduce timeLimit by each increaseDifficulty() call
@@ -24,28 +21,28 @@ public class OrderManager : MonoBehaviour
     public static float timeLimit { get; private set; }                     // used for assigning timeLimits to Orders
     private static float timeLimeLimit_ReductionVal;                        // the time in seconds that the avgTimeLimit is reduced by every drink. (TODO: scale non-linearly)
 
-    // the DrinkComponents completed for the current drink at each bartender position
-    public static List<List<DrinkComponent>> orderProgress;
+    private static GameObject orderPrefab;                                  // prefab used to spawn orders
+    private static List<List<DrinkComponent>> orderProgress;                // the DrinkComponents completed for the current drink at each bartender position, indexed by bartender position
 
 
-    /// <summary>
-    /// initialize static structures in OrderManager. Should be called once per level load
-    /// </summary>
-    public static void Initialize()
+    void Start()
     {
+        // set initial values and obtain a reference to the order prefab
         timeLimit = STARTING_TIME_LIMIT;       
         timeLimeLimit_ReductionVal = STARTING_TIME_LIMIT_REDUCTION_VAL;
         orderPrefab = Resources.Load("Prefabs/order") as GameObject;
 
         // construct the order progress list for each bartender position
         orderProgress = new List<List<DrinkComponent>>();
-        for (int i = 0; i < Bartender.numPositions; i++)
+        for (int i = 0; i < Bartender.bartenderPositions.transform.childCount; i++)
         {
             List<DrinkComponent> bartenderPosition = new List<DrinkComponent>();
             orderProgress.Add(bartenderPosition);
         }
     }
 
+
+    #region EXTERNAL FUNCTIONS
 
     /// <summary>
     /// add a new order from "customer" containing "drink" at bartender position "position"
@@ -61,6 +58,16 @@ public class OrderManager : MonoBehaviour
             Debug.Log("Created new order: " + drink.drinkName + " at bartender position: " + bartenderPosition);
 
         return order;       
+    }
+
+
+    /// <summary>
+    /// gets the number completed components at the current bartender position.
+    /// Returns zero if there are no orders for this position.
+    /// </summary>
+    public static int getCompletedComponentsCount()
+    {
+        return orderProgress[Bartender.position].Count;
     }
 
 
@@ -128,4 +135,6 @@ public class OrderManager : MonoBehaviour
         if ((timeLimit - timeLimeLimit_ReductionVal) > 0)
             timeLimit -= timeLimeLimit_ReductionVal;
     }
+
+    #endregion
 }

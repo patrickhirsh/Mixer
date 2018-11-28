@@ -217,10 +217,12 @@ public class DrinkComponent
     }
 
 
-    // Allows the creation of DrinkComponents external from those created in Initialize()
-    // this is useful when Order needs to build DrinkComponents that the player creates
-    // I want all members of DrinkComponent to be Immutable from outside this class, and since
-    // we can't use constructors when inheriting from MonoBehavior, this is the only way. Thanks Obama.
+    /// <summary>
+    /// Allows the creation of DrinkComponents external from those created in Initialize()
+    /// this is useful when Order needs to build DrinkComponents that the player creates
+    /// I want all members of DrinkComponent to be Immutable from outside this class, and since
+    /// we can't use constructors when inheriting from MonoBehavior, this is the only way. Thanks Obama.
+    /// </summary>
     public static DrinkComponent generateExternalDrinkComponent(KeyCode key, string category)
     {
         DrinkComponent component = new DrinkComponent();
@@ -230,8 +232,10 @@ public class DrinkComponent
     }
 
 
-    // when the InputManager alters the keybindings, this method needs to be called in order to
-    // update all the formatted keystrings. Otherwise, keybinding hints (using keyString) won't be updated
+    /// <summary>
+    /// when the InputManager alters the keybindings, this method needs to be called in order to
+    /// update all the formatted keystrings. Otherwise, keybinding hints (using keyString) won't be updated
+    /// </summary>
     public static void updateKeyStrings()
     {
         foreach (KeyValuePair<string, DrinkComponent> component in glassware)

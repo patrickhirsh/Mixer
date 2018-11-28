@@ -4,8 +4,5 @@ using UnityEngine;
 
 public class BartenderPosition : MonoBehaviour
 {
-    public void Start()
-    {
 
-    }
 }

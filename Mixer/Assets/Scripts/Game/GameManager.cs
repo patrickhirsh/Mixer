@@ -4,39 +4,37 @@ using UnityEngine;
 
 
 // gameState should NEVER have more than one flag set at any given time
-public enum gameState { menuScreen = 0, mainGame = 1 }
+public enum gameState { Paused = 0, GameLoop = 1 }
 
 
 public class GameManager : MonoBehaviour
 {
     public static gameState state { get; private set; }
-    public static int playerScore;      
+    public static int playerScore;
 
-    // Use this for initialization
+
     void Start ()
     {
         // debug mode settings
-        Drink.debugMode = true;
-        DrinkComponent.debugMode = true;
-        Bartender.debugMode = true;
-        InputManager.debugMode = true;
-        OrderManager.debugMode = true;
-        CustomerManager.debugMode = true;
-        GraphicsManager.debugMode = true;
-        PathfindingManager.debugMode = true;
+        Drink.debugMode =               true;
+        DrinkComponent.debugMode =      true;
+        Bartender.debugMode =           true;
+        InputManager.debugMode =        true;
+        OrderManager.debugMode =        true;
+        CustomerManager.debugMode =     true;
+        GraphicsManager.debugMode =     true;
+        PathfindingManager.debugMode =  true;
 
-        // initialize class static structures and members
+        // initialize static internal data structures
         DrinkComponent.Initialize();
         Drink.Initialize();
-        Bartender.Initialize();
-        OrderManager.Initialize();
-        GraphicsManager.Initialize();
 
-        // TODO: don't immediately transition to mainGame (need a main menu)
-        state = gameState.mainGame;
+        state = gameState.GameLoop;
         playerScore = 0;
     }
 
+
+    #region EXTERNAL FUNCTIONS
 
     /// <summary>
     /// Awards the player points
@@ -58,4 +56,5 @@ public class GameManager : MonoBehaviour
         // "SWEEP"?
     }
 
+    #endregion
 }

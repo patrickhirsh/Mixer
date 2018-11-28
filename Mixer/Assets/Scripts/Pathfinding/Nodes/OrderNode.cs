@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Represents a traversable position for customers during pathing.
+/// Customers can place orders for the associated bartenderPosition at this node.
+/// </summary>
 public class OrderNode : Node
 {
     public GameObject bartenderPosition;     // the bartenderPosition associated with this OrderNode

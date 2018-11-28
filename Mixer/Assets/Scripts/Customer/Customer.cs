@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+// CustomerTask should NEVER have more than one flag set at any given time
+// indicates a customer's current task
 public enum CustomerTask
 {
     FindingOrderNode,
@@ -15,18 +17,18 @@ public enum CustomerTask
 public class Customer : MonoBehaviour
 {
     public CustomerTask currentTask { get; private set; }
-    public Node currentNode;
 
-    private Order order;
-    private OrderNode orderNode;
-    private SpawnNode spawnNode;
-    private float walkSpeed;
+    private Node currentNode;           // this customer's current path node
+    private Order order;                // this customer's order, if applicable. Otherwise, null
+    private OrderNode orderNode;        // the order node this customer ordered from, if applicable. Otherwise, null
+    private SpawnNode spawnNode;        // the node this customer spawned from
+    private float walkSpeed;            // this customer's walk speed
 
 
 	// Use this for initialization
 	void Start ()
-    {        
-        walkSpeed = CustomerManager.AVG_WALK_SPEED + Random.Range(CustomerManager.AVG_WALK_SPEED_VARIANCE * -1, CustomerManager.AVG_WALK_SPEED_VARIANCE);
+    {
+        walkSpeed = CustomerManager.getRandomWalkSpeed();
         spawnNode = CustomerManager.getRandomSpawnNode();
         currentNode = spawnNode;
         this.transform.position = new Vector3(currentNode.transform.position.x, currentNode.transform.position.y, currentNode.transform.position.z);
@@ -34,6 +36,8 @@ public class Customer : MonoBehaviour
         executeTask();
 	}
 
+
+    #region EXTERNAL METHODS
 
     /// <summary>
     /// Should be called by the order associated with this customer upon order completion
@@ -47,6 +51,10 @@ public class Customer : MonoBehaviour
         executeTask();
     }
 
+    #endregion
+
+
+    #region INTERNAL METHODS
 
     /// <summary>
     /// Executes this customer's currentTask
@@ -145,5 +153,7 @@ public class Customer : MonoBehaviour
         }
         currentTask = nextTask;
         executeTask();
-    } 
+    }
+
+    #endregion
 }

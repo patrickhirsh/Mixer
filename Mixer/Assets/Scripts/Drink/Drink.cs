@@ -7,10 +7,10 @@ public class Drink
 {
     // STATIC
     public static bool debugMode;
-    public static List<Drink> drinks0 { get; private set; }         // easy drink recipes
-    public static List<Drink> drinks1 { get; private set; }         // moderate drink recipes
-    public static List<Drink> drinks2 { get; private set; }         // challenging drink recipes
-    public static List<Drink> drinks3 { get; private set; }         // difficult drink recipes
+    private static List<Drink> drinks0;         // easy drink recipes
+    private static List<Drink> drinks1;         // moderate drink recipes
+    private static List<Drink> drinks2;         // challenging drink recipes
+    private static List<Drink> drinks3;         // difficult drink recipes
 
     // INSTANCE
     public string drinkName { get; private set; }                   // formatted nicely for front-end

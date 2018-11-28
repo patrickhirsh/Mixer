@@ -37,7 +37,7 @@ public class AnimatedText : MonoBehaviour
 
 
     // assigns the proper values to the AnimatedText object, then begins the fadeout animation
-    // this option allows overriding the values set in the Unity editor
+    // this option allows overriding the values set in the Unity Editor
     public void generateText(string text, Color color, float speed, Vector3 direction, float fadeTime)
     {
         if (!initialized)
@@ -62,24 +62,18 @@ public class AnimatedText : MonoBehaviour
 
         while (progress < 1.0)
         {
+            // fade step
             Color currentColor = GetComponent<Text>().color;
             this.gameObject.GetComponent<Text>().color = 
                 new Color(currentColor.r, currentColor.g, currentColor.b, Mathf.Lerp(startAlpha, 0, progress));
             progress += rate * Time.deltaTime;
+
+            // movement step
+            float translation = speed * Time.deltaTime;
+            this.gameObject.transform.Translate(direction * translation);
+
             yield return null;
         }
         Destroy(this.gameObject);
     }
-
-
-	// Update is called once per frame
-	void Update ()
-    {
-        // wait to update position until the object has been initialized with generateText()
-        if (initialized)
-        {
-            float translation = speed * Time.deltaTime;
-            this.gameObject.transform.Translate(direction * translation);
-        }
-	}
 }

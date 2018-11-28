@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Represents a traversable position for customers during pathing.
+/// Customers can spawn and despawn from this node.
+/// </summary>
 public class SpawnNode : Node
 {
     

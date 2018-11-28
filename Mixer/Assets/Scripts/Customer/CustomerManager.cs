@@ -9,17 +9,16 @@ public class CustomerManager : MonoBehaviour
     public static bool debugMode;
 
     // constants for customer behavior
-    public static float AVG_WALK_SPEED = 1f;
-    public static float AVG_WALK_SPEED_VARIANCE = .1f;
-    public static float WAITING_POSITION_X_VARIANCE = .3f;              // variance in the X position of standing positions chosen for customers waiting for drinks
-    public static float WAITING_POSITION_Y_GAP = .15f;                  // distance in the Y direction between each customer waiting for a drink at any given OrderNode
+    private static float AVG_WALK_SPEED = 1f;
+    private static float AVG_WALK_SPEED_VARIANCE = .1f;
+    private static float WAITING_POSITION_X_VARIANCE = .3f;              // variance in the X position of standing positions chosen for customers waiting for drinks
+    private static float WAITING_POSITION_Y_GAP = .15f;                  // distance in the Y direction between each customer waiting for a drink at any given OrderNode
 
     // constants for spawn interval algorithm (all in seconds)
     private static float STARTING_SPAWN_TIMER = 15f;                    // time between customer spawns (adjusted over time)
     private static float STARTING_SPAWN_TIMER_REDUCTION_VAL = .5f;      // value at which to reduce spawnTimer by each increaseDifficulty() call
     private static float SPAWN_TIMER_VARIANCE_UPPER = 1f;               // deviation allowance for nextSpawnTimer when resetting the timer (upper bound)
     private static float SPAWN_TIMER_VARIANCE_LOWER = 1f;               // deviation allowance for nextSpawnTimer when resetting the timer (lower bound)
-
 
     // variables for spawn interval algorithm
     private static System.Random rnd;                       // used for all random integer numbers during customer spawning
@@ -34,7 +33,7 @@ public class CustomerManager : MonoBehaviour
     private static List<SpawnNode> spawnNodes_despawn;      // list of all spawnNodes of type "despawn"
 
 
-    public void Start()
+    void Start()
     {
         orderNodes = new List<OrderNode>();
         spawnNodes_spawn = new List<SpawnNode>();
@@ -49,7 +48,7 @@ public class CustomerManager : MonoBehaviour
         populateNodesLists();
     }
 
-	// Update is called once per frame
+
 	void Update ()
     {
         nextSpawnTimer -= Time.deltaTime;
@@ -62,6 +61,8 @@ public class CustomerManager : MonoBehaviour
         }
     }
 
+
+    #region EXTERNAL FUNCTIONS
 
     /// <summary>
     /// reduce the average amount of time between customer spawns by avgSpawnTimer_ReductionVal
@@ -115,8 +116,15 @@ public class CustomerManager : MonoBehaviour
     }
 
 
-    #region HELPER METHODS
+    public static float getRandomWalkSpeed()
+    {
+        return AVG_WALK_SPEED + UnityEngine.Random.Range(AVG_WALK_SPEED_VARIANCE * -1, AVG_WALK_SPEED_VARIANCE);
+    }
 
+    #endregion
+
+
+    #region INTERNAL FUNCTIONS
 
     /// <summary>
     /// spawns a customer at a random spawn location
@@ -191,9 +199,4 @@ public class CustomerManager : MonoBehaviour
     }
 
     #endregion
-
-    /*
-    // since we're casting to int (and thus rounding down), we need the full range of top position -> top position .999... to get an even probability
-    int position = (int)Random.Range(0, Level.levels[GameManager.currentLevel].numBartenderPositions - .000001f);
-    */
 }
