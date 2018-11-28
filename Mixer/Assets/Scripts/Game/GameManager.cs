@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 // gameState should NEVER have more than one flag set at any given time
-public enum gameState { Paused = 0, GameLoop = 1 }
+public enum GameState { Paused = 0, GameLoop = 1 }
 
 
 public class GameManager : MonoBehaviour
 {
-    public static gameState state { get; private set; }
-    public static int playerScore;
+    public static GameState state { get; private set; }         // the game's current state
+    public static int playerScore { get; private set; }         // the player's current score
+    public static int playerOrderMisses { get; private set; }   // the player's number of missed orders
 
 
     void Start ()
@@ -29,8 +31,9 @@ public class GameManager : MonoBehaviour
         DrinkComponent.Initialize();
         Drink.Initialize();
 
-        state = gameState.GameLoop;
+        state = GameState.GameLoop;
         playerScore = 0;
+        playerOrderMisses = 0;
     }
 
 
@@ -56,5 +59,27 @@ public class GameManager : MonoBehaviour
         // "SWEEP"?
     }
 
+
+    /// <summary>
+    /// Called when the player misses an order
+    /// </summary>
+    public static void orderMiss()
+    {
+        playerOrderMisses++;  
+        
+        // don't allow any misses after gameOver() to trigger graphics update
+        if (playerOrderMisses == 3) { gameOver(); }
+        if (playerOrderMisses < 4) { GraphicsManager.updatePlayerOrderMisses(); }       
+    }
+
+
+    /// <summary>
+    /// Ends the game
+    /// </summary>
+    public static void gameOver()
+    {
+        // TODO: do cool "Game Over" screen here, with PostProcessing Stack, perhaps?
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
     #endregion
 }

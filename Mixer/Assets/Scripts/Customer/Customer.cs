@@ -45,7 +45,6 @@ public class Customer : MonoBehaviour
     /// </summary>
     public void orderCallback(bool success)
     {
-        // Do something different if the order times out, and is not successful..
         order = null;
         currentTask = CustomerTask.Leaving;
         executeTask();

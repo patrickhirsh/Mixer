@@ -11,20 +11,28 @@ using UnityEngine;
 /// </summary>
 public class Order : MonoBehaviour
 {
-    public Customer customer { get; private set; }      // the customer who ordered this drink
-    public Drink drink { get; private set; }            // the drink associated with this order  
-    public float timeLeft { get; private set; }         // time remaining for the player to complete the order
+    private static readonly float ORDER_TIME_LIMIT = 10f;   // starting time limit assigned to all new orders
+
+    public Customer customer { get; private set; }          // the customer who ordered this drink
+    public Drink drink { get; private set; }                // the drink associated with this order  
+    public float timeLeft { get; private set; }             // time remaining for the player to complete the order
+
 
     void Start()
     {
-        // use OrderManager's current timeLimit (adjusted as difficulty increases) as the timeLimit
-        timeLeft = OrderManager.timeLimit;
+        timeLeft = ORDER_TIME_LIMIT;
     }
 
     void Update()
     {
         timeLeft -= Time.deltaTime;
-        // TODO: check for if we're out of time and react accordingly.
+        
+        // the order has timed out
+        if (timeLeft <= 0)
+        {
+            GameManager.orderMiss();
+            destroy(false);
+        }
     }
 
 

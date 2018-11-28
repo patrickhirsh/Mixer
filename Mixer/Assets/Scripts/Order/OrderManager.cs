@@ -13,13 +13,7 @@ public class OrderManager : MonoBehaviour
 {
     public static bool debugMode;
 
-    // constants for order timing algorithm (all in seconds)
-    private static float STARTING_TIME_LIMIT = 20f;                         // starting time limit on new orders (reduced over time)
-    private static float STARTING_TIME_LIMIT_REDUCTION_VAL = .01f;          // value at which to reduce timeLimit by each increaseDifficulty() call
-
-    // variables for spawn order timing algorithm 
-    public static float timeLimit { get; private set; }                     // used for assigning timeLimits to Orders
-    private static float timeLimeLimit_ReductionVal;                        // the time in seconds that the avgTimeLimit is reduced by every drink. (TODO: scale non-linearly)
+    
 
     private static GameObject orderPrefab;                                  // prefab used to spawn orders
     private static List<List<DrinkComponent>> orderProgress;                // the DrinkComponents completed for the current drink at each bartender position, indexed by bartender position
@@ -27,9 +21,7 @@ public class OrderManager : MonoBehaviour
 
     void Start()
     {
-        // set initial values and obtain a reference to the order prefab
-        timeLimit = STARTING_TIME_LIMIT;       
-        timeLimeLimit_ReductionVal = STARTING_TIME_LIMIT_REDUCTION_VAL;
+        // obtain a reference to the order prefab
         orderPrefab = Resources.Load("Prefabs/order") as GameObject;
 
         // construct the order progress list for each bartender position
@@ -74,12 +66,10 @@ public class OrderManager : MonoBehaviour
     /// <summary>
     /// clears the drink in progress at position.
     /// happens either when a drink is failed, or submitted successfully.
-    /// each drink clear increases difficulty.
     /// </summary>
     public static void clearOrderProgress(int position)
     {
         orderProgress[position].Clear();
-        increaseDifficulty();
     }
 
 
@@ -122,18 +112,6 @@ public class OrderManager : MonoBehaviour
             CustomerManager.increaseDifficulty();
             if (debugMode) { Debug.Log("Successfully completed a drink!"); }
         }
-    }
-
-
-    /// <summary>
-    /// Decreases the ammount of time the player has to submit each new order
-    /// Currently called every time a new order is submitted (this should probably change)
-    /// </summary>
-    public static void increaseDifficulty()
-    {
-        // reduce the average amount of time the player has to submit an order
-        if ((timeLimit - timeLimeLimit_ReductionVal) > 0)
-            timeLimit -= timeLimeLimit_ReductionVal;
     }
 
     #endregion

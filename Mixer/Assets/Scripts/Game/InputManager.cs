@@ -89,7 +89,7 @@ public class InputManager : MonoBehaviour
     {
         switch (GameManager.state)
         {
-            case gameState.GameLoop:
+            case GameState.GameLoop:
                 
                 // bartender movement
                 if (Input.GetKeyDown(moveRight))

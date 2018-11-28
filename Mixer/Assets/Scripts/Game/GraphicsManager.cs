@@ -12,7 +12,8 @@ public class GraphicsManager : MonoBehaviour
     private static Color DRINK_COMPONENT_PROGRESS_COMPLETED = Color.black;                      // completed drink component color in current drink progress panel
 
     private static GameObject canvas;                  
-    private static GameObject playerScore;              
+    private static GameObject playerScore;
+    private static GameObject playerOrderMisses;
     private static GameObject pointsAwarded;            // object used to instantiated AnimatedText objects for points awarded
     private static RectTransform currentDrink;          // the current drink panel RectTransform. The parent transform for the entire panel.
     private static GameObject currentDrinkText;         // [0] = current drink label. [1+] = current drink components
@@ -25,6 +26,7 @@ public class GraphicsManager : MonoBehaviour
         // obtain references to frequently updated GameObjects
         canvas = GameObject.Find("Canvas");
         playerScore = GameObject.Find("score");
+        playerOrderMisses = GameObject.Find("player_misses");
         pointsAwarded = GameObject.Find("points_awarded");
         currentDrink = GameObject.Find("current_drink").GetComponent<RectTransform>();
         currentDrinkText = GameObject.Find("current_drink_text");
@@ -46,15 +48,6 @@ public class GraphicsManager : MonoBehaviour
     #region EXTERNAL FUNCTIONS
 
     /// <summary>
-    /// updates the player's score score based on GameManager.playerScore
-    /// </summary>
-    public static void updateScore()
-    {
-        playerScore.GetComponent<Text>().text = GameManager.playerScore.ToString();
-    }
-
-
-    /// <summary>
     /// spawns a +(points) string above the player score as visual feedback for the points they were awarded
     /// </summary>  
     public static void spawnPointAward(int points)
@@ -64,6 +57,24 @@ public class GraphicsManager : MonoBehaviour
         color.a = .7f;
         GameObject pointsAwardedInstance = Instantiate(pointsAwarded, pointsAwarded.transform, true);
         pointsAwardedInstance.GetComponent<AnimatedText>().generateText("+" + points.ToString(), color);
+    }
+
+
+    /// <summary>
+    /// updates the player's score based on GameManager.playerScore
+    /// </summary>
+    public static void updateScore()
+    {
+        playerScore.GetComponent<Text>().text = GameManager.playerScore.ToString();
+    }
+
+
+    /// <summary>
+    /// updates the player's order miss count based on GameManager.playerOrderMisses
+    /// </summary>
+    public static void updatePlayerOrderMisses()
+    {
+        playerOrderMisses.GetComponent<Text>().text = GameManager.playerOrderMisses.ToString();
     }
 
 
