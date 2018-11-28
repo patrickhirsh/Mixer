@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+using System.Linq;
 
 
 /// <summary>
@@ -35,7 +35,7 @@ public class OrderManager : MonoBehaviour
     {
         timeLimit = STARTING_TIME_LIMIT;       
         timeLimeLimit_ReductionVal = STARTING_TIME_LIMIT_REDUCTION_VAL;
-        orderPrefab = AssetDatabase.LoadAssetAtPath<Object>("Assets/Prefabs/order.prefab") as GameObject;
+        orderPrefab = Resources.Load("Prefabs/order") as GameObject;
 
         // construct the order progress list for each bartender position
         orderProgress = new List<List<DrinkComponent>>();

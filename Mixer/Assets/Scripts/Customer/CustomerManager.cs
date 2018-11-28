@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+using System.Linq;
 using System;
 
 public class CustomerManager : MonoBehaviour
@@ -187,20 +187,7 @@ public class CustomerManager : MonoBehaviour
     /// </summary>
     private static void populateCustomerPrefabs()
     {
-        customerPrefabs = new List<GameObject>();
-
-        int prefabIndex = 0;
-        string prefabName = "customer";
-        GameObject prefabObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/Prefabs/Customers/" + 
-            prefabName + prefabIndex.ToString() + ".prefab") as GameObject;
-
-        while (prefabObject != null)
-        {
-            customerPrefabs.Add(prefabObject);
-            prefabIndex++;
-            prefabObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/Prefabs/Customers/" + 
-                prefabName + prefabIndex.ToString() + ".prefab") as GameObject;
-        }
+        customerPrefabs = new List<GameObject>(Resources.LoadAll("Prefabs/Customers", typeof(GameObject)).Cast<GameObject>());
     }
 
     #endregion
