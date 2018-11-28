@@ -17,7 +17,7 @@ public class Bartender : MonoBehaviour
     public static bartenderMenuState menuState { get; private set; }    // the bartender's current memu state
 
 
-    void Start()
+    void Awake()
     {
         bartender = this.gameObject;
         bartenderPositions = GameObject.Find("bartender_positions");
@@ -82,15 +82,6 @@ public class Bartender : MonoBehaviour
 
             else if (key == InputManager.category6)
                 menuState = bartenderMenuState.otherCategory;
-
-            else if (key == InputManager.category7)
-                menuState = bartenderMenuState.noCategorySelected;   // unused
-
-            else if (key == InputManager.category8)
-                menuState = bartenderMenuState.noCategorySelected;   // unused
-
-            else if (key == InputManager.category9)
-                menuState = bartenderMenuState.noCategorySelected;   // unused
 
             else
                 if (debugMode) { Debug.Log("handleCategorySelection() couldn't parse the given key: " + key.ToString()); }

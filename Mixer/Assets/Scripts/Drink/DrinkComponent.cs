@@ -176,19 +176,14 @@ public class DrinkComponent
         limeJuice.assign("Lime Juice", InputManager.category4, "non-Alcoholic");
         nonAlcoholic.Add(limeJuice.component, limeJuice);
 
-        // Lemon Juice
-        DrinkComponent lemonJuice = new DrinkComponent();
-        lemonJuice.assign("Lemon Juice", InputManager.category5, "non-Alcoholic");
-        nonAlcoholic.Add(lemonJuice.component, lemonJuice);
-
         // Margarita Mix
         DrinkComponent margaritaMix = new DrinkComponent();
-        margaritaMix.assign("Margarita Mix", InputManager.category6, "non-Alcoholic");
+        margaritaMix.assign("Margarita Mix", InputManager.category5, "non-Alcoholic");
         nonAlcoholic.Add(margaritaMix.component, margaritaMix);
 
         // Simple Syrup
         DrinkComponent simpleSyrup = new DrinkComponent();
-        simpleSyrup.assign("Simple Syrup", InputManager.category7, "non-Alcoholic");
+        simpleSyrup.assign("Simple Syrup", InputManager.category6, "non-Alcoholic");
         nonAlcoholic.Add(simpleSyrup.component, simpleSyrup);
         #endregion
 

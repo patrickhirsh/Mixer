@@ -16,20 +16,13 @@ public class InputManager : MonoBehaviour
     public static KeyCode category4 { get; private set; }
     public static KeyCode category5 { get; private set; }
     public static KeyCode category6 { get; private set; }
-    public static KeyCode category7 { get; private set; }
-    public static KeyCode category8 { get; private set; }
-    public static KeyCode category9 { get; private set; }
 
 
     // FOR FUTURE USE
 
     /*
     // used to generate category keybinding hints in GraphicsManager
-    private static KeyCode[] categoryKeys =
-    {
-        category1, category2, category3, category4, category5,
-        category6, category7, category8, category9
-    };
+    private static KeyCode[] categoryKeys = { category1, category2, category3, category4, category5, category6 };
 
     // used for highscore initials input validation
     private static KeyCode[] validInitialsInput =
@@ -82,9 +75,6 @@ public class InputManager : MonoBehaviour
         category4 = KeyCode.Keypad4;
         category5 = KeyCode.Keypad5;
         category6 = KeyCode.Keypad6;
-        category7 = KeyCode.Keypad7;
-        category8 = KeyCode.Keypad8;
-        category9 = KeyCode.Keypad9;
     }
 
     #endregion
@@ -134,18 +124,6 @@ public class InputManager : MonoBehaviour
                 // category6 key
                 if (Input.GetKeyDown(category6))
                     { Bartender.handleMenuSelection(category6); return; }
-
-                // category7 key
-                if (Input.GetKeyDown(category7))
-                    { Bartender.handleMenuSelection(category7); return; }
-
-                // category8 key
-                if (Input.GetKeyDown(category8))
-                    { Bartender.handleMenuSelection(category8); return; }
-
-                // category9 key
-                if (Input.GetKeyDown(category9))
-                    { Bartender.handleMenuSelection(category9); return; }
 
                 break;
         }

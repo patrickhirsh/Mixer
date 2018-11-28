@@ -115,17 +115,6 @@ public class Drink
         moscowMule.assign("Moscow Mule", moscowMuleRecipe);
         drinks0.Add(moscowMule);
 
-        // Whiskey Sour
-        Drink whiskeySour = new Drink();
-        List<DrinkComponent> whiskeySourRecipe = new List<DrinkComponent>();
-        whiskeySourRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
-        whiskeySourRecipe.Add(DrinkComponent.other["Ice"]);
-        whiskeySourRecipe.Add(DrinkComponent.liquors["Whiskey"]);
-        whiskeySourRecipe.Add(DrinkComponent.nonAlcoholic["Lemon Juice"]);
-        whiskeySourRecipe.Add(DrinkComponent.nonAlcoholic["Simple Syrup"]);
-        whiskeySour.assign("Whiskey Sour", whiskeySourRecipe);
-        drinks0.Add(whiskeySour);
-
         // Manhattan
         Drink manhattan = new Drink();
         List<DrinkComponent> manhattanRecipe = new List<DrinkComponent>();
