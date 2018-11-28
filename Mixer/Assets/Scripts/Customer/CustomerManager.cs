@@ -15,8 +15,8 @@ public class CustomerManager : MonoBehaviour
     private static float WAITING_POSITION_Y_GAP = .15f;                  // distance in the Y direction between each customer waiting for a drink at any given OrderNode
 
     // constants for spawn interval algorithm (all in seconds)
-    private static float STARTING_SPAWN_TIMER = 15f;                    // time between customer spawns (adjusted over time)
-    private static float STARTING_SPAWN_TIMER_REDUCTION_VAL = .5f;      // value at which to reduce spawnTimer by each increaseDifficulty() call
+    private static float STARTING_SPAWN_TIMER = 8f;                    // time between customer spawns (adjusted over time)
+    private static float STARTING_SPAWN_TIMER_REDUCTION_VAL = .1f;      // value at which to reduce spawnTimer by each increaseDifficulty() call
     private static float SPAWN_TIMER_VARIANCE_UPPER = 1f;               // deviation allowance for nextSpawnTimer when resetting the timer (upper bound)
     private static float SPAWN_TIMER_VARIANCE_LOWER = 1f;               // deviation allowance for nextSpawnTimer when resetting the timer (lower bound)
 
@@ -24,7 +24,7 @@ public class CustomerManager : MonoBehaviour
     private static System.Random rnd;                       // used for all random integer numbers during customer spawning
     private static float avgSpawnTimer;                     // the time limit between customer spawns
     private static float avgSpawnTimer_ReductionVal;        // the time in seconds that the avgSpawnTimer is reduced by on difficulty increase. (TODO: scale non-linearly)
-    private static float nextSpawnTimer;                    // the time remaining before another customer should be spawned
+    private static float spawnTimer;                        // the time remaining before another customer should be spawned
 
     private static GameObject CustomersParent;              // parent object in which all customers should be instantiated under                                          
     private static List<GameObject> customerPrefabs;        // array of all customer prefabs in Assets/Prefabs/Customers
@@ -41,7 +41,7 @@ public class CustomerManager : MonoBehaviour
 
         rnd = new System.Random();
         CustomersParent = GameObject.Find("Customers");
-        nextSpawnTimer = 1f;
+        spawnTimer = 3f;
         avgSpawnTimer = STARTING_SPAWN_TIMER;
         avgSpawnTimer_ReductionVal = STARTING_SPAWN_TIMER_REDUCTION_VAL;
         populateCustomerPrefabs();
@@ -51,10 +51,10 @@ public class CustomerManager : MonoBehaviour
 
 	void Update ()
     {
-        nextSpawnTimer -= Time.deltaTime;
+        spawnTimer -= Time.deltaTime;
 
         // when timer reaches 0, spawn a new customer and reset the timer
-        if (nextSpawnTimer <= 0)
+        if (spawnTimer <= 0)
         {
             spawnCustomer();
             resetNextSpawnTimer();
@@ -146,8 +146,8 @@ public class CustomerManager : MonoBehaviour
 
         // make sure the deviation in nextSpawnTimer doesn't create an invalid timeLimit
         if ((avgSpawnTimer + deviation) <= 0)
-            nextSpawnTimer = avgSpawnTimer;
-        else { nextSpawnTimer = avgSpawnTimer + deviation; }
+            spawnTimer = avgSpawnTimer;
+        else { spawnTimer = avgSpawnTimer + deviation; }
     }
 
 

@@ -48,6 +48,19 @@ public class GraphicsManager : MonoBehaviour
     #region EXTERNAL FUNCTIONS
 
     /// <summary>
+    /// Updates all graphics immediately, including those that aren't updated in Update()
+    /// </summary>
+    public static void updateAllGraphics()
+    {
+        updateScore();
+        updatePlayerOrderMisses();
+        updateBartender();
+        updateCurrentDrinkProgress();
+        updateCategories();
+    }
+
+
+    /// <summary>
     /// spawns a +(points) string above the player score as visual feedback for the points they were awarded
     /// </summary>  
     public static void spawnPointAward(int points)

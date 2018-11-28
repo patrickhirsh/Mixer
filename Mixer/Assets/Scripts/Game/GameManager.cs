@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
         state = GameState.GameLoop;
         playerScore = 0;
         playerOrderMisses = 0;
+
+        GraphicsManager.updateAllGraphics();
     }
 
 

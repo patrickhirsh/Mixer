@@ -89,7 +89,7 @@ public class Customer : MonoBehaviour
                 // order a drink
                 currentNode = currentNode as OrderNode;
                 if (currentNode != null)
-                    order = OrderManager.newOrder(this, Drink.getRandomDrink(0), ((OrderNode)currentNode).bartenderPosition);
+                    order = OrderManager.newOrder(this, Drink.getRandomDrink(), ((OrderNode)currentNode).bartenderPosition);
                 else { Debug.LogError("Customer switched to a GettingDrink state on a non-OrderNode"); }
 
                 // determine where the customer should stand while they wait

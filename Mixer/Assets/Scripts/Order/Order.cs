@@ -11,7 +11,7 @@ using UnityEngine;
 /// </summary>
 public class Order : MonoBehaviour
 {
-    private static readonly float ORDER_TIME_LIMIT = 10f;   // starting time limit assigned to all new orders
+    private static readonly float ORDER_TIME_LIMIT = 30f;   // starting time limit assigned to all new orders
 
     public Customer customer { get; private set; }          // the customer who ordered this drink
     public Drink drink { get; private set; }                // the drink associated with this order  
