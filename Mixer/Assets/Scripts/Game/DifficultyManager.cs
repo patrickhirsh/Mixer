@@ -25,13 +25,21 @@ public static class DifficultyManager
     // weight values for each tier (if applicable) when spawning.
     // these values need not sum to any particular value - they're just relative weights.
     // tiers with heavier weights are considered more strongly during tier selection.
-    private static float TIER_0_SPAWN_WEIGHT = .4f;
-    private static float TIER_1_SPAWN_WEIGHT = .2f;
-    private static float TIER_2_SPAWN_WEIGHT = .2f;
-    private static float TIER_3_SPAWN_WEIGHT = .1f;
+    private static float TIER_0_SPAWN_WEIGHT = .5f;
+    private static float TIER_1_SPAWN_WEIGHT = .1f;
+    private static float TIER_2_SPAWN_WEIGHT = .1f;
+    private static float TIER_3_SPAWN_WEIGHT = .05f;
     private static float TIER_0_1_WEIGHTSUM = TIER_0_SPAWN_WEIGHT + TIER_1_SPAWN_WEIGHT;
     private static float TIER_0_1_2_WEIGHTSUM = TIER_0_SPAWN_WEIGHT + TIER_1_SPAWN_WEIGHT + TIER_2_SPAWN_WEIGHT;
     private static float TIER_0_1_2_3_WEIGHTSUM = TIER_0_SPAWN_WEIGHT + TIER_1_SPAWN_WEIGHT + TIER_2_SPAWN_WEIGHT + TIER_3_SPAWN_WEIGHT;
+
+    // spawn timer constants. SPAWN_TIMER_SCALEVAL * (1 - difficulty) = next spawn timer
+    private static float SPAWN_TIMER_VARIANCE = 1f;
+    private static float SPAWN_TIMER_SCALEVAL = 20f;
+
+    // spawn wave size constants. SPAWN_WAVE_SIZE_SCALEVAL * difficulty + deviation =  next spawn wave size
+    private static int SPAWN_WAVE_SIZE_VARIANCE = 2;
+    private static float SPAWN_WAVE_SIZE_SCALEVAL = 20f;
 
 
     /// <summary>
@@ -103,15 +111,29 @@ public static class DifficultyManager
     }
 
 
+    /// <summary>
+    /// Returns a spawn timer value based on the current difficulty
+    /// </summary>
     public static float getNextSpawnTimer()
     {
-        return 0;
+        float spawnTimer = (1 - getCurrentDifficulty()) * SPAWN_TIMER_SCALEVAL;
+        float deviation = UnityEngine.Random.Range(SPAWN_TIMER_VARIANCE * -1, SPAWN_TIMER_VARIANCE);
+
+        // make sure the deviation in spawnTimer doesn't create an invalid timeLimit
+        if ((spawnTimer + deviation) > 0)
+            spawnTimer += deviation;
+
+        return spawnTimer;
     }
 
 
     public static int getNextSpawnWaveSize()
     {
-        return 0;
+        int spawnWaveSize = (int)(getCurrentDifficulty() * SPAWN_WAVE_SIZE_SCALEVAL);
+        int deviation = UnityEngine.Random.Range(SPAWN_WAVE_SIZE_VARIANCE * 1, SPAWN_WAVE_SIZE_VARIANCE);
+        spawnWaveSize += deviation;
+
+        return spawnWaveSize;
     }
 
 

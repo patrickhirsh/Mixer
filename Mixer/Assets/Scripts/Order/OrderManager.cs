@@ -109,7 +109,6 @@ public class OrderManager : MonoBehaviour
             GameManager.awardPoints();
             clearOrderProgress(position);
             order.destroy(true);
-            CustomerManager.increaseDifficulty();
             if (debugMode) { Debug.Log("Successfully completed a drink!"); }
         }
     }

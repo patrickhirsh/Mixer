@@ -10,22 +10,14 @@ public class CustomerManager : MonoBehaviour
 
     // constants for customer behavior
     private static float AVG_WALK_SPEED = 1f;
-    private static float AVG_WALK_SPEED_VARIANCE = .1f;
-    private static float WAITING_POSITION_X_VARIANCE = .3f;              // variance in the X position of standing positions chosen for customers waiting for drinks
-    private static float WAITING_POSITION_Y_GAP = .15f;                  // distance in the Y direction between each customer waiting for a drink at any given OrderNode
+    private static float AVG_WALK_SPEED_VARIANCE = 0f;
+    private static float WAITING_POSITION_X_VARIANCE = 0f;               // variance in the X position of standing positions chosen for customers waiting for drinks
+    private static float WAITING_POSITION_Y_GAP = .25f;                  // distance in the Y direction between each customer waiting for a drink at any given OrderNode
+    private static int SPAWN_WAVE_MAX_OFFSET = 1000;                     // maximum time in ms between customer spawns during a spawn wave
+    private static int SPAWN_WAVE_MIN_OFFSET = 500;                      // minimum time in ms between customer spawns during a spawn wave
 
-    // constants for spawn interval algorithm (all in seconds)
-    private static float STARTING_SPAWN_TIMER = 8f;                    // time between customer spawns (adjusted over time)
-    private static float STARTING_SPAWN_TIMER_REDUCTION_VAL = .1f;      // value at which to reduce spawnTimer by each increaseDifficulty() call
-    private static float SPAWN_TIMER_VARIANCE_UPPER = 1f;               // deviation allowance for nextSpawnTimer when resetting the timer (upper bound)
-    private static float SPAWN_TIMER_VARIANCE_LOWER = 1f;               // deviation allowance for nextSpawnTimer when resetting the timer (lower bound)
-
-    // variables for spawn interval algorithm
-    private static System.Random rnd;                       // used for all random integer numbers during customer spawning
-    private static float avgSpawnTimer;                     // the time limit between customer spawns
-    private static float avgSpawnTimer_ReductionVal;        // the time in seconds that the avgSpawnTimer is reduced by on difficulty increase. (TODO: scale non-linearly)
+    private static System.Random rnd;
     private static float spawnTimer;                        // the time remaining before another customer should be spawned
-
     private static GameObject CustomersParent;              // parent object in which all customers should be instantiated under                                          
     private static List<GameObject> customerPrefabs;        // array of all customer prefabs in Assets/Prefabs/Customers
     private static List<OrderNode> orderNodes;              // list of all orderNodes
@@ -42,8 +34,6 @@ public class CustomerManager : MonoBehaviour
         rnd = new System.Random();
         CustomersParent = GameObject.Find("Customers");
         spawnTimer = 3f;
-        avgSpawnTimer = STARTING_SPAWN_TIMER;
-        avgSpawnTimer_ReductionVal = STARTING_SPAWN_TIMER_REDUCTION_VAL;
         populateCustomerPrefabs();
         populateNodesLists();
     }
@@ -56,22 +46,13 @@ public class CustomerManager : MonoBehaviour
         // when timer reaches 0, spawn a new customer and reset the timer
         if (spawnTimer <= 0)
         {
-            spawnCustomer();
-            resetNextSpawnTimer();
+            StartCoroutine(spawnCustomerWave());
+            spawnTimer = DifficultyManager.getNextSpawnTimer();
         }
     }
 
 
     #region EXTERNAL FUNCTIONS
-
-    /// <summary>
-    /// reduce the average amount of time between customer spawns by avgSpawnTimer_ReductionVal
-    /// </summary>
-    public static void increaseDifficulty()
-    {
-        if ((avgSpawnTimer - avgSpawnTimer_ReductionVal) > 0)
-            avgSpawnTimer -= avgSpawnTimer_ReductionVal;
-    }
 
 
     /// <summary>
@@ -89,11 +70,6 @@ public class CustomerManager : MonoBehaviour
     public static SpawnNode getRandomDespawnNode()
     {
         return spawnNodes_despawn[rnd.Next(0, spawnNodes_despawn.Count)];           
-    }
-
-    public static OrderNode getRandomOrderNode(List<OrderNode> validOrderNodes)
-    {
-        return validOrderNodes[rnd.Next(0, validOrderNodes.Count)];          
     }
 
 
@@ -126,28 +102,42 @@ public class CustomerManager : MonoBehaviour
 
     #region INTERNAL FUNCTIONS
 
+
     /// <summary>
     /// spawns a customer at a random spawn location
     /// </summary>
     private static void spawnCustomer()
     {
-        // TODO: Add more customer variations
+        // TODO: add customer sprite variation
         Instantiate(customerPrefabs[0], CustomersParent.transform);
     }
 
 
     /// <summary>
-    /// Resets the nextSpawnTimer based on the avgSpawnTimer, using a random deviation
+    /// coroutine that spawns a wave of customers at random spawn locations
     /// </summary>
-    private static void resetNextSpawnTimer()
+    private static IEnumerator spawnCustomerWave()
     {
-        // reset nextSpawnTimer
-        float deviation = UnityEngine.Random.Range(SPAWN_TIMER_VARIANCE_LOWER, SPAWN_TIMER_VARIANCE_UPPER);
+        int count = DifficultyManager.getNextSpawnWaveSize();
 
-        // make sure the deviation in nextSpawnTimer doesn't create an invalid timeLimit
-        if ((avgSpawnTimer + deviation) <= 0)
-            spawnTimer = avgSpawnTimer;
-        else { spawnTimer = avgSpawnTimer + deviation; }
+        for (int i = 0; i < count; i++)
+        {
+            spawnCustomer();
+            yield return new WaitForSeconds(UnityEngine.Random.Range(SPAWN_WAVE_MIN_OFFSET, SPAWN_WAVE_MAX_OFFSET));
+        }           
+    }
+
+
+    /// <summary>
+    /// coroutine that spawns a wave of customers at random spawn locations
+    /// </summary>
+    private static IEnumerator spawnCustomerWave(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            spawnCustomer();
+            yield return new WaitForSeconds(rnd.Next(SPAWN_WAVE_MIN_OFFSET, SPAWN_WAVE_MAX_OFFSET)/1000);
+        }
     }
 
 

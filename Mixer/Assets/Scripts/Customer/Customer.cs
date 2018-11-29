@@ -70,7 +70,7 @@ public class Customer : MonoBehaviour
             case CustomerTask.FindingOrderNode:
 
                 // determine the orderNode the customer should order from
-                orderNode = CustomerManager.getRandomOrderNode(spawnNode.validOrderNodes);
+                orderNode = spawnNode.getBestOrderNode();
                 List<Node> path;
 
                 // attempt to find a path to this node (and start pathing)
