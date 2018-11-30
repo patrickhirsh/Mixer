@@ -18,6 +18,14 @@ public class GraphicsManager : MonoBehaviour
     private static Color DRINK_COMPONENT_PROGRESS_INCOMPLETE = new Color(.15f, .15f, .15f);     
     private static Color DRINK_COMPONENT_PROGRESS_COMPLETED = Color.black;
 
+    // the customer outline colors for various drink tiers
+    private static Color OUTLINE_TIER_0 = new Color(0, 0, 0, 0);
+    private static Color OUTLINE_TIER_1 = new Color(1f, 1f, 0, .25f);
+    private static Color OUTLINE_TIER_2 = new Color(1f, .5f, 0, .25f);
+    private static Color OUTLINE_TIER_3 = new Color(1f, 0, 0, .25f);
+    private static List<Color> OUTLINE_COLORS = new List<Color>() { OUTLINE_TIER_0, OUTLINE_TIER_1, OUTLINE_TIER_2, OUTLINE_TIER_3 };
+
+    // commonly referenced scene objects
     private static GameObject canvas;                  
     private static GameObject playerScore;
     private static GameObject playerOrderMisses;
@@ -105,6 +113,15 @@ public class GraphicsManager : MonoBehaviour
     {
         Bartender.bartender.transform.position =
             Bartender.bartenderPositions.transform.GetChild(Bartender.position).position;
+    }
+
+
+    /// <summary>
+    /// sets "customer" outline color to match the tier of "drink"
+    /// </summary>
+    public static void updateCustomerOutlineColor(Customer customer, Drink drink)
+    {
+        customer.GetComponent<Renderer>().material.color = OUTLINE_COLORS[drink.drinkTier];
     }
 
 

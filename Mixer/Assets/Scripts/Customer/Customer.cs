@@ -39,7 +39,7 @@ public class Customer : MonoBehaviour
     public CustomerTask currentTask { get; private set; }
 
     private Node currentNode;           // this customer's current path node
-    private Order order;                // this customer's order, if applicable. Otherwise, null
+    private Drink drink;                // the drink this customer will order. null after the customer's order is completed (or failed)
     private OrderNode orderNode;        // the OrderNode this customer ordered from if applicable. Otherwise, null
     private SpawnNode spawnNode;        // the node this customer spawned from
     private float walkSpeed;            // this customer's walk speed
@@ -52,9 +52,11 @@ public class Customer : MonoBehaviour
         walkSpeed = AVG_WALK_SPEED + UnityEngine.Random.Range(AVG_WALK_SPEED_VARIANCE * -1, AVG_WALK_SPEED_VARIANCE);
         spawnNode = NodeManager.getRandomSpawnNode();
         currentNode = spawnNode;
+        drink = Drink.getRandomDrink();
 
-        // move the customer to the determined spawn position
+        // move the customer to the determined spawn position and set thier outline color
         this.transform.position = new Vector3(currentNode.transform.position.x, currentNode.transform.position.y, currentNode.transform.position.z);
+        GraphicsManager.updateCustomerOutlineColor(this, this.drink);
 
         // begin the CustomerTask "state machine"
         currentTask = CustomerTask.FindingOrderNode;
@@ -70,7 +72,7 @@ public class Customer : MonoBehaviour
     /// </summary>
     public void orderCallback(bool success)
     {
-        order = null;
+        drink = null;
         currentTask = CustomerTask.Leaving;
         executeTask();
     }
@@ -117,7 +119,7 @@ public class Customer : MonoBehaviour
                 // order a drink
                 currentNode = currentNode as OrderNode;
                 if (currentNode != null)
-                    order = OrderManager.newOrder(this, Drink.getRandomDrink(), ((OrderNode)currentNode).bartenderPosition);
+                OrderManager.newOrder(this, this.drink, ((OrderNode)currentNode).bartenderPosition);
                 else { Debug.LogError("Customer switched to a GettingDrink state on a non-OrderNode"); }
 
                 // determine where the customer should stand while they wait
