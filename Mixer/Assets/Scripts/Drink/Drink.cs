@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Drink serves both static and instance functionality.
+/// See the doc comments under each region for more information on their purposes.
+/// </summary>
 public class Drink
 {
     // STATIC
@@ -184,6 +189,9 @@ public class Drink
     }
 
 
+    /// <summary>
+    /// uses the DifficultyManager to select a drink from a tier of the appropriate difficulty.
+    /// </summary>
     public static Drink getRandomDrink()
     {
         return getRandomDrink(DifficultyManager.getDrinkTier());
@@ -192,7 +200,6 @@ public class Drink
     /// <summary>
     /// given a difficulty (0-3), returns a random drink from that tier
     /// </summary>
-    /// <returns></returns>
     private static Drink getRandomDrink(int difficulty)
     {
         if (difficulty == 0)
@@ -231,6 +238,9 @@ public class Drink
      *  DrinkComponents required to create it.
      */
 
+    /// <summary>
+    /// Used internally to assign all proper data to an instance of Drink
+    /// </summary>
     private void assign(string drinkName, List<DrinkComponent> components)
     {
         this.drinkName = drinkName;

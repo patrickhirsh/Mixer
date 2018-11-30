@@ -33,11 +33,11 @@ public static class DifficultyManager
     private static float TIER_0_1_2_WEIGHTSUM = TIER_0_SPAWN_WEIGHT + TIER_1_SPAWN_WEIGHT + TIER_2_SPAWN_WEIGHT;
     private static float TIER_0_1_2_3_WEIGHTSUM = TIER_0_SPAWN_WEIGHT + TIER_1_SPAWN_WEIGHT + TIER_2_SPAWN_WEIGHT + TIER_3_SPAWN_WEIGHT;
 
-    // spawn timer constants. SPAWN_TIMER_SCALEVAL * (1 - difficulty) = next spawn timer
+    // spawn timer constants. SPAWN_TIMER_SCALEVAL * (1 - difficulty) + (deviation using variance) = next spawn timer
     private static float SPAWN_TIMER_VARIANCE = 1f;
     private static float SPAWN_TIMER_SCALEVAL = 20f;
 
-    // spawn wave size constants. SPAWN_WAVE_SIZE_SCALEVAL * difficulty + deviation =  next spawn wave size
+    // spawn wave size constants. SPAWN_WAVE_SIZE_SCALEVAL * difficulty + (deviation using variance) =  next spawn wave size
     private static int SPAWN_WAVE_SIZE_VARIANCE = 2;
     private static float SPAWN_WAVE_SIZE_SCALEVAL = 20f;
 

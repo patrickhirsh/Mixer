@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// Graphics Manager is responsible for interfacing with all graphical elements and GameObjects in the game.
+/// </summary>
 public class GraphicsManager : MonoBehaviour
 {
     public static bool debugMode;
 
-    private static int DRINK_PROGRESS_Y_OFFSET = 155;                                           // the Y offset of the drink progress panel over the current bartender position (in UI units)
-    private static Color DRINK_COMPONENT_PROGRESS_INCOMPLETE = new Color(.15f, .15f, .15f);     // incomplete drink component color in current drink progress panel
-    private static Color DRINK_COMPONENT_PROGRESS_COMPLETED = Color.black;                      // completed drink component color in current drink progress panel
+    // the Y offset of the drink progress panel over the current bartender position (in UI units)
+    private static int DRINK_PROGRESS_PANEL_Y_OFFSET = 155;
+
+    // the color of complete and incomplete components in current drink progress panel
+    private static Color DRINK_COMPONENT_PROGRESS_INCOMPLETE = new Color(.15f, .15f, .15f);     
+    private static Color DRINK_COMPONENT_PROGRESS_COMPLETED = Color.black;
 
     private static GameObject canvas;                  
     private static GameObject playerScore;
@@ -106,7 +113,7 @@ public class GraphicsManager : MonoBehaviour
     /// </summary>
     public static void updateCurrentDrinkProgress()
     {
-        // does there exist an order at the current bartending position?
+        // does there exist an order at the current bartender position?
         if (Bartender.bartenderPositions.transform.GetChild(Bartender.position).transform.childCount != 0)
         {
             // clear the current drink labels
@@ -117,20 +124,20 @@ public class GraphicsManager : MonoBehaviour
                 label.color = DRINK_COMPONENT_PROGRESS_INCOMPLETE;
             }               
 
-            // get a reference to the current drink
-            Drink drink = Bartender.bartenderPositions.transform.GetChild(Bartender.position).GetChild(0).GetComponent<Order>().drink;
+            // get a reference to the order at this bartender position
+            Order order = Bartender.bartenderPositions.transform.GetChild(Bartender.position).GetChild(0).GetComponent<Order>();
 
             // set the title at the top of the panel
-            currentDrinkText.transform.GetChild(0).GetComponent<Text>().text = drink.drinkName;
+            currentDrinkText.transform.GetChild(0).GetComponent<Text>().text = order.drink.drinkName;
 
             // render the drink components
-            for (int i = 1; i <= drink.components.Count; i++)
+            for (int i = 1; i <= order.drink.components.Count; i++)
             {
                 Text component = currentDrinkText.transform.GetChild(i).GetComponent<Text>();
-                component.text = drink.components[i - 1].component;
+                component.text = order.drink.components[i - 1].component;
 
                 // apply completed component color to completed components
-                if ((i-1) < OrderManager.getCompletedComponentsCount())
+                if ((i-1) < order.getOrderProgressCount())
                     currentDrinkText.transform.GetChild(i).gameObject.GetComponent<Text>().color = DRINK_COMPONENT_PROGRESS_COMPLETED;
             }                
 
@@ -139,7 +146,7 @@ public class GraphicsManager : MonoBehaviour
 
             // position the drink progress graphics over the current bartending position
             Vector2 position = convertToCanvasPosition(Bartender.bartenderPositions.transform.GetChild(Bartender.position).transform.position);
-            position.y += DRINK_PROGRESS_Y_OFFSET;
+            position.y += DRINK_PROGRESS_PANEL_Y_OFFSET;
             currentDrink.anchoredPosition = position;
         }
 

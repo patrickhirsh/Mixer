@@ -5,32 +5,20 @@ using System.Linq;
 
 
 /// <summary>
-/// OrderManager keeps track of the player's current order fulfillment for each bartender position. OrderManager 
-/// is also responsible for keeping track of timing standards for generating new order timeLimits and new order 
-/// spacing as well as actually generating these new orders (based on increasing difficulty curves)
+/// OrderManager handles order spawning. Since orders hold a few invariants that should always be followed
+/// upon instantiation (such as: they must always be initialized, and they must always be a child of the associated
+/// BartenderPosition), it makes sense to create a simple wrapper for creating new orders to ensure orders
+/// are always created correctly.
 /// </summary>
 public class OrderManager : MonoBehaviour
 {
     public static bool debugMode;
-
-    
-
-    private static GameObject orderPrefab;                                  // prefab used to spawn orders
-    private static List<List<DrinkComponent>> orderProgress;                // the DrinkComponents completed for the current drink at each bartender position, indexed by bartender position
+    private static GameObject orderPrefab;
 
 
     void Start()
     {
-        // obtain a reference to the order prefab
         orderPrefab = Resources.Load("Prefabs/order") as GameObject;
-
-        // construct the order progress list for each bartender position
-        orderProgress = new List<List<DrinkComponent>>();
-        for (int i = 0; i < Bartender.bartenderPositions.transform.childCount; i++)
-        {
-            List<DrinkComponent> bartenderPosition = new List<DrinkComponent>();
-            orderProgress.Add(bartenderPosition);
-        }
     }
 
 
@@ -46,71 +34,8 @@ public class OrderManager : MonoBehaviour
         Order order = orderObject.GetComponent<Order>();
         order.Initialize(customer, drink);
 
-        if (debugMode)
-            Debug.Log("Created new order: " + drink.drinkName + " at bartender position: " + bartenderPosition);
-
+        if (debugMode) { Debug.Log("Created new order: " + drink.drinkName + " at bartender position: " + bartenderPosition); }           
         return order;       
-    }
-
-
-    /// <summary>
-    /// gets the number completed components at the current bartender position.
-    /// Returns zero if there are no orders for this position.
-    /// </summary>
-    public static int getCompletedComponentsCount()
-    {
-        return orderProgress[Bartender.position].Count;
-    }
-
-
-    /// <summary>
-    /// clears the drink in progress at position.
-    /// happens either when a drink is failed, or submitted successfully.
-    /// </summary>
-    public static void clearOrderProgress(int position)
-    {
-        orderProgress[position].Clear();
-    }
-
-
-    /// <summary>
-    /// given a KeyCode, submits the drinkComponent to the orderProgress list at position.
-    /// validates the submitted component and reacts accordingly.
-    /// </summary>
-    public static void submitComponent(KeyCode key, int position)
-    {
-        // add the component to the order in progress and note its index
-        orderProgress[position].Add(DrinkComponent.generateExternalDrinkComponent(key, DrinkComponent.categoryLabels[Bartender.menuState]));
-        int compIndex = orderProgress[position].Count - 1;
-
-        // if there isn't an order at this position... reject
-        if (Bartender.bartenderPositions.transform.GetChild(position).transform.childCount == 0)
-        {
-            clearOrderProgress(position);
-            if (debugMode) { Debug.Log("A component was submitted to a position that contains no orders"); }
-        }
-
-        // obtain a reference to the order we're checking against
-        Order order = Bartender.bartenderPositions.transform.GetChild(position).transform.GetChild(0).GetComponent<Order>();
-
-        // if the submitted component doesn't have the same key input OR doesn't have the same category as the recipe...
-        if ((orderProgress[position][compIndex].key.ToString().ToUpper() != order.drink.components[compIndex].key.ToString().ToUpper()) ||      // same key?
-            (orderProgress[position][compIndex].category.ToUpper() != order.drink.components[compIndex].category.ToUpper()))                    // same category?
-        {
-            clearOrderProgress(position);
-            if (debugMode) { Debug.Log("Invalid drink component submitted. Clearing drink progress"); }
-        }
-
-        // otherwise, the component was valid
-        // check to see if this was the last component (completing the drink)
-        if (orderProgress[position].Count == order.drink.components.Count)
-        {
-            // drink completed successfully!
-            GameManager.awardPoints();
-            clearOrderProgress(position);
-            order.destroy(true);
-            if (debugMode) { Debug.Log("Successfully completed a drink!"); }
-        }
     }
 
     #endregion

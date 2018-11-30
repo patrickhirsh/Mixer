@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Input Manager is responsible for handling all user input.
+/// Input Manager is also responsible for keeping track of the current key bindings,
+/// cleaning key binding names for front-end use, changing key bindings, 
+/// and storing various "valid" key arrays for certain input fields.
+/// </summary>
 public class InputManager : MonoBehaviour
 {
     public static bool debugMode;

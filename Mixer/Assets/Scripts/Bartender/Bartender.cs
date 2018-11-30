@@ -2,17 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// bartenderState should NEVER have more than one flag set at any given time
-// indicates the bartender's current menu state
+
+/// <summary>
+/// indicates the bartender's current menu state.
+/// bartenderState should NEVER have more than one flag set at any given time
+/// </summary>
 public enum bartenderMenuState { noCategorySelected, glasswareCategory, beersCategory, liquorsCategory, bittersCategory, nonAlcoholicCategory, otherCategory }
 
 
+/// <summary>
+/// Bartender controls the bartender within the scene. Responsibilities include
+/// bartender movement, holding a reference to all bartenderositions, and 
+/// keeping track of the bartender's menu state.
+/// </summary>
 public class Bartender : MonoBehaviour
 {
     public static bool debugMode;
 
-    public static GameObject bartender { get; private set; }            // reference to the bartender gameObject
-    public static GameObject bartenderPositions { get; private set; }   // reference to the parent of all bartenderPosition objects
+    public static GameObject bartender { get; private set; }            // the bartender gameObject
+    public static GameObject bartenderPositions { get; private set; }   // parent of all bartenderPosition objects, each with their own order children
     public static int position { get; private set; }                    // the bartenders current position (0 to numBartenderPositions - 1)
     public static bartenderMenuState menuState { get; private set; }    // the bartender's current memu state
 
@@ -101,7 +109,11 @@ public class Bartender : MonoBehaviour
             // player selected a component
             else
             {
-                OrderManager.submitComponent(key, position);
+                // if an order exists at this position, try to add the selected component
+                if (bartenderPositions.transform.GetChild(position).childCount > 0)
+                    bartenderPositions.transform.GetChild(position).transform.GetChild(0).GetComponent<Order>().submitDrinkComponent(key);
+
+                // regardless of if an order exists, always step back to categories menu on component selection
                 menuState = bartenderMenuState.noCategorySelected;
                 return;
             }

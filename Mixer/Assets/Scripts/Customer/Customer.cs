@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// CustomerTask should NEVER have more than one flag set at any given time
-// indicates a customer's current task
+/// <summary>
+/// indicates a customer's current task.
+/// CustomerTask should NEVER have more than one flag set at any given time
+/// </summary>
 public enum CustomerTask
 {
     FindingOrderNode,
@@ -14,13 +16,31 @@ public enum CustomerTask
 }
 
 
+/// <summary>
+/// Customer controls an instance of a customer in the scene. This class acts as
+/// a CustomerTask "state machine", executing a series of tasks that trigger new
+/// task executions upon completion. Customer behavior is entirely self-regulated
+/// within this class.
+/// </summary>
 public class Customer : MonoBehaviour
 {
+ 
+    // average walk speed + (deviation using variance) = walk speed
+    private static float AVG_WALK_SPEED = 1f;                   
+    private static float AVG_WALK_SPEED_VARIANCE = 0f;    
+    
+    // X variance represents the maximum absolute deviation selected for the X position while waiting for a drink
+    // Y gap is the constant (applied negatively to y position) gap placed between customers waiting for a drink
+    private static float WAITING_POSITION_X_VARIANCE = 0f;      
+    private static float WAITING_POSITION_Y_GAP = .25f;         
+
+    
+    // this customer's current task (acting as a state in the state machine)
     public CustomerTask currentTask { get; private set; }
 
     private Node currentNode;           // this customer's current path node
     private Order order;                // this customer's order, if applicable. Otherwise, null
-    private OrderNode orderNode;        // the order node this customer ordered from, if applicable. Otherwise, null
+    private OrderNode orderNode;        // the OrderNode this customer ordered from if applicable. Otherwise, null
     private SpawnNode spawnNode;        // the node this customer spawned from
     private float walkSpeed;            // this customer's walk speed
 
@@ -28,10 +48,15 @@ public class Customer : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        walkSpeed = CustomerManager.getRandomWalkSpeed();
-        spawnNode = CustomerManager.getRandomSpawnNode();
+        // determine the customer's walk speed and spawn position
+        walkSpeed = AVG_WALK_SPEED + UnityEngine.Random.Range(AVG_WALK_SPEED_VARIANCE * -1, AVG_WALK_SPEED_VARIANCE);
+        spawnNode = NodeManager.getRandomSpawnNode();
         currentNode = spawnNode;
+
+        // move the customer to the determined spawn position
         this.transform.position = new Vector3(currentNode.transform.position.x, currentNode.transform.position.y, currentNode.transform.position.z);
+
+        // begin the CustomerTask "state machine"
         currentTask = CustomerTask.FindingOrderNode;
         executeTask();
 	}
@@ -56,7 +81,10 @@ public class Customer : MonoBehaviour
     #region INTERNAL METHODS
 
     /// <summary>
-    /// Executes this customer's currentTask
+    /// Executes this customer's currentTask. This is the core of the customer state machine.
+    /// Each possible CustomerTask will always either: set a new task and execute it, start a
+    /// coroutine that will then set a new task and execute it (on completion), or despawn and
+    /// destroy the customer.
     /// </summary>
     private void executeTask()
     {
@@ -93,7 +121,7 @@ public class Customer : MonoBehaviour
                 else { Debug.LogError("Customer switched to a GettingDrink state on a non-OrderNode"); }
 
                 // determine where the customer should stand while they wait
-                this.transform.position = CustomerManager.getRandomWaitingPosition(orderNode);
+                this.transform.position = getRandomWaitingPosition();
                 break;
 
            
@@ -107,7 +135,7 @@ public class Customer : MonoBehaviour
                 this.transform.position = new Vector3(currentNode.transform.position.x, currentNode.transform.position.y, GraphicsManager.calculateZValue(currentNode.transform.position.y));
 
                 // determine the despawn node this customer should leave from
-                SpawnNode destination = CustomerManager.getRandomDespawnNode();
+                SpawnNode destination = NodeManager.getRandomDespawnNode();
                 List<Node> exitPath;
 
                 // attempt to find a path to this node (and start pathing)
@@ -152,6 +180,25 @@ public class Customer : MonoBehaviour
         }
         currentTask = nextTask;
         executeTask();
+    }
+
+
+    /// <summary>
+    /// based on the number of people currently waiting at "orderNode", returns a position
+    /// that the customer should stand while they wait for their drink.
+    /// Should be called after the customer's drink has been ordered
+    /// </summary>
+    private Vector3 getRandomWaitingPosition()
+    {
+        float x = orderNode.transform.position.x + UnityEngine.Random.Range(WAITING_POSITION_X_VARIANCE * -1f, WAITING_POSITION_X_VARIANCE);
+        float y = orderNode.transform.position.y - ((orderNode.bartenderPosition.transform.childCount - 1) * WAITING_POSITION_Y_GAP);
+        float z = GraphicsManager.calculateZValue(y);
+
+        // first customer doesn't have any X offset
+        if (orderNode.bartenderPosition.transform.childCount == 1)
+            x = orderNode.transform.position.x;
+
+        return new Vector3(x, y, z);
     }
 
     #endregion

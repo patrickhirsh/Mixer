@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// DrinkComponent serves both static and instance functionality.
+/// See the doc comments under each region for more information on their purposes.
+/// </summary>
 public class DrinkComponent
 {
     // STATIC

@@ -4,10 +4,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-// gameState should NEVER have more than one flag set at any given time
+/// <summary>
+/// indicates the current state of this scene.
+/// GameState should NEVER have more than one flag set at any given time
+/// </summary>
 public enum GameState { Paused = 0, GameLoop = 1 }
 
 
+/// <summary>
+/// Game Manager is responsible for controlling the primary game loop.
+/// Game Manager also keeps track of the player's score, bonuses, and other
+/// events occuring during gameplay. Finally, Game Manager is responsible for
+/// managing the debug state of ALL other classes as well as ensuring the proper
+/// static structures for these classes are initialized upon a scene load.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     public static GameState state { get; private set; }         // the game's current state
@@ -26,6 +36,7 @@ public class GameManager : MonoBehaviour
         CustomerManager.debugMode =     true;
         GraphicsManager.debugMode =     true;
         PathfindingManager.debugMode =  true;
+        NodeManager.debugMode =         true;
 
         // initialize static internal data structures
         DrinkComponent.Initialize();
