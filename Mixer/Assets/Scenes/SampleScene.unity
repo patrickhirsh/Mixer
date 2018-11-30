@@ -982,6 +982,7 @@ MonoBehaviour:
   distance: 0
   prevNode: {fileID: 0}
   spawnType: 0
+  sisterSpawnNode: {fileID: 1391503309}
   validOrderNodes:
   - {fileID: 66876184}
   - {fileID: 1415926369}
@@ -3103,6 +3104,7 @@ MonoBehaviour:
   distance: 0
   prevNode: {fileID: 0}
   spawnType: 1
+  sisterSpawnNode: {fileID: 1728197187}
   validOrderNodes: []
 --- !u!212 &987324486
 SpriteRenderer:
@@ -3991,6 +3993,7 @@ MonoBehaviour:
   distance: 0
   prevNode: {fileID: 0}
   spawnType: 1
+  sisterSpawnNode: {fileID: 396313911}
   validOrderNodes: []
 --- !u!212 &1391503310
 SpriteRenderer:
@@ -4750,6 +4753,7 @@ MonoBehaviour:
   distance: 0
   prevNode: {fileID: 0}
   spawnType: 0
+  sisterSpawnNode: {fileID: 987324485}
   validOrderNodes:
   - {fileID: 729065732}
   - {fileID: 1434318421}

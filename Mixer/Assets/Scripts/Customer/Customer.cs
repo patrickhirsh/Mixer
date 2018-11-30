@@ -135,7 +135,7 @@ public class Customer : MonoBehaviour
                 this.transform.position = new Vector3(currentNode.transform.position.x, currentNode.transform.position.y, GraphicsManager.calculateZValue(currentNode.transform.position.y));
 
                 // determine the despawn node this customer should leave from
-                SpawnNode destination = NodeManager.getRandomDespawnNode();
+                SpawnNode destination = spawnNode.sisterSpawnNode;
                 List<Node> exitPath;
 
                 // attempt to find a path to this node (and start pathing)

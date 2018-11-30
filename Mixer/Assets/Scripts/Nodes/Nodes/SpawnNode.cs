@@ -14,7 +14,8 @@ public class SpawnNode : Node
     private static float ORDERNODE_SELECTION_COOLDOWN = 4f;         // minimum time getBestOrderNode will wait before selecting the same OrderNode again (not applicable if all are full)
 
     public enum SpawnType { spawn, despawn }
-    public SpawnType spawnType;                                     // indicates whether this is a spawn or despawn location
+    public SpawnType spawnType;                                     // indicates whether this is a spawn or despawn location (should be set in inspector)
+    public SpawnNode sisterSpawnNode;                               // indicates the paired Spawn or Despawn node associated with this node (should be set in inspector)
     public List<OrderNode> validOrderNodes;                         // indicates which OrderNodes should be considered when spawning from this point
     private Dictionary<OrderNode, float> distanceToOrderNodes;      // stores the distance to all orderNodes from this spawn point
     private Dictionary<OrderNode, float> timeAtLastSelection;       // the Time.time when this orderNode was last selected in getBestOrderNode()
@@ -34,6 +35,9 @@ public class SpawnNode : Node
         timeAtLastSelection = new Dictionary<OrderNode, float>();
         foreach (OrderNode orderNode in distanceToOrderNodes.Keys)
             timeAtLastSelection.Add(orderNode, ORDERNODE_SELECTION_COOLDOWN * -1);
+
+        // validate inspector settings
+        Debug.Assert(sisterSpawnNode != null);
     }
 
 
