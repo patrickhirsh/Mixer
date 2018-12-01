@@ -56,7 +56,7 @@ public class Customer : MonoBehaviour
 
         // move the customer to the determined spawn position and set thier outline color
         this.transform.position = new Vector3(currentNode.transform.position.x, currentNode.transform.position.y, currentNode.transform.position.z);
-        GraphicsManager.updateCustomerOutlineColor(this, this.drink);
+        GraphicsManager.updateSpriteOutlineColor(this.gameObject, this.drink);
 
         // begin the CustomerTask "state machine"
         currentTask = CustomerTask.FindingOrderNode;

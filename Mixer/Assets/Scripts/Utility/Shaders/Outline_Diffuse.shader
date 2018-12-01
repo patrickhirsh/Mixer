@@ -54,10 +54,10 @@
 				fixed upAlpha = tex2D(_MainTex, i.uv + fixed2(0, _MainTex_TexelSize.y)).a;
 				fixed downAlpha = tex2D(_MainTex, i.uv - fixed2(0, _MainTex_TexelSize.y)).a;
 				fixed rightAlpha = tex2D(_MainTex, i.uv + fixed2(_MainTex_TexelSize.x, 0)).a;
-				fixed letAlpha = tex2D(_MainTex, i.uv - fixed2(_MainTex_TexelSize.x, 0)).a;
+				fixed leftAlpha = tex2D(_MainTex, i.uv - fixed2(_MainTex_TexelSize.x, 0)).a;
 
 				// if this pixel is transparent, but has ANY neighboring A > 0 pixels, render the outline
-				if (((upAlpha + downAlpha + rightAlpha + letAlpha) > 0) && (baseColor.a == 0))
+				if (((upAlpha + downAlpha + rightAlpha + leftAlpha) > 0) && (baseColor.a == 0))
 				{
 					outlineColor.rgb *= outlineColor.a;
 					return outlineColor;

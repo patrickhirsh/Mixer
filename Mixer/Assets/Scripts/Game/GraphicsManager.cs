@@ -117,11 +117,17 @@ public class GraphicsManager : MonoBehaviour
 
 
     /// <summary>
-    /// sets "customer" outline color to match the tier of "drink"
+    /// sets "sprite" outline color to match the tier of "drink"
     /// </summary>
-    public static void updateCustomerOutlineColor(Customer customer, Drink drink)
+    public static void updateSpriteOutlineColor(GameObject sprite, Drink drink)
     {
-        customer.GetComponent<Renderer>().material.color = OUTLINE_COLORS[drink.drinkTier];
+        sprite.GetComponent<Renderer>().material.color = OUTLINE_COLORS[drink.drinkTier];
+    }
+
+
+    public static void updateUIOutlineColor(GameObject element, Drink drink)
+    {
+        element.GetComponent<Image>().material.color = OUTLINE_COLORS[drink.drinkTier];
     }
 
 
@@ -143,6 +149,10 @@ public class GraphicsManager : MonoBehaviour
 
             // get a reference to the order at this bartender position
             Order order = Bartender.bartenderPositions.transform.GetChild(Bartender.position).GetChild(0).GetComponent<Order>();
+
+
+            // set panel outline color
+            updateUIOutlineColor(currentDrinkBackground, order.drink);
 
             // set the title at the top of the panel
             currentDrinkText.transform.GetChild(0).GetComponent<Text>().text = order.drink.drinkName;
