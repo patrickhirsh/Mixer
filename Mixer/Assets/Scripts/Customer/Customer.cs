@@ -24,6 +24,8 @@ public enum CustomerTask
 /// </summary>
 public class Customer : MonoBehaviour
 {
+    // distance above the customer sprite thay the order notification icon will be rendered
+    private static float ORDER_ICON_Y_OFFSET = 75f;
  
     // average walk speed + (deviation using variance) = walk speed
     private static float AVG_WALK_SPEED = 1f;                   
@@ -32,9 +34,16 @@ public class Customer : MonoBehaviour
     // X variance represents the maximum absolute deviation selected for the X position while waiting for a drink
     // Y gap is the constant (applied negatively to y position) gap placed between customers waiting for a drink
     private static float WAITING_POSITION_X_VARIANCE = 0f;      
-    private static float WAITING_POSITION_Y_GAP = .25f;         
+    private static float WAITING_POSITION_Y_GAP = .25f;
 
-    
+    // order notification icons
+    private static GameObject orderNotificationT0Prefab = Resources.Load("Prefabs/Icons/order_notification_T0") as GameObject;
+    private static GameObject orderNotificationT1Prefab = Resources.Load("Prefabs/Icons/order_notification_T1") as GameObject;
+    private static GameObject orderNotificationT2Prefab = Resources.Load("Prefabs/Icons/order_notification_T2") as GameObject;
+    private static GameObject orderNotificationT3Prefab = Resources.Load("Prefabs/Icons/order_notification_T3") as GameObject;
+    private static GameObject orderNotificationHighlightPrefab = Resources.Load("Prefabs/Icons/order_notification_highlight") as GameObject;
+
+
     // this customer's current task (acting as a state in the state machine)
     public CustomerTask currentTask { get; private set; }
 
@@ -201,6 +210,12 @@ public class Customer : MonoBehaviour
             x = orderNode.transform.position.x;
 
         return new Vector3(x, y, z);
+    }
+
+
+    private void generateOrderNotificationIcon(GameObject orderNotificationPrefab)
+    {
+        GameObject notification = Instantiate(orderNotificationPrefab, this.transform);
     }
 
     #endregion
