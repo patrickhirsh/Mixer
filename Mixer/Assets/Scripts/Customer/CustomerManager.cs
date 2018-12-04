@@ -47,8 +47,7 @@ public class CustomerManager : MonoBehaviour
     /// </summary>
     private static void spawnCustomer()
     {
-        // TODO: add customer sprite variation
-        Instantiate(customerPrefabs[0], customersParent.transform);
+        Instantiate(customerPrefabs[UnityEngine.Random.Range(0, customerPrefabs.Count)], customersParent.transform);
     }
 
 

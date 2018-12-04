@@ -23,10 +23,7 @@ public enum CustomerTask
 /// within this class.
 /// </summary>
 public class Customer : MonoBehaviour
-{
-    // distance above the customer sprite thay the order notification icon will be rendered
-    private static float ORDER_ICON_Y_OFFSET = 75f;
- 
+{ 
     // average walk speed + (deviation using variance) = walk speed
     private static float AVG_WALK_SPEED = 1f;                   
     private static float AVG_WALK_SPEED_VARIANCE = 0f;    
@@ -36,19 +33,12 @@ public class Customer : MonoBehaviour
     private static float WAITING_POSITION_X_VARIANCE = 0f;      
     private static float WAITING_POSITION_Y_GAP = .25f;
 
-    // order notification icons
-    private static GameObject orderNotificationT0Prefab = Resources.Load("Prefabs/Icons/order_notification_T0") as GameObject;
-    private static GameObject orderNotificationT1Prefab = Resources.Load("Prefabs/Icons/order_notification_T1") as GameObject;
-    private static GameObject orderNotificationT2Prefab = Resources.Load("Prefabs/Icons/order_notification_T2") as GameObject;
-    private static GameObject orderNotificationT3Prefab = Resources.Load("Prefabs/Icons/order_notification_T3") as GameObject;
-    private static GameObject orderNotificationHighlightPrefab = Resources.Load("Prefabs/Icons/order_notification_highlight") as GameObject;
-
-
     // this customer's current task (acting as a state in the state machine)
     public CustomerTask currentTask { get; private set; }
 
     private Node currentNode;           // this customer's current path node
     private Drink drink;                // the drink this customer will order. null after the customer's order is completed (or failed)
+    private Order order;                // the Order this customer created if applicable. Otherwise, null
     private OrderNode orderNode;        // the OrderNode this customer ordered from if applicable. Otherwise, null
     private SpawnNode spawnNode;        // the node this customer spawned from
     private float walkSpeed;            // this customer's walk speed
@@ -82,6 +72,7 @@ public class Customer : MonoBehaviour
     public void orderCallback(bool success)
     {
         drink = null;
+        order = null;
         currentTask = CustomerTask.Leaving;
         executeTask();
     }
@@ -128,7 +119,7 @@ public class Customer : MonoBehaviour
                 // order a drink
                 currentNode = currentNode as OrderNode;
                 if (currentNode != null)
-                OrderManager.newOrder(this, this.drink, ((OrderNode)currentNode).bartenderPosition);
+                order = OrderManager.newOrder(this, this.drink, ((OrderNode)currentNode).bartenderPosition);
                 else { Debug.LogError("Customer switched to a GettingDrink state on a non-OrderNode"); }
 
                 // determine where the customer should stand while they wait
@@ -210,12 +201,6 @@ public class Customer : MonoBehaviour
             x = orderNode.transform.position.x;
 
         return new Vector3(x, y, z);
-    }
-
-
-    private void generateOrderNotificationIcon(GameObject orderNotificationPrefab)
-    {
-        GameObject notification = Instantiate(orderNotificationPrefab, this.transform);
     }
 
     #endregion

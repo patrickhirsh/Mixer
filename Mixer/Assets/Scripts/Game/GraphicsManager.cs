@@ -12,7 +12,7 @@ public class GraphicsManager : MonoBehaviour
     public static bool debugMode;
 
     // the Y offset of the drink progress panel over the current bartender position (in UI units)
-    private static int DRINK_PROGRESS_PANEL_Y_OFFSET = 155;
+    private static int DRINK_PROGRESS_PANEL_Y_OFFSET = 157;
 
     // the color of complete and incomplete components in current drink progress panel
     private static Color DRINK_COMPONENT_PROGRESS_INCOMPLETE = new Color(.15f, .15f, .15f);     
@@ -25,6 +25,13 @@ public class GraphicsManager : MonoBehaviour
     private static Color OUTLINE_TIER_3 = new Color(1f, 0, 0, .25f);
     private static List<Color> OUTLINE_COLORS = new List<Color>() { OUTLINE_TIER_0, OUTLINE_TIER_1, OUTLINE_TIER_2, OUTLINE_TIER_3 };
 
+    // the colors used in current drink titles (based on drink tiers)
+    private static Color TEXT_TIER_0 = new Color(.7f, .7f, .7f, 1f);
+    private static Color TEXT_TIER_1 = new Color(.7f, .7f, 0, 1f);
+    private static Color TEXT_TIER_2 = new Color(.7f, .35f, 0, 1f);
+    private static Color TEXT_TIER_3 = new Color(.7f, .1f, .1f, 1f);
+    private static List<Color> TEXT_COLORS = new List<Color>() { TEXT_TIER_0, TEXT_TIER_1, TEXT_TIER_2, TEXT_TIER_3 };
+
     // commonly referenced scene objects
     private static GameObject canvas;                  
     private static GameObject playerScore;
@@ -32,8 +39,13 @@ public class GraphicsManager : MonoBehaviour
     private static GameObject pointsAwarded;            // object used to instantiated AnimatedText objects for points awarded
     private static RectTransform currentDrink;          // the current drink panel RectTransform. The parent transform for the entire panel.
     private static GameObject currentDrinkText;         // [0] = current drink label. [1+] = current drink components
+    private static Text currentDrinkTime;               // time remaining on the current drink order
     private static GameObject currentDrinkBackground;   // the current drink backgroud sprite
     private static GameObject categoryLabels;           // the parent of all category labels
+
+    // prefabs
+    private static Sprite order_miss;
+    private static Sprite order_miss_marked;
 
 
     void Start()
@@ -45,8 +57,13 @@ public class GraphicsManager : MonoBehaviour
         pointsAwarded = GameObject.Find("points_awarded");
         currentDrink = GameObject.Find("current_drink").GetComponent<RectTransform>();
         currentDrinkText = GameObject.Find("current_drink_text");
+        currentDrinkTime = GameObject.Find("current_drink_time").GetComponent<Text>();
         currentDrinkBackground = GameObject.Find("current_drink_background");
         categoryLabels = GameObject.Find("category_labels");
+
+        // load resources
+        order_miss = Resources.Load<Sprite>("Art/Icons/order_miss");
+        order_miss_marked = Resources.Load<Sprite>("Art/Icons/order_miss_marked");
 
         hideEditorTools();
         updateScore();
@@ -102,7 +119,19 @@ public class GraphicsManager : MonoBehaviour
     /// </summary>
     public static void updatePlayerOrderMisses()
     {
-        playerOrderMisses.GetComponent<Text>().text = GameManager.playerOrderMisses.ToString();
+        // clear player order misses
+        for (int i = 0; i < playerOrderMisses.transform.childCount; i++)
+            playerOrderMisses.transform.GetChild(i).GetComponent<Image>().sprite = order_miss;
+
+        // assign "marked" for each player miss
+        for (int i = 0; i < GameManager.playerOrderMisses; i++)
+        {
+            // if for some reason we have more than playerOrderMisses.transform.childCount misses, stop
+            if (i > playerOrderMisses.transform.childCount)
+                break;
+
+            playerOrderMisses.transform.GetChild(i).GetComponent<Image>().sprite = order_miss_marked;
+        }
     }
 
 
@@ -150,12 +179,15 @@ public class GraphicsManager : MonoBehaviour
             // get a reference to the order at this bartender position
             Order order = Bartender.bartenderPositions.transform.GetChild(Bartender.position).GetChild(0).GetComponent<Order>();
 
-
             // set panel outline color
             updateUIOutlineColor(currentDrinkBackground, order.drink);
 
             // set the title at the top of the panel
             currentDrinkText.transform.GetChild(0).GetComponent<Text>().text = order.drink.drinkName;
+            currentDrinkText.transform.GetChild(0).GetComponent<Text>().color = TEXT_COLORS[order.drink.drinkTier];
+
+            // update time remaining
+            currentDrinkTime.text = (Mathf.CeilToInt(order.timeLeft)).ToString();
 
             // render the drink components
             for (int i = 1; i <= order.drink.components.Count; i++)
@@ -184,6 +216,7 @@ public class GraphicsManager : MonoBehaviour
             for (int i = 0; i < currentDrinkText.transform.childCount; i++)
                 currentDrinkText.transform.GetChild(i).GetComponent<Text>().text = "";
 
+            currentDrinkTime.text = "";
             currentDrinkBackground.SetActive(false);
         }
     }

@@ -15,27 +15,30 @@ using UnityEngine;
 /// </summary>
 public static class DifficultyManager
 {
-    private static float DIFFICULTY_CURVE = 1000f;
+    private static float DIFFICULTY_CURVE = 700f;
 
     // difficulty value that must be surpassed in order to spawn each tier
     //private static float TIER_1_DIFFICULTY_THRESHOLD = .12f;
     //private static float TIER_2_DIFFICULTY_THRESHOLD = .24f;
     //private static float TIER_3_DIFFICULTY_THRESHOLD = .35f;
-    private static float TIER_1_DIFFICULTY_THRESHOLD = 0f;
-    private static float TIER_2_DIFFICULTY_THRESHOLD = 0f;
-    private static float TIER_3_DIFFICULTY_THRESHOLD = 0f;
+    //private static float TIER_1_DIFFICULTY_THRESHOLD = 0f;
+    //private static float TIER_2_DIFFICULTY_THRESHOLD = 0f;
+    //private static float TIER_3_DIFFICULTY_THRESHOLD = 0f;
+    private static float TIER_1_DIFFICULTY_THRESHOLD = .10f;
+    private static float TIER_2_DIFFICULTY_THRESHOLD = .18f;
+    private static float TIER_3_DIFFICULTY_THRESHOLD = .22f;
 
     // weight values for each tier (if applicable) when spawning.
     // these values need not sum to any particular value - they're just relative weights.
     // tiers with heavier weights are considered more strongly during tier selection.
-    //private static float TIER_0_SPAWN_WEIGHT = .5f;
-    //private static float TIER_1_SPAWN_WEIGHT = .1f;
-    //private static float TIER_2_SPAWN_WEIGHT = .1f;
-    //private static float TIER_3_SPAWN_WEIGHT = .05f;
-    private static float TIER_0_SPAWN_WEIGHT = 0f;
-    private static float TIER_1_SPAWN_WEIGHT = 1f;
-    private static float TIER_2_SPAWN_WEIGHT = 1f;
-    private static float TIER_3_SPAWN_WEIGHT = 1f;
+    private static float TIER_0_SPAWN_WEIGHT = .5f;
+    private static float TIER_1_SPAWN_WEIGHT = .1f;
+    private static float TIER_2_SPAWN_WEIGHT = .1f;
+    private static float TIER_3_SPAWN_WEIGHT = .05f;
+    //private static float TIER_0_SPAWN_WEIGHT = 1f;
+    //private static float TIER_1_SPAWN_WEIGHT = 1f;
+    //private static float TIER_2_SPAWN_WEIGHT = 1f;
+    //private static float TIER_3_SPAWN_WEIGHT = 1f;
     private static float TIER_0_1_WEIGHTSUM = TIER_0_SPAWN_WEIGHT + TIER_1_SPAWN_WEIGHT;
     private static float TIER_0_1_2_WEIGHTSUM = TIER_0_SPAWN_WEIGHT + TIER_1_SPAWN_WEIGHT + TIER_2_SPAWN_WEIGHT;
     private static float TIER_0_1_2_3_WEIGHTSUM = TIER_0_SPAWN_WEIGHT + TIER_1_SPAWN_WEIGHT + TIER_2_SPAWN_WEIGHT + TIER_3_SPAWN_WEIGHT;
