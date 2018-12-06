@@ -153,6 +153,6 @@ public static class DifficultyManager
     /// </summary>
     private static float getCurrentDifficulty()
     {
-        return Time.time / (Time.time + DIFFICULTY_CURVE);
+        return Time.timeSinceLevelLoad / (Time.timeSinceLevelLoad + DIFFICULTY_CURVE);
     }
 }
