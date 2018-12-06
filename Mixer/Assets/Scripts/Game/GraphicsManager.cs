@@ -241,7 +241,7 @@ public class GraphicsManager : MonoBehaviour
             int index = 1;
             foreach (KeyValuePair<bartenderMenuState, string> label in DrinkComponent.categoryLabels)
             {
-                categoryLabels.transform.GetChild(index).GetComponent<Text>().text = label.Value;
+                categoryLabels.transform.GetChild(index).GetComponent<Text>().text = TextFormatter.newLineOnSpace(label.Value);
                 index++;
             }
                 
@@ -315,7 +315,7 @@ public class GraphicsManager : MonoBehaviour
 
         // update labels for however many components we have
         foreach (KeyValuePair<string, DrinkComponent> component in labelSource)                    
-            { categoryLabels.transform.GetChild(index).GetComponent<Text>().text = component.Key; index++; }
+            { categoryLabels.transform.GetChild(index).GetComponent<Text>().text = TextFormatter.newLineOnSpace(component.Key); index++; }
 
         // fill the rest with ""
         for (int i = index; i < categoryLabels.transform.childCount; i++)                                    

@@ -105,14 +105,14 @@ public class Drink
         #region Tier 2
 
         // Rum And Coke
-        Drink rumAndCoke = new Drink();
+        Drink rumAndCola = new Drink();
         List<DrinkComponent> rumAndCokeRecipe = new List<DrinkComponent>();
         rumAndCokeRecipe.Add(DrinkComponent.glassware["Mixed Drink Glass"]);
         rumAndCokeRecipe.Add(DrinkComponent.other["Ice"]);
         rumAndCokeRecipe.Add(DrinkComponent.liquors["Rum"]);
-        rumAndCokeRecipe.Add(DrinkComponent.nonAlcoholic["Coke"]);
-        rumAndCoke.assign("Rum And Coke", 2, rumAndCokeRecipe);
-        drinks2.Add(rumAndCoke);
+        rumAndCokeRecipe.Add(DrinkComponent.nonAlcoholic["Cola"]);
+        rumAndCola.assign("Rum And Cola", 2, rumAndCokeRecipe);
+        drinks2.Add(rumAndCola);
 
         // Negroni
         Drink negroni = new Drink();

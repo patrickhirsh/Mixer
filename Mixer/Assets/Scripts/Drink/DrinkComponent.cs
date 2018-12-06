@@ -54,7 +54,7 @@ public class DrinkComponent
 
         categoryLabels = new Dictionary<bartenderMenuState, string>() { { bartenderMenuState.glasswareCategory, "Glassware" },
             { bartenderMenuState.beersCategory, "Beers" }, { bartenderMenuState.liquorsCategory, "Liquors" }, {bartenderMenuState.bittersCategory, "Bitters" },
-            { bartenderMenuState.nonAlcoholicCategory, "Non-Alcoholic" }, { bartenderMenuState.otherCategory, "Other" } };
+            { bartenderMenuState.nonAlcoholicCategory, "Non Alcoholic" }, { bartenderMenuState.otherCategory, "Other" } };
 
 
         #region            GLASSWARE
@@ -163,32 +163,32 @@ public class DrinkComponent
 
         // Tonic
         DrinkComponent tonic = new DrinkComponent();
-        tonic.assign("Tonic", InputManager.category1, "non-Alcoholic");
+        tonic.assign("Tonic", InputManager.category1, "non alcoholic");
         nonAlcoholic.Add(tonic.component, tonic);
 
         // Coke
-        DrinkComponent coke = new DrinkComponent();
-        coke.assign("Coke", InputManager.category2, "non-Alcoholic");
-        nonAlcoholic.Add(coke.component, coke);
+        DrinkComponent cola = new DrinkComponent();
+        cola.assign("Cola", InputManager.category2, "non alcoholic");
+        nonAlcoholic.Add(cola.component, cola);
 
         // Ginger Beer
         DrinkComponent gingerBeer = new DrinkComponent();
-        gingerBeer.assign("Ginger Beer", InputManager.category3, "non-Alcoholic");
+        gingerBeer.assign("Ginger Beer", InputManager.category3, "non alcoholic");
         nonAlcoholic.Add(gingerBeer.component, gingerBeer);
 
         // Lime Juice
         DrinkComponent limeJuice = new DrinkComponent();
-        limeJuice.assign("Lime Juice", InputManager.category4, "non-Alcoholic");
+        limeJuice.assign("Lime Juice", InputManager.category4, "non alcoholic");
         nonAlcoholic.Add(limeJuice.component, limeJuice);
 
         // Margarita Mix
         DrinkComponent margaritaMix = new DrinkComponent();
-        margaritaMix.assign("Margarita Mix", InputManager.category5, "non-Alcoholic");
+        margaritaMix.assign("Margarita Mix", InputManager.category5, "non alcoholic");
         nonAlcoholic.Add(margaritaMix.component, margaritaMix);
 
         // Simple Syrup
         DrinkComponent simpleSyrup = new DrinkComponent();
-        simpleSyrup.assign("Simple Syrup", InputManager.category6, "non-Alcoholic");
+        simpleSyrup.assign("Simple Syrup", InputManager.category6, "non alcoholic");
         nonAlcoholic.Add(simpleSyrup.component, simpleSyrup);
         #endregion
 
@@ -239,17 +239,17 @@ public class DrinkComponent
     public static void updateKeyStrings()
     {
         foreach (KeyValuePair<string, DrinkComponent> component in glassware)
-            component.Value.keyString = InputManager.getStringFromKeyCode(component.Value.key);
+            component.Value.keyString = TextFormatter.getStringFromKeyCode(component.Value.key);
         foreach (KeyValuePair<string, DrinkComponent> component in beers)
-            component.Value.keyString = InputManager.getStringFromKeyCode(component.Value.key);
+            component.Value.keyString = TextFormatter.getStringFromKeyCode(component.Value.key);
         foreach (KeyValuePair<string, DrinkComponent> component in liquors)
-            component.Value.keyString = InputManager.getStringFromKeyCode(component.Value.key);
+            component.Value.keyString = TextFormatter.getStringFromKeyCode(component.Value.key);
         foreach (KeyValuePair<string, DrinkComponent> component in bitters)
-            component.Value.keyString = InputManager.getStringFromKeyCode(component.Value.key);
+            component.Value.keyString = TextFormatter.getStringFromKeyCode(component.Value.key);
         foreach (KeyValuePair<string, DrinkComponent> component in nonAlcoholic)
-            component.Value.keyString = InputManager.getStringFromKeyCode(component.Value.key);
+            component.Value.keyString = TextFormatter.getStringFromKeyCode(component.Value.key);
         foreach (KeyValuePair<string, DrinkComponent> component in other)
-            component.Value.keyString = InputManager.getStringFromKeyCode(component.Value.key);
+            component.Value.keyString = TextFormatter.getStringFromKeyCode(component.Value.key);
     }
 
 
@@ -268,7 +268,7 @@ public class DrinkComponent
         this.component = component;
         this.category = category;
         this.key = key;
-        this.keyString = InputManager.getStringFromKeyCode(key);
+        this.keyString = TextFormatter.getStringFromKeyCode(key);
     }
 
     #endregion

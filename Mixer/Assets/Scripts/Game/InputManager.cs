@@ -57,18 +57,6 @@ public class InputManager : MonoBehaviour
     #region EXTERNAL FUNCTIONS
 
     /// <summary>
-    /// given a keycode, returns a clean string that's formatted for front-end use
-    /// </summary>
-    public static string getStringFromKeyCode(KeyCode key)
-    {
-        string clean = key.ToString();
-        if (clean.StartsWith("ALPHA", true, System.Globalization.CultureInfo.CurrentCulture)) { clean = clean.Substring(5, clean.Length - 5); }
-        if (clean.StartsWith("KEYPAD", true, System.Globalization.CultureInfo.CurrentCulture)) { clean = clean.Substring(6, clean.Length - 6); }
-        return clean;
-    }
-
-
-    /// <summary>
     /// sets keybindings back to their default values
     /// </summary>
     public static void setDefaultKeyBindings()
