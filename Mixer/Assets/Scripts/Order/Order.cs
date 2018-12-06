@@ -19,8 +19,6 @@ public class Order : MonoBehaviour
     // distance above the customer sprite in unity units that the order notification icon will be rendered
     private static float ORDER_ICON_Y_OFFSET = 1.7f;
 
-    private static float ORDER_ICON_SIZE = 1f;
-
     public Customer customer { get; private set; }                      // the customer who ordered this drink
     public Drink drink { get; private set; }                            // the drink associated with this order  
     public BartenderPosition bartenderPosition { get; private set; }    // the BartenderPosition this Order was placed at
@@ -94,6 +92,7 @@ public class Order : MonoBehaviour
         // set both to disabled until Update() determines this order is the next in line
         orderNotification.enabled = false;
         orderNotificationHighlight.enabled = false;
+        orderNotification.transform.GetComponent<SpriteMask>().enabled = false;
     }
 
 
@@ -140,9 +139,11 @@ public class Order : MonoBehaviour
     {
         if (render)
         {
-            if (orderNotification.enabled == false || orderNotificationHighlight.enabled == false)
+            if (orderNotification.enabled == false || orderNotificationHighlight.enabled == false || 
+                orderNotification.transform.GetComponent<SpriteMask>().enabled == false)
             {
                 orderNotification.enabled = true;
+                orderNotification.transform.GetComponent<SpriteMask>().enabled = true;
                 orderNotificationHighlight.enabled = true;
             }
             
@@ -150,9 +151,11 @@ public class Order : MonoBehaviour
 
         else
         {
-            if (orderNotification.enabled == true || orderNotificationHighlight.enabled == true)
+            if (orderNotification.enabled == true || orderNotificationHighlight.enabled == true || 
+                orderNotification.transform.GetComponent<SpriteMask>().enabled == true)
             {
                 orderNotification.enabled = false;
+                orderNotification.transform.GetComponent<SpriteMask>().enabled = false;
                 orderNotificationHighlight.enabled = false;
             }                
         }
