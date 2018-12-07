@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
     public static void gameOver()
     {
         // TODO: do cool "Game Over" screen here, with PostProcessing Stack, perhaps?
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene("Menu");
     }
     #endregion
 }
